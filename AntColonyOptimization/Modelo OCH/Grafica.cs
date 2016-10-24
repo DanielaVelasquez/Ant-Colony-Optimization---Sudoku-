@@ -50,5 +50,13 @@ namespace AntColonyOptimization.Modelo_OCH
         {
             return MemberwiseClone();
         }
+        /// <summary>
+        /// Elimina un vértice de la gráfica,junto con las aristas incidentes en el
+        /// </summary>
+        /// <param name="v">vertice quiere eliminar de la gráfica</param>
+        public void eliminar_vertice(Vertice v)
+        {
+
+        }
     }
 }

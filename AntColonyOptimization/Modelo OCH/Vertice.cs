@@ -38,7 +38,6 @@ namespace AntColonyOptimization.Modelo_OCH
             aristas = new List<Arista>();
             atractivo = nAtractivo;
         }
-
         public void setFeromonas(double nFeromonas)
         {
             feromonas = nFeromonas;
@@ -64,7 +63,6 @@ namespace AntColonyOptimization.Modelo_OCH
             }
             return vecinos;
         }
-
         public double getAtractivo()
         {
             return atractivo;
@@ -99,6 +97,14 @@ namespace AntColonyOptimization.Modelo_OCH
                     aristas.Add(a);
             }
             return aristas;
+        }
+        public void eliminar_arista(Arista a)
+        {
+            Vertice vecino = a.get_vecino_de(this);
+            //Elimina la arista de cada uno de los vertices
+            vecino.getAristas().Remove(a);
+            aristas.Remove(a);
+            a.setVertices(null, null);
         }
     }
 }

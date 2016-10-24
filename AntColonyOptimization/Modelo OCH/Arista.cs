@@ -80,5 +80,10 @@ namespace AntColonyOptimization.Modelo_OCH
         {
             return atractivo;
         }
+        public void setVertices(Vertice v1,Vertice v2)
+        {
+            vertice1 = v1;
+            vertice2 = v2;
+        }
     }
 }
