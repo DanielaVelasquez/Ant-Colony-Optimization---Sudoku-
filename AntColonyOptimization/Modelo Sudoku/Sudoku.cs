@@ -9,8 +9,6 @@ namespace AntColonyOptimization.Modelo_Sudoku
 {
     public class Sudoku:Solucion
     {   
-        
-        
         /*-----------------------------------Atributos-----------------------------------*/
         /// <summary>
         /// Tablero sudoku
@@ -107,6 +105,105 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 numeros.Add(i);
             
             return numeros;
+        }
+        /// <summary>
+        /// Ubica un número en el tablero de sudoku si puede
+        /// </summary>
+        /// <param name="fila">fila para ubicar el número</param>
+        /// <param name="col">columna para ubicar el número</param>
+        /// <param name="num">número que se quiere ubicar</param>
+        public void ubicar_numero_jugando(int fila, int col, int num)
+        {
+            if (puede_ubicar(fila, col, num))
+                tablero[fila, col] = num;
+            else
+                throw new Exception("Número " + num + " repetido en fila, columna o cuadrante");
+        }
+        /// <summary>
+        /// Ubica un número en el tablero sin revisar si es válido
+        /// </summary>
+        /// <param name="fila">fila para ubicar el número</param>
+        /// <param name="col">columna para ubicar el número</param>
+        /// <param name="num">número que se quiere ubicar</param>
+        public void ubicar_numero(int fila,int col,int num)
+        {
+            tablero[fila, col] = num;
+        }
+        /// <summary>
+        /// Determina si un numero se puede ubicar en una posición en el tablero
+        /// </summary>
+        /// <param name="fila">fila del tablero donde se quiere ubicar el número</param>
+        /// <param name="col">columna del tablero donde se quiere ubicar el número</param>
+        /// <param name="num">número se quiere ubicar el número</param>
+        /// <returns>verdadero si el número se puede ubicar en el tablero, falso en caso contrario</returns>
+        public Boolean puede_ubicar(int fila, int col,int num)
+        {
+            return !esta_fila(fila, num) && !esta_col(col, num) && !esta_cuadro(fila, col, num);
+        }
+        /// <summary>
+        /// Determina si un número está en una fila 
+        /// </summary>
+        /// <param name="fila">número fila</param>
+        /// <param name="num">número busca</param>
+        /// <returns>verdadero si el número está en la fila, falso en caso contrario</returns>
+        private Boolean esta_fila(int fila, int num)
+        {
+            for(int j = 0; j < n*n;j++)
+            {
+                if (tablero[fila, j] == num)
+                    return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// Determina si un número está en una columna 
+        /// </summary>
+        /// <param name="col">número columna</param>
+        /// <param name="num">número busca</param>
+        /// <returns>verdadero si el número está en la columna, falso en caso contrario</returns>
+        private Boolean esta_col(int col, int num)
+        {
+            for(int i = 0;i<n*n;i++)
+            {
+                if (tablero[i, col] == num)
+                    return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// Determina si un valor está en el cuadro al que pertence el numero
+        /// </summary>
+        /// <param name="fila">fila tablero donde está ubicado el número</param>
+        /// <param name="col">columna tablero donde está ubicado el número</param>
+        /// <param name="num">numero que se busca en el tablero</param>
+        /// <returns>verdadero si el numero está en el cuadro del tablero, falso en caso contrario</returns>
+        private Boolean esta_cuadro(int fila,int col, int num)
+        {
+            int f = obtener_cuadrante(fila);
+            int c = obtener_cuadrante(col);
+            for(int i = 0; i<n*n;i++)
+            {
+                for(int j = 0; j< n*n;j++)
+                {
+                    if (tablero[i + fila, j + c] == num)
+                        return true;
+                }
+            }
+            return false;
+        }
+        /// <summary>
+        /// Obtiene el inicio del cuadrante dentro del cual está un valor de fila o columna
+        /// </summary>
+        /// <param name="valor">posicion fila o columna</param>
+        /// <returns>inicio del cuadrante</returns>
+        private int obtener_cuadrante(int valor)
+        {
+            for(int i = 0; i < n*n; i = i + n)
+            {
+                if (valor > i && valor < i + n)
+                    return i;
+            }
+            return -1;
         }
     }
 }
