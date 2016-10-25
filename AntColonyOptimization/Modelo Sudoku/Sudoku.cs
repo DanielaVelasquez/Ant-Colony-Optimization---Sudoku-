@@ -42,8 +42,8 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 List<int> numeros = crear_lista_valores();
                 for(int j=0; j< n*n;j++)
                 {
-                    if (numeros.Contains(tablero[i][j]))
-                        numeros.Remove(tablero[i][j]);
+                    if (numeros.Contains(tablero[i,j]))
+                        numeros.Remove(tablero[i,j]);
                 }
                 filas += numeros.Count;
             }
@@ -61,8 +61,8 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 List<int> numeros = crear_lista_valores();
                 for(int i = 0; i< n*n; i++)
                 {
-                    if (numeros.Contains(tablero[i][j]))
-                        numeros.Remove(tablero[i][j]);
+                    if (numeros.Contains(tablero[i,j]))
+                        numeros.Remove(tablero[i,j]);
                 }
                 columnas += numeros.Count;
             }
@@ -84,8 +84,8 @@ namespace AntColonyOptimization.Modelo_Sudoku
                         List<int> numeros = crear_lista_valores();
                         for(int j = 0; j< n; j++)
                         {
-                            if (numeros.Contains(tablero[i + f][j + c]))
-                                numeros.Remove(tablero[i + f][j + c]);
+                            if (numeros.Contains(tablero[i + f,j + c]))
+                                numeros.Remove(tablero[i + f,j + c]);
                         }
                         cuadros += numeros.Count;
                     }
