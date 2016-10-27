@@ -12,32 +12,32 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <summary>
         /// Vertices de la gráfica
         /// </summary>
-        private List<Vertice> vertices;
+        private List<Componente> vertices;
         /// <summary>
         /// Aristas de la gráfica
         /// </summary>
-        private List<Arista> aristas;
+        private List<Transicion> aristas;
 
         /*-----------------------------------Métodos-----------------------------------*/
 
-        public List<Vertice> getVertices()
+        public List<Componente> get_vertices()
         {
             return vertices;
         }
-        public void setVertices(List<Vertice> vertices)
+        public void set_vertices(List<Componente> vertices)
         {
             this.vertices = vertices;
             aristas = null;
         }
-        public List<Arista> getAristas()
+        public List<Transicion> getAristas()
         {
             if(aristas == null)
             {
-                aristas = new List<Arista>();
-                foreach(Vertice v in vertices)
+                aristas = new List<Transicion>();
+                foreach(Componente v in vertices)
                 {
-                    List<Arista> aristas_v = v.getAristas();
-                    foreach(Arista a in aristas_v)
+                    List<Transicion> aristas_v = v.get_transiciones();
+                    foreach(Transicion a in aristas_v)
                     {
                         if (!aristas.Contains(a))
                             aristas.Add(a);
@@ -46,6 +46,7 @@ namespace AntColonyOptimization.Modelo_OCH
             }
             return aristas;
         }
+
         public Object Clone()
         {
             return MemberwiseClone();
@@ -54,9 +55,9 @@ namespace AntColonyOptimization.Modelo_OCH
         /// Elimina un vértice de la gráfica,junto con las aristas incidentes en el
         /// </summary>
         /// <param name="v">vertice quiere eliminar de la gráfica</param>
-        public void eliminar_vertice(Vertice v)
+        public void eliminar_vertice(Componente v)
         {
-
+            v.remover_vecinos();
         }
     }
 }

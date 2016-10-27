@@ -7,83 +7,85 @@ using System.Threading.Tasks;
 namespace AntColonyOptimization.Modelo_OCH
 {
     /// <summary>
-    /// Representa conexión entre dos vertices
+    /// Conexión entre dos vertices
     /// </summary>
-    public class Arista
+    public class Transicion
     {
         /*-----------------------------------Atributos-----------------------------------*/
         /// <summary>
-        /// Vertice 1 de la arista
+        /// Componente 1 de la arista
         /// </summary>
-        private Vertice vertice1;
+        private Componente componente1;
         /// <summary>
-        /// Vertice 2 de la arista
+        /// Componente 2 de la arista
         /// </summary>
-        private Vertice vertice2;
+        private Componente componente2;
         /// <summary>
-        /// Cantidad de feromonas almacenadas en el vértice
+        /// Cantidad de feromonas almacenadas en transicion
         /// </summary>
         private double feromonas;
         /// <summary>
-        /// Atractivo del movimiento n eta
+        /// Atractivo del movimiento 
         /// </summary>
         private double atractivo;
 
         /*-----------------------------------Métodos-----------------------------------*/
-        public Arista(Vertice v1,Vertice v2)
+        public Transicion(Componente v1,Componente v2)
         {
-            vertice1 = v1;
-            vertice2 = v2;
+            componente1 = v1;
+            componente2 = v2;
             feromonas = 0;
             atractivo = -1;
         }
-        public Arista(Vertice v1, Vertice v2,double nAtractivo)
+        public Transicion(Componente v1, Componente v2,double nAtractivo)
         {
-            vertice1 = v1;
-            vertice2 = v2;
+            componente1 = v1;
+            componente2 = v2;
             feromonas = 0;
             atractivo = nAtractivo;
         }
-        public void setFeromonas(double nFeromonas)
-        {
-            feromonas = nFeromonas;
-        }
-        public double getFeromonas()
-        {
-            return feromonas;
-        }
+        
         /// <summary>
         /// Obtiene el vertice vecino de v
         /// </summary>
         /// <param name="v">vertice de la arista del cual se quiere saber cual es su vecino en la arista</param>
         /// <returns>vecino en la arista de v</returns>
-        public Vertice get_vecino_de(Vertice v)
+        public Componente get_vecino_de(Componente v)
         {
-            if (vertice1 == v)
-                return vertice2;
-            else if (vertice2 == v)
-                return vertice1;
+            if (componente1 == v)
+                return componente2;
+            else if (componente2 == v)
+                return componente1;
             else
                 throw new Exception("Vertice no pertecene arista");
         }
         /// <summary>
-        /// Determina si la arista conecta a v1 y v2
+        /// Determina si la transicion conecta a v1 y v2
         /// </summary>
         /// <param name="v1">vertice quiere saber si conecta con </param>
         /// <param name="v2"></param>
         /// <returns></returns>
-        public Boolean conecta(Vertice v1, Vertice v2)
+        public Boolean conecta(Componente v1, Componente v2)
         {
-            return (vertice1 == v1 && vertice2 == v2) || (vertice1 == v2 && vertice2 == v1);
+            return (componente1 == v1 && componente2 == v2) || (componente1 == v2 && componente2 == v1);
         }
-        public double getAtractivo()
+        
+        public double get_atractivo()
         {
             return atractivo;
         }
-        public void setVertices(Vertice v1,Vertice v2)
+        public void set_componentes(Componente v1,Componente v2)
         {
-            vertice1 = v1;
-            vertice2 = v2;
+            componente1 = v1;
+            componente2 = v2;
+        }
+        public void set_feromonas(double nFeromonas)
+        {
+            feromonas = nFeromonas;
+        }
+        public double get_feromonas()
+        {
+            return feromonas;
         }
     }
 }

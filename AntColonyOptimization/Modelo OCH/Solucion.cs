@@ -12,11 +12,11 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <summary>
         /// Vertices parte de la solución
         /// </summary>
-        private List<Vertice> vertices;
+        private List<Componente> componentes;
         /// <summary>
         /// Vertice actual de la solución
         /// </summary>
-        private Vertice<T> vertice_actual;
+        private Componente componente_actual;
         /*-----------------------------------Métodos-----------------------------------*/
         /// <summary>
         /// Determina la calidad de la solución
@@ -28,12 +28,12 @@ namespace AntColonyOptimization.Modelo_OCH
         /// </summary>
         /// <param name="a">Arista que se busca en la solución</param>
         /// <returns>valor de verdad sobre la presencia de la arista en la solución</returns>
-        public Boolean tiene(Arista a)
+        public Boolean tiene(Transicion a)
         {
-            foreach(Vertice v in vertices)
+            foreach(Componente v in componentes)
             {
-                List<Arista> aristas = v.getAristas();
-                foreach(Arista arista in aristas)
+                List<Transicion> aristas = v.getAristas();
+                foreach(Transicion arista in aristas)
                 {
                     if (arista == a)
                         return true;
@@ -46,22 +46,22 @@ namespace AntColonyOptimization.Modelo_OCH
         /// </summary>
         /// <param name="v">Vertice que se busca en la solucion</param>
         /// <returns>valor de verdad sobre la presencia del vertice en la solución</returns>
-        public Boolean tiene(Vertice v)
+        public Boolean tiene(Componente v)
         {
-            return vertices.Contains(v);
+            return componentes.Contains(v);
         }
-        public Vertice getVerticeActual()
+        public Componente getVerticeActual()
         {
-            return vertice_actual;
+            return componente_actual;
         }
         /// <summary>
         /// Ubica la solución en el nuevo vertice y lo añade a la solución
         /// </summary>
         /// <param name="v">nuevo vertice de la solucion y se vuelve el vertice actual</param>
-        public void cambiar_vertice_actual(Vertice v)
+        public void cambiar_vertice_actual(Componente v)
         {
-            vertices.Add(v);
-            vertice_actual = v;
+            componentes.Add(v);
+            componente_actual = v;
         }
     }
 }

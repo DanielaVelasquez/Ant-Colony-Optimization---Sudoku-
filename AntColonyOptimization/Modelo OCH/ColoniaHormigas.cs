@@ -155,16 +155,16 @@ namespace AntColonyOptimization.Modelo_OCH
             //Las feromonas están ubicadas en los vértices
             if (ubicacion_feromonas == VERTICES_FEROMONAS)
             {
-                List<Vertice> vertices = grafica.getVertices();
-                foreach (Vertice v in vertices)
-                    v.setFeromonas(inicial_feromonas);
+                List<Componente> vertices = grafica.get_vertices();
+                foreach (Componente v in vertices)
+                    v.set_feromonas(inicial_feromonas);
             }
             //Las feromonas están ubicadas en las aristas
             else if (ubicacion_feromonas == ARISTAS_FEROMONAS)
             {
-                List<Arista> aristas = grafica.getAristas();
-                foreach (Arista a in aristas)
-                    a.setFeromonas(inicial_feromonas);
+                List<Transicion> aristas = grafica.getAristas();
+                foreach (Transicion a in aristas)
+                    a.set_feromonas(inicial_feromonas);
             }
             else
                 throw new Exception(ERROR_UBICACION_FEROMONAS);
@@ -177,23 +177,23 @@ namespace AntColonyOptimization.Modelo_OCH
             //Las feromonas están en las aristas
             if (ubicacion_feromonas == ARISTAS_FEROMONAS)
             {
-                List<Arista> aristas = grafica.getAristas();
+                List<Transicion> aristas = grafica.getAristas();
                 //Actualiza las feromonas en cada arista de la gráfica
-                foreach (Arista a in aristas)
+                foreach (Transicion a in aristas)
                 {
-                    double Txy = a.getFeromonas();
+                    double Txy = a.get_feromonas();
                     Txy = ((1 - rho) * Txy) + sum_deltha_xy(a);
-                    a.setFeromonas(Txy);
+                    a.set_feromonas(Txy);
                 }
             }
             else if (ubicacion_feromonas == VERTICES_FEROMONAS)
             {
-                List<Vertice> vertices = grafica.getVertices();
-                foreach (Vertice v in vertices)
+                List<Componente> vertices = grafica.get_vertices();
+                foreach (Componente v in vertices)
                 {
-                    double Tx = v.getFeromonas();
+                    double Tx = v.get_feromonas();
                     Tx = ((1 - rho) * Tx) + sum_deltha_x(v);
-                    v.setFeromonas(Tx);
+                    v.set_feromonas(Tx);
                 }
             }
             else
@@ -204,7 +204,7 @@ namespace AntColonyOptimization.Modelo_OCH
         /// </summary>
         /// <param name="arista">transición de la cual se quiere calcular las feromonas por depositar</param>
         /// <returns>cantidad de feromonas depositadas por cada hormiga en la arista</returns>
-        private double sum_deltha_xy(Arista arista)
+        private double sum_deltha_xy(Transicion arista)
         {
             double sum_deltha_xy = 0.0;
             foreach(Hormiga k in hormigas)
@@ -219,7 +219,7 @@ namespace AntColonyOptimization.Modelo_OCH
         /// </summary>
         /// <param name="arista">vertice del cual se quiere calcular las feromonas por depositar</param>
         /// <returns>cantidad de feromonas depositadas por cada hormiga en el vertice</returns>
-        private double sum_deltha_x(Vertice vertice)
+        private double sum_deltha_x(Componente vertice)
         {
             double sum_deltha_xy = 0.0;
             foreach (Hormiga k in hormigas)
@@ -238,9 +238,9 @@ namespace AntColonyOptimization.Modelo_OCH
             Grafica g = (Grafica)grafica.Clone();
             while(gestor.completo(k.getSolucion()))
             {
-                Vertice x = k.getSolucion().getVerticeActual();
+                Componente x = k.getSolucion().getVerticeActual();
                 //Vecinos del vertice actual
-                List<Vertice> N_v = x.N();
+                List<Componente> N_v = x.N();
 
                 //Probabilidad de cada vertice
                 Hashtable P = new Hashtable();
@@ -248,19 +248,19 @@ namespace AntColonyOptimization.Modelo_OCH
 
                 if(ubicacion_feromonas == VERTICES_FEROMONAS)
                 {
-                    foreach(Vertice y in N_v)
+                    foreach(Componente y in N_v)
                     {
-                        double P_y = Math.Pow(y.getFeromonas(), alfa) * Math.Pow(y.getAtractivo(), beta);
+                        double P_y = Math.Pow(y.get_feromonas(), alfa) * Math.Pow(y.calcular_atractivo(), beta);
                         sum += P_y;
                         P.Add(y, P_y);
                     }
                 }
                 else
                 {
-                    List<Arista> aristas = x.getAristasConecta(N_v);
-                    foreach(Arista y in aristas)
+                    List<Transicion> aristas = x.getAristasConecta(N_v);
+                    foreach(Transicion y in aristas)
                     {
-                        double P_xy = Math.Pow(y.getFeromonas(), alfa) * Math.Pow(y.getAtractivo(), beta);
+                        double P_xy = Math.Pow(y.get_feromonas(), alfa) * Math.Pow(y.get_atractivo(), beta);
                         sum += P_xy;
                         P.Add(y, P_xy);
                     }
@@ -269,7 +269,7 @@ namespace AntColonyOptimization.Modelo_OCH
                 {
                     P[e.Key] = (double) e.Value / sum;
                 }
-                Vertice siguiente = escoger_vertice(P,sum);
+                Componente siguiente = escoger_vertice(P,sum);
                 k.getSolucion().cambiar_vertice_actual(siguiente);
 
                 
@@ -281,7 +281,7 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <param name="P">Diccionario (vertice,probabilidad) </param>
         /// <param name="sumatoria_P">suma de todas las probabilidades</param>
         /// <returns></returns>
-        private Vertice escoger_vertice(Hashtable P,double sumatoria_P)
+        private Componente escoger_vertice(Hashtable P,double sumatoria_P)
         {
             double num = random.NextDouble();
             double sum = 0.0;
@@ -289,7 +289,7 @@ namespace AntColonyOptimization.Modelo_OCH
             {
                 sum += (double)e.Value;
                 if (num <= sum)
-                    return (Vertice)e.Key;
+                    return (Componente)e.Key;
             }
             return null;
         }

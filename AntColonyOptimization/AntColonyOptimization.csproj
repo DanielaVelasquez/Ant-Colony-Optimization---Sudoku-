@@ -45,13 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controlador\SudokuOCH.cs" />
-    <Compile Include="Modelo OCH\Arista.cs" />
+    <Compile Include="Modelo OCH\Transicion.cs" />
     <Compile Include="Modelo OCH\ColoniaHormigas.cs" />
     <Compile Include="Modelo OCH\GestorProblema.cs" />
     <Compile Include="Modelo OCH\Grafica.cs" />
     <Compile Include="Modelo OCH\Hormiga.cs" />
     <Compile Include="Modelo OCH\Solucion.cs" />
-    <Compile Include="Modelo OCH\Vertice.cs" />
+    <Compile Include="Modelo OCH\Componente.cs" />
     <Compile Include="Modelo Sudoku\GestorSudoku.cs" />
     <Compile Include="Modelo Sudoku\Sudoku.cs" />
     <Compile Include="Program.cs" />
