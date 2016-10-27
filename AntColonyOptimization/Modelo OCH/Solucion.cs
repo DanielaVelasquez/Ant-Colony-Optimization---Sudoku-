@@ -16,7 +16,7 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <summary>
         /// Vertice actual de la solución
         /// </summary>
-        private Vertice vertice_actual;
+        private Vertice<T> vertice_actual;
         /*-----------------------------------Métodos-----------------------------------*/
         /// <summary>
         /// Determina la calidad de la solución

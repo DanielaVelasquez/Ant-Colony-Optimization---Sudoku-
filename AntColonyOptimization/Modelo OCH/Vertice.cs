@@ -9,7 +9,7 @@ namespace AntColonyOptimization.Modelo_OCH
     /// <summary>
     /// Representa un vértice de la gráfica
     /// </summary>
-    public class Vertice
+    public class Vertice 
     {
         /*-----------------------------------Atributos-----------------------------------*/
         /// <summary>
