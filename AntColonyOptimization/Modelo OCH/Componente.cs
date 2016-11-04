@@ -9,7 +9,7 @@ namespace AntColonyOptimization.Modelo_OCH
     /// <summary>
     /// Componente problema
     /// </summary>
-    public abstract class Componente 
+    public abstract class Componente:ICloneable 
     {
         /*-----------------------------------Atributos-----------------------------------*/
         /// <summary>
@@ -140,6 +140,11 @@ namespace AntColonyOptimization.Modelo_OCH
                 a.set_componentes(null, null);
             }
         }
+
+        public Object Clone()
+        {
+            return MemberwiseClone();
+        } 
 
         /// <summary>
         /// Calcula el atractivo del componente
