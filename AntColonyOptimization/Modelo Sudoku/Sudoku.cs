@@ -8,7 +8,9 @@ using AntColonyOptimization.Modelo_OCH;
 namespace AntColonyOptimization.Modelo_Sudoku
 {
     public class Sudoku:Solucion
-    {   
+    {
+        /*-----------------------------------Constantes-----------------------------------*/
+        private const int VACIO = 0;
         /*-----------------------------------Atributos-----------------------------------*/
         /// <summary>
         /// Tablero sudoku
@@ -204,6 +206,87 @@ namespace AntColonyOptimization.Modelo_Sudoku
                     return i;
             }
             return -1;
+        }
+        /// <summary>
+        /// Determina la cantidad de veces que un número se encuentra en la misma fila
+        /// </summary>
+        /// <param name="fila">fila tablero en la que se busca</param>
+        /// <param name="num">número que se busca</param>
+        /// <returns>Cantidad de veces que el número se repite en la fila</returns>
+        public int repetido_fila(int fila, int num)
+        {
+            int cont = 0;
+            for (int j = 0; j < n * n; j++)
+            {
+                if (tablero[fila, j] == num)
+                    cont++;
+            }
+            return cont;
+        }
+        /// <summary>
+        /// Determina la cantidad de veces que un número se encuentra en la misma columna
+        /// </summary>
+        /// <param name="col">columna tablero en la que se busca</param>
+        /// <param name="num">número que se busca</param>
+        /// <returns>Cantidad de veces que el número se repite en la columna</returns>
+        public int repetido_col(int col,int num)
+        {
+            int cont = 0;
+            for (int i = 0; i < n * n; i++)
+            {
+                if (tablero[i, col] == num)
+                    cont++;
+            }
+            return cont;
+        }
+        /// <summary>
+        /// Determina la cantidad de veces que un número está repetido en un cuadro
+        /// </summary>
+        /// <param name="fila">fila donde esta ubicado el número</param>
+        /// <param name="col">columna donde está ubicado el número</param>
+        /// <param name="num">número está buscando</param>
+        /// <returns></returns>
+        public int repetido_cuadro(int fila,int col,int num)
+        {
+            int f = obtener_cuadrante(fila);
+            int c = obtener_cuadrante(col);
+            int cont = 0;
+            for (int i = 0; i < n * n; i++)
+            {
+                for (int j = 0; j < n * n; j++)
+                {
+                    if (tablero[i + fila, j + c] == num)
+                        cont++;
+                }
+            }
+            return cont;
+        }
+        /// <summary>
+        /// Determina si el tablero está lleno
+        /// </summary>
+        /// <returns></returns>
+        public Boolean completo()
+        {
+            for(int i=0;i< n*n;i++)
+            {
+                for(int j = 0; j< n*n;j++)
+                {
+                    if (tablero[i, j] == VACIO)
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        public int get_n()
+        {
+            return n;
+        }
+
+        public override void vertice_actualizado()
+        {
+            Casilla c = (Casilla) this.get_vertice_actual();
+            tablero[c.get_fila(), c.get_col()] = c.get_valor();
         }
     }
 }

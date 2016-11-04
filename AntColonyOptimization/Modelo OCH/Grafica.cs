@@ -29,7 +29,7 @@ namespace AntColonyOptimization.Modelo_OCH
             this.vertices = vertices;
             aristas = null;
         }
-        public List<Transicion> getAristas()
+        public List<Transicion> get_aristas()
         {
             if(aristas == null)
             {
@@ -45,6 +45,10 @@ namespace AntColonyOptimization.Modelo_OCH
                 }
             }
             return aristas;
+        }
+        public Boolean tiene(Componente c)
+        {
+            return vertices.Contains(c);
         }
 
         public Object Clone()

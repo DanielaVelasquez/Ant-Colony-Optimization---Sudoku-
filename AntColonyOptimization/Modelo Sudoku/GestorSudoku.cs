@@ -12,18 +12,26 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /*-----------------------------------Atributos-----------------------------------*/
 
         /*-----------------------------------Métodos-----------------------------------*/
-        public override void ubicar_posicion_inicial(List<Hormiga> hormigas, Grafica grafica)
+        public void ubicar_posicion_inicial(Random r, List<Hormiga> hormigas, Grafica grafica)
         {
+            List<Componente> componentes = grafica.get_vertices();
+            foreach(Hormiga k in hormigas)
+            {
+                int num = r.Next(0, componentes.Count);
+                Componente inicio = componentes[num];
+                k.getSolucion().cambiar_vertice_actual(inicio);
+            }
+            
+        }
+        public  Boolean completo(Solucion solucion)
+        {
+            return ((Sudoku)solucion).completo();
 
         }
-        
-        public override Boolean completo(Solucion solucion)
+        public  void configurar_grafica(Grafica g, Hormiga k)
         {
-
-        }
-        public override  void configurar_grafica(Grafica g, Hormiga k)
-        {
-
+            Componente c = k.getSolucion().get_vertice_actual();
+            g.eliminar_vertice(c);
         }
     }
 }

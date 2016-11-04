@@ -10,9 +10,9 @@ namespace AntColonyOptimization.Modelo_OCH
     {
         /*-----------------------------------Atributos-----------------------------------*/
         /// <summary>
-        /// Vertices parte de la solución
+        /// Solucion propuesta
         /// </summary>
-        private List<Componente> componentes;
+        private Grafica grafica;
         /// <summary>
         /// Vertice actual de la solución
         /// </summary>
@@ -30,16 +30,8 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <returns>valor de verdad sobre la presencia de la arista en la solución</returns>
         public Boolean tiene(Transicion a)
         {
-            foreach(Componente v in componentes)
-            {
-                List<Transicion> aristas = v.getAristas();
-                foreach(Transicion arista in aristas)
-                {
-                    if (arista == a)
-                        return true;
-                }
-            }
-            return false;
+            List<Transicion> t = grafica.get_aristas();
+            return t.Contains(a);
         }
         /// <summary>
         /// Determina si la solución tiene el vertice v
@@ -48,9 +40,9 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <returns>valor de verdad sobre la presencia del vertice en la solución</returns>
         public Boolean tiene(Componente v)
         {
-            return componentes.Contains(v);
+            return grafica.tiene(v);
         }
-        public Componente getVerticeActual()
+        public Componente get_vertice_actual()
         {
             return componente_actual;
         }
@@ -60,8 +52,19 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <param name="v">nuevo vertice de la solucion y se vuelve el vertice actual</param>
         public void cambiar_vertice_actual(Componente v)
         {
-            componentes.Add(v);
+            Componente copia = (Componente) v.Clone();
+            copia.remover_vecinos();
+            if (componente_actual != null)
+            {
+                componente_actual.crear_transicion_con(v);
+            }
             componente_actual = v;
+            vertice_actualizado();
         }
+
+        /// <summary>
+        /// Acciones adicionales que puede tomar una solución al momento de haber sido actualizado un vertice
+        /// </summary>
+        public abstract void vertice_actualizado();
     }
 }

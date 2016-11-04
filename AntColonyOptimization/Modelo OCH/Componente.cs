@@ -15,7 +15,7 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <summary>
         /// Cantidad de feromonas almacenadas en el vértice
         /// </summary>
-        private double feromonas;
+        protected double feromonas;
         /// <summary>
         /// Componentes vecinos del componente, es decir aquellos componentes a los cuales puede alcanzar el componente actual
         /// </summary>
@@ -23,7 +23,7 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <summary>
         /// Atractivo de tomar el vertice n eta
         /// </summary>
-        private double atractivo;
+        protected double atractivo;
         /*-----------------------------------Métodos-----------------------------------*/
 
         public Componente()
@@ -63,12 +63,12 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <returns>vecinos vertice</returns>
         public List<Componente> N()
         {
-            List<Componente> vecinos = new List<Componente>();
+            List<Componente> v = new List<Componente>();
             foreach (KeyValuePair<Componente, Transicion> t in vecinos)
             {
-                vecinos.Add(t.Key);
+                v.Add(t.Key);
             }
-            return vecinos;
+            return v;
         }
         /// <summary>
         /// Obtiene la transicion que conecta al componente actual con el componente y
@@ -86,7 +86,7 @@ namespace AntColonyOptimization.Modelo_OCH
         /// </summary>
         /// <param name="componentes">componentes a los cuales se quiere encontrar la transicion</param>
         /// <returns>lista transiciones conectan al vertice con los vertices entregados</returns>
-        public List<Transicion> getAristasConecta(List<Componente> componentes)
+        public List<Transicion> get_arista_conecta(List<Componente> componentes)
         {
             List<Transicion> t = new List<Transicion>();
             foreach (Componente c in componentes)
@@ -133,12 +133,38 @@ namespace AntColonyOptimization.Modelo_OCH
         {
             foreach (KeyValuePair<Componente, Transicion> v in vecinos)
             {
-                Componente vecino = v.key;
+                Componente vecino = v.Key;
                 Transicion a = v.Value;
                 vecino.remover_transicion_con(this);
                 this.remover_transicion_con(vecino);
                 a.set_componentes(null, null);
             }
+        }
+        /// <summary>
+        /// Crea la transicion entre el componente actual y el componente indicado
+        /// </summary>
+        /// <param name="c">componente con el cual se quiere establecer la transicion</param>
+        public void crear_transicion_con(Componente c)
+        {
+            if (vecinos.ContainsKey(c))
+                throw new Exception("Transición con " + c.ToString() + " establecida previamente");
+            else
+            {
+                Transicion t = new Transicion(this, c);
+                this.establecer_transicion(t);
+                c.establecer_transicion(t);
+
+            }
+        }
+        /// <summary>
+        /// Crea la transicion
+        /// </summary>
+        /// <param name="t">Transicion que se desea establecer</param>
+        public void establecer_transicion(Transicion t)
+        {
+            if(vecinos.ContainsKey(t.get_vecino_de(this)))
+                throw new Exception("Transición con " + t.get_vecino_de(this).ToString() + " establecida previamente");
+            vecinos.Add(t.get_vecino_de(this), t);
         }
 
         public Object Clone()

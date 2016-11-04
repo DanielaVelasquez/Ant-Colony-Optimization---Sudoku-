@@ -91,6 +91,10 @@ namespace AntColonyOptimization.Modelo_OCH
         /// Generador de números aletorios
         /// </summary>
         private Random random;
+        /// <summary>
+        /// Resultados de las hormigas a traves de las iteraciones fila: iteracion, col: id_hormiga, val[fila,col] = funcion costo solucion hormiga
+        /// </summary>
+        private int[,] resultados;
 
         /*-----------------------------------Métodos-----------------------------------*/
         public ColoniaHormigas(int nSemilla)
@@ -113,7 +117,7 @@ namespace AntColonyOptimization.Modelo_OCH
             int i = 0;
             do
             {
-                gestor.ubicar_posicion_inicial(hormigas, grafica);
+                gestor.ubicar_posicion_inicial(random,hormigas, grafica);
                 foreach (Hormiga k in hormigas)
                     construir_solucion(k);
                 seleccionar_mejor_hormiga();
@@ -162,7 +166,7 @@ namespace AntColonyOptimization.Modelo_OCH
             //Las feromonas están ubicadas en las aristas
             else if (ubicacion_feromonas == ARISTAS_FEROMONAS)
             {
-                List<Transicion> aristas = grafica.getAristas();
+                List<Transicion> aristas = grafica.get_aristas();
                 foreach (Transicion a in aristas)
                     a.set_feromonas(inicial_feromonas);
             }
@@ -177,7 +181,7 @@ namespace AntColonyOptimization.Modelo_OCH
             //Las feromonas están en las aristas
             if (ubicacion_feromonas == ARISTAS_FEROMONAS)
             {
-                List<Transicion> aristas = grafica.getAristas();
+                List<Transicion> aristas = grafica.get_aristas();
                 //Actualiza las feromonas en cada arista de la gráfica
                 foreach (Transicion a in aristas)
                 {
@@ -238,7 +242,7 @@ namespace AntColonyOptimization.Modelo_OCH
             Grafica g = (Grafica)grafica.Clone();
             while(gestor.completo(k.getSolucion()))
             {
-                Componente x = k.getSolucion().getVerticeActual();
+                Componente x = k.getSolucion().get_vertice_actual();
                 //Vecinos del vertice actual
                 List<Componente> N_v = x.N();
 
@@ -250,14 +254,14 @@ namespace AntColonyOptimization.Modelo_OCH
                 {
                     foreach(Componente y in N_v)
                     {
-                        double P_y = Math.Pow(y.get_feromonas(), alfa) * Math.Pow(y.calcular_atractivo(), beta);
+                        double P_y = Math.Pow(y.get_feromonas(), alfa) * Math.Pow(y.calcular_atractivo(k.getSolucion()), beta);
                         sum += P_y;
                         P.Add(y, P_y);
                     }
                 }
                 else
                 {
-                    List<Transicion> aristas = x.getAristasConecta(N_v);
+                    List<Transicion> aristas = x.get_arista_conecta(N_v);
                     foreach(Transicion y in aristas)
                     {
                         double P_xy = Math.Pow(y.get_feromonas(), alfa) * Math.Pow(y.get_atractivo(), beta);
