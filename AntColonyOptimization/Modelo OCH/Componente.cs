@@ -10,6 +10,7 @@ namespace AntColonyOptimization.Modelo_OCH
     /// <summary>
     /// Componente problema
     /// </summary>
+    [Serializable]
     public abstract class Componente:ICloneable
     {
         /*-----------------------------------Atributos-----------------------------------*/
@@ -169,8 +170,12 @@ namespace AntColonyOptimization.Modelo_OCH
                 throw new Exception("Transición con " + t.get_vecino_de(this).ToString() + " establecida previamente");
             vecinos.Add(t.get_vecino_de(this), t);
         }
- 
 
+        /// <summary>
+        /// Realiza una copia del objeto sin incluir los vecinos del mismo.
+        /// </summary>
+        /// <returns></returns>
+        public abstract Componente clonar_sin_vecinos();
         /// <summary>
         /// Calcula el atractivo del componente
         /// </summary>

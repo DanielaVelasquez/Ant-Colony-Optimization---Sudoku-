@@ -32,11 +32,6 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 k.set_solucion(clone);
                 k.getSolucion().cambiar_vertice_actual(inicio);
             }
-            for(int i = 0; i<hormigas.Count-1;i++)
-            {
-                if (hormigas[i].getSolucion() == hormigas[i + 1].getSolucion())
-                    Console.WriteLine("Iguales");
-            }
         }
         public Boolean completo(Solucion solucion)
         {

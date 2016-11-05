@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AntColonyOptimization.Modelo_Sudoku;
 using AntColonyOptimization.Modelo_OCH;
+using AntColonyOptimization.Complemento;
 
 namespace AntColonyOptimization.Controlador
 {
@@ -49,6 +50,7 @@ namespace AntColonyOptimization.Controlador
         /// <returns></returns>
         public Sudoku resolver(int n,Sudoku s,int semilla)
         {
+           
             gestor = new GestorSudoku();
             gestor.set_sudoku(s);
             colonia = new ColoniaHormigas(semilla);

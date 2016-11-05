@@ -8,6 +8,7 @@ using AntColonyOptimization.Complemento;
 
 namespace AntColonyOptimization.Modelo_Sudoku
 {
+    [Serializable]
     public class Sudoku:Solucion
     {
         /*-----------------------------------Constantes-----------------------------------*/
@@ -27,6 +28,13 @@ namespace AntColonyOptimization.Modelo_Sudoku
         {
             this.n = n;
             tablero = new int[this.n*this.n, this.n*this.n];
+            /*for (int i = 0; i < n * n; i++ )
+            {
+                for(int j = 0; j< n*n; j++)
+                {
+                    tablero[i, j] = VACIO;
+                }
+            }*/
             grafica = new Grafica();
         }
         public override double funcion_costo()

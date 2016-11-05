@@ -7,6 +7,7 @@ using AntColonyOptimization.Complemento;
 
 namespace AntColonyOptimization.Modelo_OCH
 {
+    [Serializable]
     public abstract class Solucion : ICloneable
     {
         /*-----------------------------------Atributos-----------------------------------*/
@@ -53,8 +54,8 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <param name="v">nuevo vertice de la solucion y se vuelve el vertice actual</param>
         public void cambiar_vertice_actual(Componente v)
         {
-            Componente copia = (Componente)v.Clone();
-            copia.remover_vecinos();
+            Componente copia = v.clonar_sin_vecinos();
+            //copia.remover_vecinos();
             if (componente_actual != null)
             {
                 componente_actual.crear_transicion_con(v);

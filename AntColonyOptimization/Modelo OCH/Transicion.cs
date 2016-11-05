@@ -9,6 +9,7 @@ namespace AntColonyOptimization.Modelo_OCH
     /// <summary>
     /// Conexión entre dos vertices
     /// </summary>
+    [Serializable]
     public class Transicion
     {
         /*-----------------------------------Atributos-----------------------------------*/

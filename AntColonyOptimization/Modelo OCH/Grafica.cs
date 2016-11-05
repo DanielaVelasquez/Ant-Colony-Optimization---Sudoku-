@@ -7,6 +7,7 @@ using AntColonyOptimization.Complemento;
 
 namespace AntColonyOptimization.Modelo_OCH
 {
+    [Serializable]
     public class Grafica : ICloneable
     {
         /*-----------------------------------Atributos-----------------------------------*/

@@ -8,6 +8,7 @@ using AntColonyOptimization.Complemento;
 
 namespace AntColonyOptimization.Modelo_Sudoku
 {
+    [Serializable]
     public class Casilla:Componente
     {
         /*-----------------------------------Atributos-----------------------------------*/
@@ -57,7 +58,13 @@ namespace AntColonyOptimization.Modelo_Sudoku
         public override Object Clone()
         {
             return Clonar<Casilla>.Clonacion(this);
-        } 
+        }
+        public override Componente clonar_sin_vecinos()
+        {
+            Casilla c = new Casilla(fila, col, valor);
+            c.set_feromonas(this.get_feromonas());
+            return c;
+        }
 
     }
 }
