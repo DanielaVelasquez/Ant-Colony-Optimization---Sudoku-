@@ -7,10 +7,10 @@ using AntColonyOptimization.Modelo_OCH;
 
 namespace AntColonyOptimization.Modelo_Sudoku
 {
-    public class Sudoku:Solucion
+    public class Sudoku:Solucion,ICloneable
     {
         /*-----------------------------------Constantes-----------------------------------*/
-        private const int VACIO = 0;
+        public const int VACIO = 0;
         /*-----------------------------------Atributos-----------------------------------*/
         /// <summary>
         /// Tablero sudoku
@@ -25,7 +25,8 @@ namespace AntColonyOptimization.Modelo_Sudoku
         public Sudoku(int n)
         {
             this.n = n;
-            tablero = new int[this.n, this.n];
+            tablero = new int[this.n*this.n, this.n*this.n];
+            grafica = new Grafica();
         }
         public override double funcion_costo()
         {
@@ -277,16 +278,38 @@ namespace AntColonyOptimization.Modelo_Sudoku
             }
             return true;
         }
+        
 
         public int get_n()
         {
             return n;
+        }
+        public int[,] get_tablero()
+        {
+            return tablero;
         }
 
         public override void vertice_actualizado()
         {
             Casilla c = (Casilla) this.get_vertice_actual();
             tablero[c.get_fila(), c.get_col()] = c.get_valor();
+        }
+        public Object Clone()
+        {
+            return MemberwiseClone();
+        }
+        public override string ToString()
+        {
+            String cad = "";
+            for(int i = 0; i < n*n; i++)
+            {
+                for(int j = 0; j< n*n; j++)
+                {
+                    cad += tablero[i, j]+"%f4";
+                }
+                cad += "\n";
+            }
+            return cad;
         }
     }
 }

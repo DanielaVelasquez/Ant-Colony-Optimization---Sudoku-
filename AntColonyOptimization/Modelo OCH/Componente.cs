@@ -131,8 +131,10 @@ namespace AntColonyOptimization.Modelo_OCH
         /// </summary>
         public void remover_vecinos()
         {
-            foreach (KeyValuePair<Componente, Transicion> v in vecinos)
+            int i = 0;
+            while (vecinos.Count != 0)
             {
+                KeyValuePair<Componente, Transicion> v = vecinos.ElementAt(i);
                 Componente vecino = v.Key;
                 Transicion a = v.Value;
                 vecino.remover_transicion_con(this);

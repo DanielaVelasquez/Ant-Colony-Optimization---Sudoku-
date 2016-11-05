@@ -19,7 +19,11 @@ namespace AntColonyOptimization.Modelo_OCH
         private List<Transicion> aristas;
 
         /*-----------------------------------Métodos-----------------------------------*/
-
+        public Grafica()
+        {
+            vertices = new List<Componente>();
+            aristas = new List<Transicion>();
+        }
         public List<Componente> get_vertices()
         {
             return vertices;
@@ -49,6 +53,10 @@ namespace AntColonyOptimization.Modelo_OCH
         public Boolean tiene(Componente c)
         {
             return vertices.Contains(c);
+        }
+        public void adicionar_vertice(Componente c)
+        {
+            vertices.Add(c);
         }
 
         public Object Clone()

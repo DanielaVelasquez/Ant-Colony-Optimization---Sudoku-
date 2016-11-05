@@ -24,6 +24,10 @@ namespace AntColonyOptimization.Modelo_OCH
         {
             return solucion;
         }
+        public void set_solucion(Solucion s)
+        {
+            solucion = s;
+        }
         /// <summary>
         /// Determina la cantidad de feromonas que aplica la hormiga k, con base en la función de costo de su solución
         /// </summary>

@@ -12,11 +12,11 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <summary>
         /// Solucion propuesta
         /// </summary>
-        private Grafica grafica;
+        protected Grafica grafica;
         /// <summary>
         /// Vertice actual de la solución
         /// </summary>
-        private Componente componente_actual;
+        protected Componente componente_actual;
         /*-----------------------------------Métodos-----------------------------------*/
         /// <summary>
         /// Determina la calidad de la solución

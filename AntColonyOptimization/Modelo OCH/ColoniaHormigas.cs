@@ -105,13 +105,23 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <summary>
         /// Busca la mejor solución para el grupo de vértices
         /// </summary>
+        /// <param name=param name="tipo_op">indica si las feromonas estan en las aristas o vertices, usar constantes de la presenta clase</param>
+        /// <param name="g">Gestor del problema</param>
         /// <param name="vertices">gráfica busqueda  de las hormigas</param>
         /// <param name="n">cantidad de hormigas</param>
+        /// <param name="alfa">Influencia sobre nivel de feromonas</param>
+        /// <param name="beta">Influencia atractivo movimiento</param>
+        /// <param name="rho">Coeficiente evaporacion feromonas</param>
         /// <returns>Mejor solución encontrada</returns>
-        public Solucion optimizacion_colonia_hormigas(Grafica grafica, int n)
+        public Solucion optimizacion_colonia_hormigas(int tipo_op,GestorProblema g,Grafica grafica, int n,double alfa, double beta,double rho)
         {
+            this.tipo_optimizacion = tipo_op;
+            this.gestor = g;
             this.grafica = grafica;
             this.n = n;
+            this.alfa = alfa;
+            this.beta = beta;
+            this.rho = rho;
 
             crear_hormigas();
             int i = 0;

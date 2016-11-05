@@ -17,7 +17,7 @@ namespace AntColonyOptimization
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Sudoku());
+            Application.Run(new Fr_Sudoku());
         }
     }
 }

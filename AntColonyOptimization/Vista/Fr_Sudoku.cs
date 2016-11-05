@@ -7,10 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AntColonyOptimization.Controlador;
+using AntColonyOptimization.Modelo_Sudoku;
 
 namespace AntColonyOptimization.Vista
 {
-    public partial class Sudoku : Form
+    public partial class Fr_Sudoku : Form
     {
         /*-----------------------------------Constantes-----------------------------------*/
         private static char separador = ',';
@@ -23,15 +25,28 @@ namespace AntColonyOptimization.Vista
         /// Tamaño tablero
         /// </summary>
         private int n;
+        /// <summary>
+        /// Controlador 
+        /// </summary>
+        private SudokuOCH controlador;
         /*-----------------------------------Métodos-----------------------------------*/
-        public Sudoku()
+        public Fr_Sudoku()
         {
             n = 3;
             InitializeComponent();
             crear_tablero();
             disponible_conjunto(false);
+            controlador = SudokuOCH.get_instance();
+            resolver();
         }
-     
+        private void resolver()
+        {
+            n = 3;
+            //int[,] tablero = new int[n * n, n * n];
+            Sudoku s = new Sudoku(n);
+            Sudoku solucion = controlador.resolver(n, s, 88);
+            Console.WriteLine(solucion.ToString());
+        }
         private void crear_tablero()
         {
             int ancho = (panel_tablero.Size.Width/(n*n));

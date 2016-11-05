@@ -1,6 +1,6 @@
 ﻿namespace AntColonyOptimization.Vista
 {
-    partial class Sudoku
+    partial class Fr_Sudoku
     {
         /// <summary>
         /// Required designer variable.
