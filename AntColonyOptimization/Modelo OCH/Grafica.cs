@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AntColonyOptimization.Complemento;
 
 namespace AntColonyOptimization.Modelo_OCH
 {
@@ -38,10 +39,10 @@ namespace AntColonyOptimization.Modelo_OCH
             if(aristas == null)
             {
                 aristas = new List<Transicion>();
-                foreach(Componente v in vertices)
+                foreach (Componente v in vertices)
                 {
                     List<Transicion> aristas_v = v.get_transiciones();
-                    foreach(Transicion a in aristas_v)
+                    foreach (Transicion a in aristas_v)
                     {
                         if (!aristas.Contains(a))
                             aristas.Add(a);
@@ -61,8 +62,8 @@ namespace AntColonyOptimization.Modelo_OCH
 
         public Object Clone()
         {
-            return MemberwiseClone();
-        }
+            return Clonar<Grafica>.Clonacion(this);
+        } 
         /// <summary>
         /// Elimina un vértice de la gráfica,junto con las aristas incidentes en el
         /// </summary>

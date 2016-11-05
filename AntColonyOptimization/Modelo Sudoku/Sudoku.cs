@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AntColonyOptimization.Modelo_OCH;
+using AntColonyOptimization.Complemento;
 
 namespace AntColonyOptimization.Modelo_Sudoku
 {
-    public class Sudoku:Solucion,ICloneable
+    public class Sudoku:Solucion
     {
         /*-----------------------------------Constantes-----------------------------------*/
         public const int VACIO = 0;
@@ -294,10 +295,6 @@ namespace AntColonyOptimization.Modelo_Sudoku
             Casilla c = (Casilla) this.get_vertice_actual();
             tablero[c.get_fila(), c.get_col()] = c.get_valor();
         }
-        public Object Clone()
-        {
-            return MemberwiseClone();
-        }
         public override string ToString()
         {
             String cad = "";
@@ -305,11 +302,18 @@ namespace AntColonyOptimization.Modelo_Sudoku
             {
                 for(int j = 0; j< n*n; j++)
                 {
-                    cad += tablero[i, j]+"%f4";
+                    cad += tablero[i, j]+"   ";
                 }
                 cad += "\n";
             }
             return cad;
         }
+
+
+        public override Object Clone()
+        {
+            return Clonar<Sudoku>.Clonacion(this);
+        } 
+
     }
 }

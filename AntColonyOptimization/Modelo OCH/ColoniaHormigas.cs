@@ -159,7 +159,7 @@ namespace AntColonyOptimization.Modelo_OCH
         {
             hormigas = new List<Hormiga>();
             for (int k = 0; k < n; k++)
-                hormigas.Add(new Hormiga());
+                hormigas.Add(new Hormiga(k+1));
         }
         /// <summary>
         /// Inicia las feromonas en las aristas o vértices
@@ -250,7 +250,7 @@ namespace AntColonyOptimization.Modelo_OCH
         public void construir_solucion(Hormiga k)
         {
             Grafica g = (Grafica)grafica.Clone();
-            while(gestor.completo(k.getSolucion()))
+            while(!gestor.completo(k.getSolucion()))
             {
                 Componente x = k.getSolucion().get_vertice_actual();
                 //Vecinos del vertice actual

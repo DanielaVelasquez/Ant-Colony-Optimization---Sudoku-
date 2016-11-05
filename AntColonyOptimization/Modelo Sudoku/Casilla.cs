@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AntColonyOptimization.Modelo_OCH;
+using AntColonyOptimization.Complemento;
 
 namespace AntColonyOptimization.Modelo_Sudoku
 {
@@ -52,5 +53,11 @@ namespace AntColonyOptimization.Modelo_Sudoku
             atractivo = (n*n - 1) - sudoku.repetido_fila(fila,valor) + (n*n-1) -  sudoku.repetido_col(col,valor) + ((n*n)-((n-1)*(n-1))) - sudoku.repetido_cuadro(fila,col,valor);
             return atractivo;
         }
+
+        public override Object Clone()
+        {
+            return Clonar<Casilla>.Clonacion(this);
+        } 
+
     }
 }

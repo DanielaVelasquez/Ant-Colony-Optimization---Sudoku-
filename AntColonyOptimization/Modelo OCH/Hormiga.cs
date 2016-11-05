@@ -13,10 +13,15 @@ namespace AntColonyOptimization.Modelo_OCH
         /// Solución construida por la hormiga
         /// </summary>
         private Solucion solucion;
+        /// <summary>
+        /// Número identificador de la hormigas
+        /// </summary>
+        private int id;
 
         /*-----------------------------------Métodos-----------------------------------*/
-        public Hormiga()
+        public Hormiga(int id)
         {
+            this.id = id;
             solucion = null;
             //TODO: set la solucion al iniciar las hormigas en las solucion inicial
         }
@@ -43,5 +48,6 @@ namespace AntColonyOptimization.Modelo_OCH
                 throw new Exception("Valor tipo de optimización no válido");
 
         }
+
     }
 }

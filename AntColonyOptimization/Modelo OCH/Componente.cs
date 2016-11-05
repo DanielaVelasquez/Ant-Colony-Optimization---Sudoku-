@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AntColonyOptimization.Complemento;
 
 namespace AntColonyOptimization.Modelo_OCH
 {
     /// <summary>
     /// Componente problema
     /// </summary>
-    public abstract class Componente:ICloneable 
+    public abstract class Componente:ICloneable
     {
         /*-----------------------------------Atributos-----------------------------------*/
         /// <summary>
@@ -168,11 +169,7 @@ namespace AntColonyOptimization.Modelo_OCH
                 throw new Exception("Transición con " + t.get_vecino_de(this).ToString() + " establecida previamente");
             vecinos.Add(t.get_vecino_de(this), t);
         }
-
-        public Object Clone()
-        {
-            return MemberwiseClone();
-        } 
+ 
 
         /// <summary>
         /// Calcula el atractivo del componente
@@ -180,5 +177,8 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <param name="s">solución sobre la cual se quiere ver el atractivo</param>
         /// <returns></returns>
         public abstract double calcular_atractivo(Solucion s);
+
+        public abstract Object Clone();
+
     }
 }

@@ -14,7 +14,7 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <param name="r">objeto genera numeros aleatorios</param>
         /// <param name="hormigas">hormigas del algoritmo</param>
         /// <param name="grafica">gráfica del problema</param>
-        void ubicar_posicion_inicial(Random r,List<Hormiga> hormigas,Grafica grafica);
+        void ubicar_posicion_inicial(Random r, List<Hormiga> hormigas, Grafica grafica);
         /// <summary>
         /// Determina si una solución ya está completa
         /// </summary>

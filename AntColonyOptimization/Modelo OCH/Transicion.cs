@@ -30,14 +30,14 @@ namespace AntColonyOptimization.Modelo_OCH
         private double atractivo;
 
         /*-----------------------------------Métodos-----------------------------------*/
-        public Transicion(Componente v1,Componente v2)
+        public Transicion(Componente v1, Componente v2)
         {
             componente1 = v1;
             componente2 = v2;
             feromonas = 0;
             atractivo = -1;
         }
-        public Transicion(Componente v1, Componente v2,double nAtractivo)
+        public Transicion(Componente v1, Componente v2, double nAtractivo)
         {
             componente1 = v1;
             componente2 = v2;
@@ -74,7 +74,7 @@ namespace AntColonyOptimization.Modelo_OCH
         {
             return atractivo;
         }
-        public void set_componentes(Componente v1,Componente v2)
+        public void set_componentes(Componente v1, Componente v2)
         {
             componente1 = v1;
             componente2 = v2;
