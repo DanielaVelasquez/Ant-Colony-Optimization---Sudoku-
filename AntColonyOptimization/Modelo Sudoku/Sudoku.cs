@@ -212,7 +212,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         {
             for(int i = 0; i < n*n; i = i + n)
             {
-                if (valor > i && valor < i + n)
+                if (valor >= i && valor < i + n)
                     return i;
             }
             return -1;
@@ -261,11 +261,11 @@ namespace AntColonyOptimization.Modelo_Sudoku
             int f = obtener_cuadrante(fila);
             int c = obtener_cuadrante(col);
             int cont = 0;
-            for (int i = 0; i < n * n; i++)
+            for (int i = 0; i < n ; i++)
             {
-                for (int j = 0; j < n * n; j++)
+                for (int j = 0; j < n ; j++)
                 {
-                    if (tablero[i + fila, j + c] == num)
+                    if (tablero[i + f, j + c] == num)
                         cont++;
                 }
             }

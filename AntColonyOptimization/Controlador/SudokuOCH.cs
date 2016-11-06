@@ -28,6 +28,10 @@ namespace AntColonyOptimization.Controlador
         /// Coeficiente evaporacion feromonas
         /// </summary>
         private const double RHO = 0.1;
+        /// <summary>
+        /// Cantidad inicial de feromonas
+        /// </summary>
+        public const double FEROMONAS_INICIAL = 0.1;
         /*-----------------------------------Atributos-----------------------------------*/
         private static SudokuOCH instance = null;
 
@@ -54,7 +58,7 @@ namespace AntColonyOptimization.Controlador
             gestor = new GestorSudoku();
             gestor.set_sudoku(s);
             colonia = new ColoniaHormigas(semilla);
-            return (Sudoku)colonia.optimizacion_colonia_hormigas(ColoniaHormigas.VERTICES_FEROMONAS,gestor,gestor.crear_grafica(s),N,ALFA,BETA,RHO);
+            return (Sudoku)colonia.optimizacion_colonia_hormigas(FEROMONAS_INICIAL,ColoniaHormigas.VERTICES_FEROMONAS, ColoniaHormigas.MINIMIZAR, gestor, gestor.crear_grafica(s), N, ALFA, BETA, RHO);
         }
 
     }

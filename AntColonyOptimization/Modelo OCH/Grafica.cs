@@ -54,13 +54,35 @@ namespace AntColonyOptimization.Modelo_OCH
         }
         public Boolean tiene(Componente c)
         {
+            foreach(Componente comp in vertices)
+            {
+                if(comp.Equals(c))
+                    return true;
+            }
+            return false;
+            /*
             return vertices.Contains(c);
+             * */
         }
         public void adicionar_vertice(Componente c)
         {
             vertices.Add(c);
         }
-
+        /// <summary>
+        /// Busca componente igual en la gráfica
+        /// </summary>
+        /// <param name="c">componente busca</param>
+        /// <returns>vertice igual a c o null en caso contrario</returns>
+        public Componente buscar(Componente c)
+        {
+            List<Componente> componentes = get_vertices();
+            foreach(Componente v in componentes)
+            {
+                if (v.Equals(c))
+                    return v;
+            }
+            return null;
+        }
         public Object Clone()
         {
             return Clonar<Grafica>.Clonacion(this);

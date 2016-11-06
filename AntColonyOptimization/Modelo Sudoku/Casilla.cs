@@ -65,6 +65,11 @@ namespace AntColonyOptimization.Modelo_Sudoku
             c.set_feromonas(this.get_feromonas());
             return c;
         }
+        public override bool Equals(object obj)
+        {
+            Casilla c = (Casilla)obj;
+            return c.get_fila() == fila && c.get_valor() == valor && c.get_col() == col;
+        }
 
     }
 }

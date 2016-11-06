@@ -29,7 +29,6 @@ namespace AntColonyOptimization.Modelo_OCH
         /// Determina si se quiere encontrar una solución de valor mínimo
         /// </summary>
         public const int MINIMIZAR = 3;
-
         /// <summary>
         /// Mensaje error si el valor para la ubicación de las feormonsa es invalido
         /// </summary>
@@ -95,6 +94,10 @@ namespace AntColonyOptimization.Modelo_OCH
         /// Resultados de las hormigas a traves de las iteraciones fila: iteracion, col: id_hormiga, val[fila,col] = funcion costo solucion hormiga
         /// </summary>
         private int[,] resultados;
+        /// <summary>
+        /// Tiempo tomo a la simulación encontrar una solución
+        /// </summary>
+        private TimeSpan tiempo;
 
         /*-----------------------------------Métodos-----------------------------------*/
         public ColoniaHormigas(int nSemilla)
@@ -113,8 +116,12 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <param name="beta">Influencia atractivo movimiento</param>
         /// <param name="rho">Coeficiente evaporacion feromonas</param>
         /// <returns>Mejor solución encontrada</returns>
-        public Solucion optimizacion_colonia_hormigas(int tipo_op,GestorProblema g,Grafica grafica, int n,double alfa, double beta,double rho)
+        public Solucion optimizacion_colonia_hormigas(double inicial_feromonas, int ubicacion_feromonas, int tipo_op,GestorProblema g,Grafica grafica, int n,double alfa, double beta,double rho)
         {
+            DateTime inicio = DateTime.Now;
+
+            this.inicial_feromonas = inicial_feromonas;
+            this.ubicacion_feromonas = ubicacion_feromonas;
             this.tipo_optimizacion = tipo_op;
             this.gestor = g;
             this.grafica = grafica;
@@ -122,11 +129,15 @@ namespace AntColonyOptimization.Modelo_OCH
             this.alfa = alfa;
             this.beta = beta;
             this.rho = rho;
+            iteraciones = 100;
 
             crear_hormigas();
+            iniciar_feromonas();
             int i = 0;
             do
             {
+                if (i == 2)
+                    Console.WriteLine("aqui");
                 gestor.ubicar_posicion_inicial(random,hormigas, grafica);
                 foreach (Hormiga k in hormigas)
                     construir_solucion(k);
@@ -134,6 +145,8 @@ namespace AntColonyOptimization.Modelo_OCH
                 actualizar_feromonas();
                 i++;
             } while (i < iteraciones);
+            DateTime final = DateTime.Now;
+            tiempo = final - inicio;
             return mejor;
         }
         /// <summary>
@@ -249,10 +262,12 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <param name="k">hormiga a la cual se le va a construir la solucion</param>
         public void construir_solucion(Hormiga k)
         {
-            Grafica g = (Grafica)grafica.Clone();
+            Grafica g = grafica;
+            //Grafica g = (Grafica)grafica.Clone();
             while(!gestor.completo(k.getSolucion()))
             {
-                Componente x = k.getSolucion().get_vertice_actual();
+                Componente actual_k = k.getSolucion().get_vertice_actual();
+                Componente x = g.buscar(actual_k);
                 //Vecinos del vertice actual
                 List<Componente> N_v = x.N();
 
@@ -264,6 +279,7 @@ namespace AntColonyOptimization.Modelo_OCH
                 {
                     foreach(Componente y in N_v)
                     {
+                        double atractivo = y.calcular_atractivo(k.getSolucion());
                         double P_y = Math.Pow(y.get_feromonas(), alfa) * Math.Pow(y.calcular_atractivo(k.getSolucion()), beta);
                         sum += P_y;
                         P.Add(y, P_y);
@@ -279,10 +295,13 @@ namespace AntColonyOptimization.Modelo_OCH
                         P.Add(y, P_xy);
                     }
                 }
+                Hashtable P1 = new Hashtable();
                 foreach(DictionaryEntry e in P)
                 {
-                    P[e.Key] = (double) e.Value / sum;
+                    double P_xy = (double) e.Value / sum;
+                    P1.Add(e.Key, P_xy);
                 }
+                P = P1;
                 Componente siguiente = escoger_vertice(P,sum);
                 k.getSolucion().cambiar_vertice_actual(siguiente);
 
