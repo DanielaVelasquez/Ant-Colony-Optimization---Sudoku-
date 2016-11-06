@@ -38,10 +38,21 @@ namespace AntColonyOptimization.Modelo_Sudoku
             return ((Sudoku)solucion).completo();
 
         }
-        public void configurar_grafica(Grafica g, Hormiga k)
+        public  List<Componente> configurar_vecinos(List<Componente> N, Hormiga k)
         {
-            Componente c = k.getSolucion().get_vertice_actual();
-            g.eliminar_vertice(c);
+            List<Componente> vecinos = new List<Componente>();
+            List<Componente> vertices_solucion = k.getSolucion().get_grafica().get_vertices();
+            foreach(Casilla v in vertices_solucion)
+            {
+                foreach(Casilla c in N)
+                {
+                    if ((v.get_fila() != c.get_fila() || v.get_col() != c.get_col()) && !vecinos.Contains(c))
+                        vecinos.Add(c);
+                    else
+                        Console.WriteLine("no");
+                }
+            }
+            return vecinos;
         }
 
         /// <summary>

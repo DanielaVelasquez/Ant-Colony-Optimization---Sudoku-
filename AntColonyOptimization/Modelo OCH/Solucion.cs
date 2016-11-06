@@ -35,6 +35,10 @@ namespace AntColonyOptimization.Modelo_OCH
             List<Transicion> t = grafica.get_aristas();
             return t.Contains(a);
         }
+        public Grafica get_grafica()
+        {
+            return grafica;
+        }
         /// <summary>
         /// Determina si la solución tiene el vertice v
         /// </summary>

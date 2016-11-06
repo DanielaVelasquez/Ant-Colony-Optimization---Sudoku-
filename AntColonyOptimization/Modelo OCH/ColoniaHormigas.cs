@@ -129,21 +129,20 @@ namespace AntColonyOptimization.Modelo_OCH
             this.alfa = alfa;
             this.beta = beta;
             this.rho = rho;
-            iteraciones = 100;
+            iteraciones = 50;
 
             crear_hormigas();
             iniciar_feromonas();
             int i = 0;
             do
             {
-                if (i == 2)
-                    Console.WriteLine("aqui");
                 gestor.ubicar_posicion_inicial(random,hormigas, grafica);
                 foreach (Hormiga k in hormigas)
                     construir_solucion(k);
                 seleccionar_mejor_hormiga();
                 actualizar_feromonas();
                 i++;
+
             } while (i < iteraciones);
             DateTime final = DateTime.Now;
             tiempo = final - inicio;
@@ -260,7 +259,7 @@ namespace AntColonyOptimization.Modelo_OCH
         /// Construye solución de la hormiga
         /// </summary>
         /// <param name="k">hormiga a la cual se le va a construir la solucion</param>
-        public void construir_solucion(Hormiga k)
+        private void construir_solucion(Hormiga k)
         {
             Grafica g = grafica;
             //Grafica g = (Grafica)grafica.Clone();
@@ -270,7 +269,7 @@ namespace AntColonyOptimization.Modelo_OCH
                 Componente x = g.buscar(actual_k);
                 //Vecinos del vertice actual
                 List<Componente> N_v = x.N();
-
+                N_v = gestor.configurar_vecinos(N_v, k);
                 //Probabilidad de cada vertice
                 Hashtable P = new Hashtable();
                 double sum = 0;
@@ -304,7 +303,6 @@ namespace AntColonyOptimization.Modelo_OCH
                 P = P1;
                 Componente siguiente = escoger_vertice(P,sum);
                 k.getSolucion().cambiar_vertice_actual(siguiente);
-
                 
             }
         }

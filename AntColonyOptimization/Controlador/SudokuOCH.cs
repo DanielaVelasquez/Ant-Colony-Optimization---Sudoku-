@@ -15,7 +15,7 @@ namespace AntColonyOptimization.Controlador
         /// <summary>
         /// Cantidad hormigas en la colonia
         /// </summary>
-        private const int N = 200;
+        private const int N = 15;
         /// <summary>
         /// Influencia sobre nivel de feromonas
         /// </summary>

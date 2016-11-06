@@ -44,7 +44,7 @@ namespace AntColonyOptimization.Vista
             n = 3;
             //int[,] tablero = new int[n * n, n * n];
             Sudoku s = new Sudoku(n);
-            Sudoku solucion = controlador.resolver(n, s, 88);
+            Sudoku solucion = controlador.resolver(n, s, 56);
             Console.WriteLine(solucion.ToString());
         }
         private void crear_tablero()

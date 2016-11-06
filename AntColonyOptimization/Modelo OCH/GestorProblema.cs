@@ -22,10 +22,11 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <returns></returns>
         Boolean completo(Solucion solucion);
         /// <summary>
-        /// Si el problema es dinámico, se configura la gráfica respecto a la solución de la hormiga 
+        /// Si el problema es dinámico, se configura los vecinos a los que tiene alcance un vertice de acuerdo a la solucion que lleva la hormiga
         /// </summary>
-        /// <param name="g">gráfica con la cual está trabjando la hormiga</param>
+        /// <param name="g">gráfica problema</param>
         /// <param name="k">hormiga está construyendo una solucion sobre la gráfica</param>
-        void configurar_grafica(Grafica g, Hormiga k);
+        /// <rereturns>vecinos acomodados</rereturns>
+        List<Componente> configurar_vecinos(List<Componente> N, Hormiga k);
     }
 }
