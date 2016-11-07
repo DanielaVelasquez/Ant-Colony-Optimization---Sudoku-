@@ -62,7 +62,7 @@ namespace AntColonyOptimization.Modelo_OCH
             //copia.remover_vecinos();
             if (componente_actual != null)
             {
-                componente_actual.crear_transicion_con(v);
+                componente_actual.crear_transicion_con(copia);
             }
 
             grafica.adicionar_vertice(copia);

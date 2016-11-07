@@ -42,17 +42,40 @@ namespace AntColonyOptimization.Modelo_Sudoku
         {
             List<Componente> vecinos = new List<Componente>();
             List<Componente> vertices_solucion = k.getSolucion().get_grafica().get_vertices();
+
+            //Sudoku s = k.getSolucion(
             foreach(Casilla v in vertices_solucion)
             {
+                int cont = 0;
+                while(cont < N.Count)
+                {
+                    Casilla c = (Casilla) N[cont];
+                    if (v.get_fila() == c.get_fila() && v.get_col() == c.get_col())
+                        N.Remove(c);
+                    else
+                        cont++;
+                    /*
+                    if (!(v.get_fila() == c.get_fila() && v.get_col() == c.get_col()))
+                    {
+                        if(!vecinos.Contains(c))
+                            vecinos.Add(c);
+                        cont++;
+                    }
+                    else
+                        N.Remove(c);
+                     * */
+                }
+                /*
                 foreach(Casilla c in N)
                 {
-                    if ((v.get_fila() != c.get_fila() || v.get_col() != c.get_col()) && !vecinos.Contains(c))
+                    
+                    if (!(v.get_fila() == c.get_fila() && v.get_col() == c.get_col()) && !vecinos.Contains(c))
                         vecinos.Add(c);
                     else
-                        Console.WriteLine("no");
-                }
+                        copia.Remove(c);
+                }*/
             }
-            return vecinos;
+            return N;
         }
 
         /// <summary>
@@ -91,6 +114,11 @@ namespace AntColonyOptimization.Modelo_Sudoku
                     actual.crear_transicion_con(casilla);
                 }
                 g.adicionar_vertice(actual);
+            }
+            foreach(Componente c in g.get_vertices())
+            {
+                if (c.N().Count >= 729)
+                    Console.WriteLine("MAL");
             }
             return g;
         }

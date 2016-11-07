@@ -262,6 +262,7 @@ namespace AntColonyOptimization.Modelo_OCH
         private void construir_solucion(Hormiga k)
         {
             Grafica g = grafica;
+            
             //Grafica g = (Grafica)grafica.Clone();
             while(!gestor.completo(k.getSolucion()))
             {
@@ -302,8 +303,7 @@ namespace AntColonyOptimization.Modelo_OCH
                 }
                 P = P1;
                 Componente siguiente = escoger_vertice(P,sum);
-                k.getSolucion().cambiar_vertice_actual(siguiente);
-                
+                k.getSolucion().cambiar_vertice_actual(siguiente);                
             }
         }
         /// <summary>
