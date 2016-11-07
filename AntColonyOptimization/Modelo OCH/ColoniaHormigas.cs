@@ -100,10 +100,9 @@ namespace AntColonyOptimization.Modelo_OCH
         private TimeSpan tiempo;
 
         /*-----------------------------------Métodos-----------------------------------*/
-        public ColoniaHormigas(int nSemilla)
+        public ColoniaHormigas()
         {
-            semilla = nSemilla;
-            random = new Random(semilla);
+            
         }
         /// <summary>
         /// Busca la mejor solución para el grupo de vértices
@@ -116,10 +115,11 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <param name="beta">Influencia atractivo movimiento</param>
         /// <param name="rho">Coeficiente evaporacion feromonas</param>
         /// <returns>Mejor solución encontrada</returns>
-        public Solucion optimizacion_colonia_hormigas(double inicial_feromonas, int ubicacion_feromonas, int tipo_op,GestorProblema g,Grafica grafica, int n,double alfa, double beta,double rho)
+        public Solucion optimizacion_colonia_hormigas(int nSemilla,double inicial_feromonas, int ubicacion_feromonas, int tipo_op,GestorProblema g,Grafica grafica, int n,double alfa, double beta,double rho)
         {
             DateTime inicio = DateTime.Now;
-
+            semilla = nSemilla;
+            random = new Random(semilla);
             this.inicial_feromonas = inicial_feromonas;
             this.ubicacion_feromonas = ubicacion_feromonas;
             this.tipo_optimizacion = tipo_op;
@@ -262,15 +262,21 @@ namespace AntColonyOptimization.Modelo_OCH
         private void construir_solucion(Hormiga k)
         {
             Grafica g = grafica;
-            
-            //Grafica g = (Grafica)grafica.Clone();
-            while(!gestor.completo(k.getSolucion()))
+            //Verifica aún hay vecinos para explorar desde la solución actual
+            Boolean abortado = false;
+            while(!gestor.completo(k.getSolucion()) && !abortado)
             {
                 Componente actual_k = k.getSolucion().get_vertice_actual();
                 Componente x = g.buscar(actual_k);
                 //Vecinos del vertice actual
                 List<Componente> N_v = x.N();
                 N_v = gestor.configurar_vecinos(N_v, k);
+                if (N_v.Count == 0)
+                {
+                    abortado = true;
+                    break;
+                }
+                    
                 //Probabilidad de cada vertice
                 Hashtable P = new Hashtable();
                 double sum = 0;

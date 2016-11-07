@@ -57,8 +57,8 @@ namespace AntColonyOptimization.Controlador
            
             gestor = new GestorSudoku();
             gestor.set_sudoku(s);
-            colonia = new ColoniaHormigas(semilla);
-            return (Sudoku)colonia.optimizacion_colonia_hormigas(FEROMONAS_INICIAL,ColoniaHormigas.VERTICES_FEROMONAS, ColoniaHormigas.MINIMIZAR, gestor, gestor.crear_grafica(s), N, ALFA, BETA, RHO);
+            colonia = new ColoniaHormigas();
+            return (Sudoku)colonia.optimizacion_colonia_hormigas(semilla,FEROMONAS_INICIAL,ColoniaHormigas.VERTICES_FEROMONAS, ColoniaHormigas.MINIMIZAR, gestor, gestor.crear_grafica(s), N, ALFA, BETA, RHO);
         }
 
     }

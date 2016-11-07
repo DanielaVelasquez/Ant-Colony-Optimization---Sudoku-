@@ -39,6 +39,10 @@ namespace AntColonyOptimization.Modelo_OCH
         {
             return grafica;
         }
+        public void set_grafica(Grafica g)
+        {
+            grafica = g;
+        }
         /// <summary>
         /// Determina si la solución tiene el vertice v
         /// </summary>

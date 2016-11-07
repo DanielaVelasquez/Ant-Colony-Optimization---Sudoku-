@@ -50,6 +50,7 @@ namespace AntColonyOptimization.Vista
                 if (solucion.funcion_costo() == 0)
                     Console.WriteLine("I'm amazing");
                 Console.WriteLine(solucion.ToString());
+                Console.WriteLine(solucion.funcion_costo());
             }
             
         }

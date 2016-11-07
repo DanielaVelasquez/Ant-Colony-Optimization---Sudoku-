@@ -9,18 +9,48 @@ namespace AntColonyOptimization.Modelo_Sudoku
 {
     public class GestorSudoku : GestorProblema
     {
+        /*-----------------------------------Constantes-----------------------------------*/
+        /// <summary>
+        /// Cantidad hormigas en la colonia
+        /// </summary>
+        private const int N = 15;
+        /// <summary>
+        /// Influencia sobre nivel de feromonas
+        /// </summary>
+        private const double ALFA = 1;
+        /// <summary>
+        /// Influencia atractivo movimiento
+        /// </summary>
+        private const double BETA = 1;
+        /// <summary>
+        /// Coeficiente evaporacion feromonas
+        /// </summary>
+        private const double RHO = 0.1;
+        /// <summary>
+        /// Cantidad inicial de feromonas
+        /// </summary>
+        public const double FEROMONAS_INICIAL = 0.1;
+
         /*-----------------------------------Atributos-----------------------------------*/
         /// <summary>
         /// Sudoku inicial que está gestionando  
         /// </summary>
         private Sudoku sudoku;
+        /// <summary>
+        /// Colonia hormigas
+        /// </summary>
+        private ColoniaHormigas colonia;
 
         /*-----------------------------------Métodos-----------------------------------*/
         public void set_sudoku(Sudoku s)
         {
             this.sudoku = s;
+            crear_grafica_solucion(s);
         }
+        private void crear_grafica_solucion(Sudoku s)
+        {
 
+        }
         public void ubicar_posicion_inicial(Random r, List<Hormiga> hormigas, Grafica grafica)
         {
             List<Componente> componentes = grafica.get_vertices();
@@ -50,20 +80,21 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 while(cont < N.Count)
                 {
                     Casilla c = (Casilla) N[cont];
+                    if(c.get_fila()==0 && c.get_col()==3 && c.get_valor() == 5)
+                    {
+                        Console.WriteLine("llegue");
+                    }
+                    //Si la fila y columna ya están ocupadas
                     if (v.get_fila() == c.get_fila() && v.get_col() == c.get_col())
                         N.Remove(c);
-                    else
-                        cont++;
-                    /*
-                    if (!(v.get_fila() == c.get_fila() && v.get_col() == c.get_col()))
-                    {
-                        if(!vecinos.Contains(c))
-                            vecinos.Add(c);
-                        cont++;
-                    }
-                    else
+                    //Si la fila o columna ya tiene el número 
+                    else if((v.get_fila() == c.get_fila() || v.get_col() == c.get_col())&& c.get_valor() == v.get_valor())
                         N.Remove(c);
-                     * */
+                    //Si estan en el mismo cuadrante y el número ya está en el cuadrante
+                    else if(sudoku.obtener_cuadrante(v.get_fila())==sudoku.obtener_cuadrante(c.get_fila()) && sudoku.obtener_cuadrante(v.get_col())==sudoku.obtener_cuadrante(c.get_col()) && c.get_valor() == v.get_valor())
+                        N.Remove(c);
+                    else
+                        cont++;
                 }
                 /*
                 foreach(Casilla c in N)
@@ -115,12 +146,33 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 }
                 g.adicionar_vertice(actual);
             }
-            foreach(Componente c in g.get_vertices())
-            {
-                if (c.N().Count >= 729)
-                    Console.WriteLine("MAL");
-            }
             return g;
         }
+        /*
+        public Sudoku resolver(Sudoku s,int semilla)
+        {
+            sudoku = s;
+            colonia = new ColoniaHormigas();
+            Grafica grafica = crear_grafica(s);
+
+            Grafica solucion = new Grafica();
+
+            int[,] tablero = s.get_tablero();
+            int n = s.get_n();
+            for (int i = 0; i < n * n; i++)
+            {
+                for (int j = 0; j < n * n; j++)
+                {
+                    if(tablero[i,j]!=Sudoku.VACIO)
+                    {
+                        Casilla c = new Casilla(i, j, tablero[i, j]);
+                        Casilla casilla = (Casilla) grafica.buscar(c);
+                        solucion.
+                    }
+                }
+            }
+
+        }
+         * */
     }
 }

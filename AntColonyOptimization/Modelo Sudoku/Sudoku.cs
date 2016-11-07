@@ -13,6 +13,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
     {
         /*-----------------------------------Constantes-----------------------------------*/
         public const int VACIO = 0;
+        private const int PENALIZACION_VACIOS = 25;
         /*-----------------------------------Atributos-----------------------------------*/
         /// <summary>
         /// Tablero sudoku
@@ -39,7 +40,24 @@ namespace AntColonyOptimization.Modelo_Sudoku
         }
         public override double funcion_costo()
         {
-            return repetidos_filas() + repetidos_columnas() + repetidos_cuadros();
+            return repetidos_filas() + repetidos_columnas() + repetidos_cuadros() + casillas_vacias() * PENALIZACION_VACIOS;
+        }
+        /// <summary>
+        /// Cuenta la cantidad de casillas vacias
+        /// </summary>
+        /// <returns>cantidad de casillas vacias en el tablero</returns>
+        public int casillas_vacias()
+        {
+            int cont = 0;
+            for(int i = 0; i < n*n; i++)
+            {
+                for(int j = 0; j < n*n; j++)
+                {
+                    if (tablero[i, j] == VACIO)
+                        cont++;
+                }
+            }
+            return cont;
         }
         /// <summary>
         /// Contabiliza la cantidad de números repetidos en las filas del tablero
@@ -212,7 +230,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// </summary>
         /// <param name="valor">posicion fila o columna</param>
         /// <returns>inicio del cuadrante</returns>
-        private int obtener_cuadrante(int valor)
+        public int obtener_cuadrante(int valor)
         {
             for(int i = 0; i < n*n; i = i + n)
             {
