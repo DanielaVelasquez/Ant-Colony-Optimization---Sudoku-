@@ -43,9 +43,31 @@ namespace AntColonyOptimization.Vista
         {
             n = 3;
             //int[,] tablero = new int[n * n, n * n];
+            for(int i = 0; i<100;i++)
+            {
+                Sudoku s = crear_sudoku("5,3,1,0,8,0,6,0,0,0,0,0,4,0,6,0,0,0,0,7,0,0,0,2,8,5,0,8,0,2,7,3,0,0,1,0,7,0,0,5,0,0,0,9,0,3,4,0,0,6,0,0,0,0,0,6,9,8,0,0,0,0,0,0,5,0,0,4,1,0,0,7,0,0,0,2,0,0,4,0,3");
+                Sudoku solucion = controlador.resolver(n, s, i);
+                if (solucion.funcion_costo() == 0)
+                    Console.WriteLine("I'm amazing");
+                Console.WriteLine(solucion.ToString());
+            }
+            
+        }
+        private Sudoku crear_sudoku(String cad)
+        {
+            String[] sep = cad.Split(',');
+            int cont = 0;
+            int n = 3;
             Sudoku s = new Sudoku(n);
-            Sudoku solucion = controlador.resolver(n, s, 56);
-            Console.WriteLine(solucion.ToString());
+            for(int i = 0; i<n*n;i++)
+            {
+                for(int j = 0; j < n*n; j++)
+                {
+                    s.ubicar_numero(i, j, int.Parse(sep[cont]));
+                    cont++;
+                }
+            }
+            return s;
         }
         private void crear_tablero()
         {
@@ -64,7 +86,6 @@ namespace AntColonyOptimization.Vista
                     this.panel_tablero.Controls.Add(casilla);
                 }
             }
-            Console.Write("FIN");
         }
         private void lb_tamanio_tablero_Click(object sender, EventArgs e)
         {
