@@ -142,6 +142,8 @@ namespace AntColonyOptimization.Modelo_OCH
                 seleccionar_mejor_hormiga();
                 actualizar_feromonas();
                 i++;
+                Console.WriteLine(mejor.ToString());
+                Console.WriteLine(mejor.funcion_costo());
 
             } while (i < iteraciones);
             DateTime final = DateTime.Now;

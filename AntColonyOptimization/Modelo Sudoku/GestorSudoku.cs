@@ -13,7 +13,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// <summary>
         /// Cantidad hormigas en la colonia
         /// </summary>
-        private const int N = 15;
+        private const int N = 200;
         /// <summary>
         /// Influencia sobre nivel de feromonas
         /// </summary>
@@ -80,10 +80,10 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 while(cont < N.Count)
                 {
                     Casilla c = (Casilla) N[cont];
-                    if(c.get_fila()==0 && c.get_col()==3 && c.get_valor() == 5)
+                    /*if(c.get_fila()==0 && c.get_col()==0 && c.get_valor() == 5)
                     {
                         Console.WriteLine("llegue");
-                    }
+                    }*/
                     //Si la fila y columna ya están ocupadas
                     if (v.get_fila() == c.get_fila() && v.get_col() == c.get_col())
                         N.Remove(c);
@@ -132,6 +132,11 @@ namespace AntColonyOptimization.Modelo_Sudoku
                             componentes.Add(c);
                         }
                     }
+                    else
+                    {
+                        Casilla c = new Casilla(i, j, tablero[i, j]);
+                        componentes.Add(c);
+                    }
                 }
             }
             Grafica g = new Grafica();
@@ -148,7 +153,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
             }
             return g;
         }
-        /*
+        
         public Sudoku resolver(Sudoku s,int semilla)
         {
             sudoku = s;
@@ -167,12 +172,15 @@ namespace AntColonyOptimization.Modelo_Sudoku
                     {
                         Casilla c = new Casilla(i, j, tablero[i, j]);
                         Casilla casilla = (Casilla) grafica.buscar(c);
-                        solucion.
+                        solucion.adicionar_vertice(casilla.clonar_sin_vecinos());
                     }
                 }
             }
+            sudoku.set_grafica(solucion);
+
+            return (Sudoku)colonia.optimizacion_colonia_hormigas(semilla, FEROMONAS_INICIAL, ColoniaHormigas.VERTICES_FEROMONAS, ColoniaHormigas.MINIMIZAR, this, grafica, N, ALFA, BETA, RHO);
 
         }
-         * */
+        
     }
 }

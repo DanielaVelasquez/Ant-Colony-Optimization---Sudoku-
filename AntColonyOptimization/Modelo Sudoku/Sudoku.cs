@@ -323,8 +323,8 @@ namespace AntColonyOptimization.Modelo_Sudoku
         public override void vertice_actualizado()
         {
             Casilla c = (Casilla) this.get_vertice_actual();
-            if (tablero[c.get_fila(), c.get_col()] != VACIO)
-                Console.WriteLine("Repetido");
+            /*if (tablero[c.get_fila(), c.get_col()] != VACIO)
+                Console.WriteLine("Repetido");*/
             tablero[c.get_fila(), c.get_col()] = c.get_valor();
         }
         public override string ToString()

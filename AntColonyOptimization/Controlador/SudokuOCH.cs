@@ -54,11 +54,8 @@ namespace AntColonyOptimization.Controlador
         /// <returns></returns>
         public Sudoku resolver(int n,Sudoku s,int semilla)
         {
-           
             gestor = new GestorSudoku();
-            gestor.set_sudoku(s);
-            colonia = new ColoniaHormigas();
-            return (Sudoku)colonia.optimizacion_colonia_hormigas(semilla,FEROMONAS_INICIAL,ColoniaHormigas.VERTICES_FEROMONAS, ColoniaHormigas.MINIMIZAR, gestor, gestor.crear_grafica(s), N, ALFA, BETA, RHO);
+            return gestor.resolver(s, semilla);
         }
 
     }
