@@ -50,7 +50,8 @@ namespace AntColonyOptimization.Modelo_Sudoku
         {
             Sudoku sudoku = (Sudoku) s;
             int n = sudoku.get_n();
-
+            if (!sudoku.puede_ubicar(fila, col, valor))
+                return 1;
             //Cantidad de casillas que afecta un sudoku
             atractivo = (n*n - 1) - sudoku.repetido_fila(fila,valor) + (n*n-1) -  sudoku.repetido_col(col,valor) + ((n*n)-((n-1)*(n-1))) - sudoku.repetido_cuadro(fila,col,valor);
             return atractivo;

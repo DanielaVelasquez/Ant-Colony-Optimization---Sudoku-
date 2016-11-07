@@ -150,7 +150,11 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// <returns>verdadero si el número se puede ubicar en el tablero, falso en caso contrario</returns>
         public Boolean puede_ubicar(int fila, int col,int num)
         {
-            return !esta_fila(fila, num) && !esta_col(col, num) && !esta_cuadro(fila, col, num);
+            return !casilla_utilizada(fila,col,num)&&!esta_fila(fila, num) && !esta_col(col, num) && !esta_cuadro(fila, col, num);
+        }
+        public Boolean casilla_utilizada(int fila,int col,int num)
+        {
+            return !(tablero[fila, col] == VACIO);
         }
         /// <summary>
         /// Determina si un número está en una fila 
@@ -193,11 +197,11 @@ namespace AntColonyOptimization.Modelo_Sudoku
         {
             int f = obtener_cuadrante(fila);
             int c = obtener_cuadrante(col);
-            for(int i = 0; i<n*n;i++)
+            for(int i = 0; i<n;i++)
             {
-                for(int j = 0; j< n*n;j++)
+                for(int j = 0; j< n;j++)
                 {
-                    if (tablero[i + fila, j + c] == num)
+                    if (tablero[i + f, j + c] == num)
                         return true;
                 }
             }
