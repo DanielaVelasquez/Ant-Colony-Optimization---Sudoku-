@@ -148,7 +148,7 @@ namespace AntColonyOptimization.Modelo_OCH
         /// Crea la transicion entre el componente actual y el componente indicado
         /// </summary>
         /// <param name="c">componente con el cual se quiere establecer la transicion</param>
-        public void crear_transicion_con(Componente c)
+        public Transicion crear_transicion_con(Componente c)
         {
             if (vecinos.ContainsKey(c))
                 throw new Exception("Transición con " + c.ToString() + " establecida previamente");
@@ -157,6 +157,7 @@ namespace AntColonyOptimization.Modelo_OCH
                 Transicion t = new Transicion(this, c);
                 this.establecer_transicion(t);
                 c.establecer_transicion(t);
+                return t;
 
             }
         }

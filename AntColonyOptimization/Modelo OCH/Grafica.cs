@@ -24,7 +24,7 @@ namespace AntColonyOptimization.Modelo_OCH
         public Grafica()
         {
             vertices = new List<Componente>();
-            aristas = new List<Transicion>();
+            aristas = null;
         }
         public List<Componente> get_vertices()
         {
@@ -51,6 +51,10 @@ namespace AntColonyOptimization.Modelo_OCH
                 }
             }
             return aristas;
+        }
+        public void set_aristas(List<Transicion>t)
+        {
+            aristas = t;
         }
         public Boolean tiene(Componente c)
         {
@@ -94,6 +98,20 @@ namespace AntColonyOptimization.Modelo_OCH
         public void eliminar_vertice(Componente v)
         {
             v.remover_vecinos();
+        }
+        public override bool Equals(object obj)
+        {
+            Grafica otra = (Grafica)obj;
+            if(otra.get_vertices().Count == vertices.Count)
+            {
+                List<Componente> otros_v = otra.get_vertices();
+                for(int i = 0; i<vertices.Count;i++)
+                {
+                    if (!vertices[i].Equals(otros_v[i]))
+                        return false;
+                }
+            }
+            return false;
         }
     }
 }

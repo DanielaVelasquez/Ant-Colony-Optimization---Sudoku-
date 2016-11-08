@@ -71,9 +71,9 @@ namespace AntColonyOptimization.Modelo_OCH
         /// </summary>
         private int ubicacion_feromonas;
         /// <summary>
-        /// Cantidad iteraciones para la busqueda
+        /// Valor mínimo de porcentaje de hormigas en el mismo camino
         /// </summary>
-        private int iteraciones;
+        private double mismo_camino;
         /// <summary>
         /// Conocedor del problema
         /// </summary>
@@ -115,10 +115,11 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <param name="beta">Influencia atractivo movimiento</param>
         /// <param name="rho">Coeficiente evaporacion feromonas</param>
         /// <returns>Mejor solución encontrada</returns>
-        public Solucion optimizacion_colonia_hormigas(int nSemilla,double inicial_feromonas, int ubicacion_feromonas, int tipo_op,GestorProblema g,Grafica grafica, int n,double alfa, double beta,double rho)
+        public Solucion optimizacion_colonia_hormigas(double mismo_camino,int nSemilla,double inicial_feromonas, int ubicacion_feromonas, int tipo_op,GestorProblema g,Grafica grafica, int n,double alfa, double beta,double rho)
         {
             DateTime inicio = DateTime.Now;
             semilla = nSemilla;
+            this.mismo_camino = mismo_camino;
             random = new Random(semilla);
             this.inicial_feromonas = inicial_feromonas;
             this.ubicacion_feromonas = ubicacion_feromonas;
@@ -129,7 +130,6 @@ namespace AntColonyOptimization.Modelo_OCH
             this.alfa = alfa;
             this.beta = beta;
             this.rho = rho;
-            iteraciones = 50;
 
             crear_hormigas();
             iniciar_feromonas();
@@ -141,14 +141,43 @@ namespace AntColonyOptimization.Modelo_OCH
                     construir_solucion(k);
                 seleccionar_mejor_hormiga();
                 actualizar_feromonas();
-                i++;
+                i++;/*
                 Console.WriteLine(mejor.ToString());
-                Console.WriteLine(mejor.funcion_costo());
-
-            } while (i < iteraciones);
+                Console.WriteLine(mejor.funcion_costo());*/
+                Console.WriteLine("iteracion " + i);
+                Console.WriteLine("Porentjae: " + hormigas_mismo_camino());
+                foreach (Hormiga k in hormigas)
+                    Console.WriteLine(k.ToString());
+            } while (hormigas_mismo_camino() < mismo_camino);
             DateTime final = DateTime.Now;
             tiempo = final - inicio;
             return mejor;
+        }
+        /// <summary>
+        /// Calcula la desviación estandar de las soluciones de cada hormiga
+        /// </summary>
+        /// <returns></returns>
+        private double hormigas_mismo_camino()
+        {
+            
+            double maximo = 0;
+            for(int i = 0; i < hormigas.Count - 1; i++)
+            {
+                double porcentaje = 0;
+                Solucion S1 = hormigas[i].getSolucion();
+                for(int j = i+1; j < hormigas.Count;j++)
+                {
+                    Solucion S2 = hormigas[j].getSolucion();
+                    if(S1.Equals(S2))
+                    {
+                        porcentaje++;
+                    }
+                }
+                porcentaje = porcentaje / (double)(hormigas.Count - 1);
+                if (maximo == 0 || maximo < porcentaje)
+                    maximo = porcentaje;
+            }
+            return maximo;
         }
         /// <summary>
         /// Busca la solución de la mejor hormiga y la guarda
@@ -310,7 +339,7 @@ namespace AntColonyOptimization.Modelo_OCH
                     P1.Add(e.Key, P_xy);
                 }
                 P = P1;
-                Componente siguiente = escoger_vertice(P,sum);
+                Componente siguiente = escoger_vertice(P,x);
                 k.getSolucion().cambiar_vertice_actual(siguiente);                
             }
         }
@@ -318,9 +347,9 @@ namespace AntColonyOptimization.Modelo_OCH
         /// Escoge el siguiente vertice de acuerdo a la probabilidad de moverse a cada vertice
         /// </summary>
         /// <param name="P">Diccionario (vertice,probabilidad) </param>
-        /// <param name="sumatoria_P">suma de todas las probabilidades</param>
+        /// <param name="v">Vertice actual de la hormiga</param>
         /// <returns></returns>
-        private Componente escoger_vertice(Hashtable P,double sumatoria_P)
+        private Componente escoger_vertice(Hashtable P,Componente v)
         {
             double num = random.NextDouble();
             double sum = 0.0;
@@ -328,7 +357,16 @@ namespace AntColonyOptimization.Modelo_OCH
             {
                 sum += (double)e.Value;
                 if (num <= sum)
-                    return (Componente)e.Key;
+                {
+                    if(ubicacion_feromonas == VERTICES_FEROMONAS)
+                        return (Componente)e.Key;
+                    else
+                    {
+                        Transicion t = (Transicion)e.Key;
+                        return t.get_vecino_de(v);
+                    }
+                }
+                    
             }
             return null;
         }

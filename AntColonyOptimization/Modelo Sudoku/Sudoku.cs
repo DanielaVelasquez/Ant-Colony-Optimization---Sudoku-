@@ -335,7 +335,11 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 for(int j = 0; j< n*n; j++)
                 {
                     cad += tablero[i, j]+"   ";
+                    if (j+1 % n == 0 )
+                        cad += "|";
                 }
+                if (i+1 % n == 0 )
+                    cad += "\n__________________________________________________";
                 cad += "\n";
             }
             return cad;
@@ -345,7 +349,27 @@ namespace AntColonyOptimization.Modelo_Sudoku
         public override Object Clone()
         {
             return Clonar<Sudoku>.Clonacion(this);
-        } 
+        }
+
+        public override bool Equals(object obj)
+        {
+            Sudoku s = (Sudoku)obj;
+            int[,] tablero2 = s.get_tablero();
+            int n2 = s.get_n();
+            if(n== n2)
+            {
+                for(int i = 0; i < n*n; i++)
+                {
+                    for(int j=0;j<n*n;j++)
+                    {
+                        if (tablero[i, j] != tablero2[i, j])
+                            return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
 
     }
 }

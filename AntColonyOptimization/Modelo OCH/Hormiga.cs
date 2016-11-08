@@ -48,6 +48,10 @@ namespace AntColonyOptimization.Modelo_OCH
                 throw new Exception("Valor tipo de optimización no válido");
 
         }
+        public override string ToString()
+        {
+            return "Id: " + id + "\nSolucion: " + solucion.ToString();
+        }
 
     }
 }

@@ -45,7 +45,8 @@ namespace AntColonyOptimization.Vista
             //int[,] tablero = new int[n * n, n * n];
             for(int i = 0; i<100;i++)
             {
-                Sudoku s = crear_sudoku("5,3,1,0,8,0,6,0,0,0,0,0,4,0,6,0,0,0,0,7,0,0,0,2,8,5,0,8,0,2,7,3,0,0,1,0,7,0,0,5,0,0,0,9,0,3,4,0,0,6,0,0,0,0,0,6,9,8,0,0,0,0,0,0,5,0,0,4,1,0,0,7,0,0,0,2,0,0,4,0,3");
+                //Sudoku s = crear_sudoku("5,3,1,0,8,0,6,0,0,0,0,0,4,0,6,0,0,0,0,7,0,0,0,2,8,5,0,8,0,2,7,3,0,0,1,0,7,0,0,5,0,0,0,9,0,3,4,0,0,6,0,0,0,0,0,6,9,8,0,0,0,0,0,0,5,0,0,4,1,0,0,7,0,0,0,2,0,0,4,0,3");
+                Sudoku s = new Sudoku(n);
                 Sudoku solucion = controlador.resolver(n, s, i);
                 if (solucion.funcion_costo() == 0)
                     Console.WriteLine("I'm amazing");

@@ -13,7 +13,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// <summary>
         /// Cantidad hormigas en la colonia
         /// </summary>
-        private const int N = 200;
+        private const int N = 50;
         /// <summary>
         /// Influencia sobre nivel de feromonas
         /// </summary>
@@ -21,7 +21,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// <summary>
         /// Influencia atractivo movimiento
         /// </summary>
-        private const double BETA = 1;
+        private const double BETA = 0;
         /// <summary>
         /// Coeficiente evaporacion feromonas
         /// </summary>
@@ -30,6 +30,10 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// Cantidad inicial de feromonas
         /// </summary>
         public const double FEROMONAS_INICIAL = 0.1;
+        /// <summary>
+        /// Valor mínimo de desviacion de las soluciones de las hormigas
+        /// </summary>
+        public const double PORCENTAJE_HORMIGAS = 0.85;
 
         /*-----------------------------------Atributos-----------------------------------*/
         /// <summary>
@@ -140,6 +144,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 }
             }
             Grafica g = new Grafica();
+            List<Transicion> transicion = new List<Transicion>();
             //Crea las aristas
             while(componentes.Count!=0)
             {
@@ -147,10 +152,11 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 componentes.Remove(actual);
                 foreach(Casilla casilla in componentes)
                 {
-                    actual.crear_transicion_con(casilla);
+                    transicion.Add(actual.crear_transicion_con(casilla));
                 }
                 g.adicionar_vertice(actual);
             }
+            g.set_aristas(transicion);
             return g;
         }
         
@@ -178,7 +184,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
             }
             sudoku.set_grafica(solucion);
 
-            return (Sudoku)colonia.optimizacion_colonia_hormigas(semilla, FEROMONAS_INICIAL, ColoniaHormigas.VERTICES_FEROMONAS, ColoniaHormigas.MINIMIZAR, this, grafica, N, ALFA, BETA, RHO);
+            return (Sudoku)colonia.optimizacion_colonia_hormigas(PORCENTAJE_HORMIGAS,semilla, FEROMONAS_INICIAL, ColoniaHormigas.ARISTAS_FEROMONAS, ColoniaHormigas.MINIMIZAR, this, grafica, N, ALFA, BETA, RHO);
 
         }
         
