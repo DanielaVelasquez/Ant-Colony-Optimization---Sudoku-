@@ -138,7 +138,11 @@ namespace AntColonyOptimization.Modelo_OCH
             {
                 gestor.ubicar_posicion_inicial(random,hormigas, grafica);
                 foreach (Hormiga k in hormigas)
+                {
                     construir_solucion(k);
+                    Console.WriteLine(k.ToString());
+                }
+                    
                 seleccionar_mejor_hormiga();
                 actualizar_feromonas();
                 i++;/*
@@ -146,8 +150,8 @@ namespace AntColonyOptimization.Modelo_OCH
                 Console.WriteLine(mejor.funcion_costo());*/
                 Console.WriteLine("iteracion " + i);
                 Console.WriteLine("Porentjae: " + hormigas_mismo_camino());
-                foreach (Hormiga k in hormigas)
-                    Console.WriteLine(k.ToString());
+                
+                    
             } while (hormigas_mismo_camino() < mismo_camino);
             DateTime final = DateTime.Now;
             tiempo = final - inicio;
@@ -294,26 +298,30 @@ namespace AntColonyOptimization.Modelo_OCH
         {
             Grafica g = grafica;
             //Verifica aún hay vecinos para explorar desde la solución actual
-            Boolean abortado = false;
-            while(!gestor.completo(k.getSolucion()) && !abortado)
+            int cont = 0;
+            int iteraciones = 200;
+            while(!gestor.completo(k.getSolucion()))
             {
+                Console.WriteLine("Iteracion: " + cont);
+                Console.WriteLine(k.getSolucion().ToString());
                 Componente actual_k = k.getSolucion().get_vertice_actual();
                 Componente x = g.buscar(actual_k);
                 //Vecinos del vertice actual
                 List<Componente> N_v = x.N();
-                N_v = gestor.configurar_vecinos(N_v, k);
-                if (N_v.Count == 0)
+                //N_v = gestor.configurar_vecinos(N_v, k);
+                /*if (N_v.Count == 0)
                 {
                     abortado = true;
                     break;
-                }
+                }*/
                     
                 //Probabilidad de cada vertice
-                Hashtable P = new Hashtable();
+                
                 double sum = 0;
-
+                IDictionary P = null;
                 if(ubicacion_feromonas == VERTICES_FEROMONAS)
                 {
+                    P = new Dictionary<Componente, double>();
                     foreach(Componente y in N_v)
                     {
                         double atractivo = y.calcular_atractivo(k.getSolucion());
@@ -324,6 +332,7 @@ namespace AntColonyOptimization.Modelo_OCH
                 }
                 else
                 {
+                    P = new Dictionary<Transicion, double>();
                     List<Transicion> aristas = x.get_arista_conecta(N_v);
                     foreach(Transicion y in aristas)
                     {
@@ -333,14 +342,16 @@ namespace AntColonyOptimization.Modelo_OCH
                     }
                 }
                 Hashtable P1 = new Hashtable();
-                foreach(DictionaryEntry e in P)
+                
+                foreach (DictionaryEntry e in P)
                 {
-                    double P_xy = (double) e.Value / sum;
+                    double P_xy = (double)e.Value / sum;
                     P1.Add(e.Key, P_xy);
                 }
                 P = P1;
                 Componente siguiente = escoger_vertice(P,x);
-                k.getSolucion().cambiar_vertice_actual(siguiente);                
+                k.getSolucion().cambiar_vertice_actual(siguiente);
+                cont++;
             }
         }
         /// <summary>
@@ -349,15 +360,19 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <param name="P">Diccionario (vertice,probabilidad) </param>
         /// <param name="v">Vertice actual de la hormiga</param>
         /// <returns></returns>
-        private Componente escoger_vertice(Hashtable P,Componente v)
+        private Componente escoger_vertice(IDictionary P,Componente v)
         {
             double num = random.NextDouble();
+            /*Console.WriteLine("Rnd: " + num);*/
             double sum = 0.0;
             foreach(DictionaryEntry e in P)
             {
+                Console.WriteLine("Vertice: " + e.Key.ToString() + " prob " + e.Value);
                 sum += (double)e.Value;
                 if (num <= sum)
                 {
+                    /*Console.WriteLine("Prob: " + e.Value);
+                    Console.WriteLine("Vertice escogido: " + e.Key.ToString());*/
                     if(ubicacion_feromonas == VERTICES_FEROMONAS)
                         return (Componente)e.Key;
                     else

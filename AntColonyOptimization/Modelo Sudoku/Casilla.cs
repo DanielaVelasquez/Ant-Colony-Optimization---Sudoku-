@@ -50,10 +50,28 @@ namespace AntColonyOptimization.Modelo_Sudoku
         {
             Sudoku sudoku = (Sudoku) s;
             int n = sudoku.get_n();
-            if (!sudoku.puede_ubicar(fila, col, valor))
-                return 1;
+            int[,] tablero = sudoku.get_tablero();
+
+            atractivo = 0;
+            int repetidos = sudoku.contar_repetidos_fila(fila,valor) + sudoku.contar_repetidos_col(col,valor) + sudoku.contar_repetidos_region(fila,col,valor);
             //Cantidad de casillas que afecta un sudoku
-            atractivo = (n*n - 1) - sudoku.repetido_fila(fila,valor) + (n*n-1) -  sudoku.repetido_col(col,valor) + ((n*n)-((n-1)*(n-1))) - sudoku.repetido_cuadro(fila,col,valor);
+            int total = (n * n - 1) + (n * n - 1) + ((n * n) - ((n - 1) * (n - 1)));
+
+            //Si en el tablero dicha casilla está vacia, aumenta su probabilidad
+            if (tablero[fila, col] == Sudoku.VACIO)
+                atractivo += 1 / (double)total;
+            //Si fila, columna o region de la casilla tiene números repetidos
+            if(repetidos>0)
+            {
+                List<int> lista_repetidos = sudoku.listar_numeros_repetidos_en(fila, col);
+                //Si uno de los números repetidos NO es el valor de la casilla, su deseabilidad aumenta
+                if (!lista_repetidos.Contains(valor))
+                    atractivo += 1 / (double)(total - repetidos);
+            }
+            
+            
+            
+            atractivo += 1/(double)(repetidos + 1);
             return atractivo;
         }
 
@@ -72,6 +90,9 @@ namespace AntColonyOptimization.Modelo_Sudoku
             Casilla c = (Casilla)obj;
             return c.get_fila() == fila && c.get_valor() == valor && c.get_col() == col;
         }
-
+        public override string ToString()
+        {
+            return "Fila: " + fila + " Col: " + col + " Valor: " + valor;
+        }
     }
 }

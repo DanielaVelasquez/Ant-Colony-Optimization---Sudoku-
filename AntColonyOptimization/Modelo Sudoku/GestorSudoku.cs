@@ -17,11 +17,11 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// <summary>
         /// Influencia sobre nivel de feromonas
         /// </summary>
-        private const double ALFA = 1;
+        private const double ALFA = 0.3;
         /// <summary>
         /// Influencia atractivo movimiento
         /// </summary>
-        private const double BETA = 0;
+        private const double BETA = 1;
         /// <summary>
         /// Coeficiente evaporacion feromonas
         /// </summary>
@@ -69,7 +69,8 @@ namespace AntColonyOptimization.Modelo_Sudoku
         }
         public Boolean completo(Solucion solucion)
         {
-            return ((Sudoku)solucion).completo();
+            return ((Sudoku)solucion).funcion_costo() == 0;
+            //return ((Sudoku)solucion).completo();
 
         }
         public  List<Componente> configurar_vecinos(List<Componente> N, Hormiga k)
@@ -184,7 +185,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
             }
             sudoku.set_grafica(solucion);
 
-            return (Sudoku)colonia.optimizacion_colonia_hormigas(PORCENTAJE_HORMIGAS,semilla, FEROMONAS_INICIAL, ColoniaHormigas.ARISTAS_FEROMONAS, ColoniaHormigas.MINIMIZAR, this, grafica, N, ALFA, BETA, RHO);
+            return (Sudoku)colonia.optimizacion_colonia_hormigas(PORCENTAJE_HORMIGAS,semilla, FEROMONAS_INICIAL, ColoniaHormigas.VERTICES_FEROMONAS, ColoniaHormigas.MINIMIZAR, this, grafica, N, ALFA, BETA, RHO);
 
         }
         

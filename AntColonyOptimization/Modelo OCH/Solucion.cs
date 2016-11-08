@@ -68,7 +68,7 @@ namespace AntColonyOptimization.Modelo_OCH
             {
                 componente_actual.crear_transicion_con(copia);
             }
-
+            Console.WriteLine(copia.ToString());
             grafica.adicionar_vertice(copia);
             componente_actual = copia;
             vertice_actualizado();

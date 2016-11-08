@@ -40,7 +40,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         }
         public override double funcion_costo()
         {
-            return repetidos_filas() + repetidos_columnas() + repetidos_cuadros() + casillas_vacias() * PENALIZACION_VACIOS;
+            return repetidos_filas() + repetidos_columnas() + repetidos_cuadros() + (casillas_vacias() * PENALIZACION_VACIOS) + Math.Abs((n*n*n*n)-grafica.get_vertices().Count);
         }
         /// <summary>
         /// Cuenta la cantidad de casillas vacias
@@ -245,7 +245,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// <param name="fila">fila tablero en la que se busca</param>
         /// <param name="num">número que se busca</param>
         /// <returns>Cantidad de veces que el número se repite en la fila</returns>
-        public int repetido_fila(int fila, int num)
+        public int contar_repetidos_fila(int fila, int num)
         {
             int cont = 0;
             for (int j = 0; j < n * n; j++)
@@ -261,7 +261,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// <param name="col">columna tablero en la que se busca</param>
         /// <param name="num">número que se busca</param>
         /// <returns>Cantidad de veces que el número se repite en la columna</returns>
-        public int repetido_col(int col,int num)
+        public int contar_repetidos_col(int col,int num)
         {
             int cont = 0;
             for (int i = 0; i < n * n; i++)
@@ -278,7 +278,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// <param name="col">columna donde está ubicado el número</param>
         /// <param name="num">número está buscando</param>
         /// <returns></returns>
-        public int repetido_cuadro(int fila,int col,int num)
+        public int contar_repetidos_region(int fila,int col,int num)
         {
             int f = obtener_cuadrante(fila);
             int c = obtener_cuadrante(col);
@@ -309,8 +309,94 @@ namespace AntColonyOptimization.Modelo_Sudoku
             }
             return true;
         }
-        
+        /// <summary>
+        /// Crea una lista con los números repetidos en un fila, col y región
+        /// </summary>
+        /// <param name="fila">fila de la casilla que se desea ver</param>
+        /// <param name="col">columna de la casilla que se desea ver</param>
+        /// <returns>Lista con los números que se repiten en una fila, columna o región</returns>
+        public List<int> listar_numeros_repetidos_en(int fila, int col)
+        {
+            List<int> lista = new List<int>();
+            adicionar_sin_repetir(lista, listar_repetidos_region(fila,col));
+            adicionar_sin_repetir(lista, listar_repetidos_col(col));
+            adicionar_sin_repetir(lista, listar_repetidos_fila(fila));
+            return lista;
+        }
+        private void adicionar_sin_repetir(List<int> lista, List<int> adicionar)
+        {
+            foreach(int v in adicionar)
+            {
+                if (!lista.Contains(v))
+                    lista.Add(v);
+            }
+        }
+        /// <summary>
+        /// Crea una lista con los números repetidos en una region
+        /// </summary>
+        /// <param name="fila">fila de la casilla que se desea ver</param>
+        /// <param name="col">columna de la casilla que se desea ver</param>
+        /// <returns>Lista con los números que se repiten en una región</returns>
+        private List<int> listar_repetidos_region(int fila, int col)
+        {
+            List<int> repetidos = new List<int>();
+            int f = obtener_cuadrante(fila);
+            int c = obtener_cuadrante(col);
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    for(int i_1 = i + 1; i_1 < n; i_1++)
+                    {
+                       for (int j_1 = 0; j_1 < n; j_1++)
+                       {
+                           if(tablero[i+f,j+c]!= VACIO && tablero[i_1+f, j_1+f]!= VACIO && tablero[i+f,j+c] == tablero[i_1+f, j_1+f] && !repetidos.Contains(tablero[i_1+f, j_1+f]))
+                           {
+                               repetidos.Add(tablero[i + f, j + c]);
+                           }
+                       }
+                    }
+                }
+            }
+            return repetidos;
 
+        }
+        /// <summary>
+        /// Crea una lista con los números repetidos en una columna
+        /// </summary>
+        /// <param name="col">col de la casilla que se desea ver</param>
+        /// <returns>Lista con los números que se repiten en una columna</returns>
+        private List<int> listar_repetidos_col(int col)
+        {
+            List<int> repetidos = new List<int>();
+            for (int i = 0; i < (n * n) - 1; i++)
+            {
+                for (int j = i; j < n * n; j++)
+                {
+                    if (tablero[i, col]  != VACIO && tablero[j, col] != VACIO && tablero[i, col] == tablero[j, col] && !repetidos.Contains(tablero[i, col]))
+                        repetidos.Add(tablero[i, col]);
+                }
+            }
+            return repetidos;
+        }
+        /// <summary>
+        /// rea una lista con los números repetidos en un fila
+        /// </summary>
+        /// <param name="fila">fila de la casilla que se desea ver</param>
+        /// <returns>Lista con los números que se repiten en una fila</returns>
+        private List<int> listar_repetidos_fila(int fila)
+        {
+            List<int> repetidos = new List<int>();
+            for(int i = 0; i<  (n*n) - 1;i++)
+            {
+                for(int j = i; j< n*n;j++)
+                {
+                    if (tablero[fila, i] != VACIO && tablero[fila, j] != VACIO && tablero[fila, i] == tablero[fila, j] && !repetidos.Contains(tablero[fila, i]))
+                        repetidos.Add(tablero[fila, i]);
+                }
+            }
+            return repetidos;
+        }
         public int get_n()
         {
             return n;
@@ -344,13 +430,10 @@ namespace AntColonyOptimization.Modelo_Sudoku
             }
             return cad;
         }
-
-
         public override Object Clone()
         {
             return Clonar<Sudoku>.Clonacion(this);
         }
-
         public override bool Equals(object obj)
         {
             Sudoku s = (Sudoku)obj;
