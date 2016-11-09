@@ -51,27 +51,35 @@ namespace AntColonyOptimization.Modelo_Sudoku
             Sudoku sudoku = (Sudoku) s;
             int n = sudoku.get_n();
             int[,] tablero = sudoku.get_tablero();
-
+            if (fila == 6 && col == 5 && valor == 6)
+                Console.WriteLine("k");
             atractivo = 0;
-            int repetidos = sudoku.contar_repetidos_fila(fila,valor) + sudoku.contar_repetidos_col(col,valor) + sudoku.contar_repetidos_region(fila,col,valor);
+            //Cantidad de veces está presente el valor de la casilla en su fila, columna y región 
+            int repetido_numero = sudoku.contar_repetidos_fila(fila,valor) + sudoku.contar_repetidos_col(col,valor) + sudoku.contar_repetidos_region(fila,col,valor);
             //Cantidad de casillas que afecta un sudoku
             int total = (n * n - 1) + (n * n - 1) + ((n * n) - ((n - 1) * (n - 1)));
+            
+            //Si el valor de la casilla es válido aumenta su deseabilidad
+            if (sudoku.puede_ubicar(fila, col, valor))
+                atractivo += 1 - ((double)1 /( (double)total - repetido_numero + 1));
 
-            //Si en el tablero dicha casilla está vacia, aumenta su probabilidad
-            if (tablero[fila, col] == Sudoku.VACIO)
-                atractivo += 1 / (double)total;
-            //Si fila, columna o region de la casilla tiene números repetidos
-            if(repetidos>0)
+            //Cantidad de números repetidos que hay en la misma fila, columna y región de la casilla
+            List<int> lista_repetidos = sudoku.listar_numeros_repetidos_en(fila, col);
+            int repetidos = lista_repetidos.Count;
+
+            //Si hay números repetidos
+            if (repetidos > 0)
             {
-                List<int> lista_repetidos = sudoku.listar_numeros_repetidos_en(fila, col);
-                //Si uno de los números repetidos NO es el valor de la casilla, su deseabilidad aumenta
+                //Si entre los números repetidos NO es el valor de la casilla, su deseabilidad aumenta
                 if (!lista_repetidos.Contains(valor))
-                    atractivo += 1 / (double)(total - repetidos);
+                {
+                    atractivo += (double) 1 / ((double)repetido_numero + 1);
+                }
+                    
+               
             }
             
-            
-            
-            atractivo += 1/(double)(repetidos + 1);
+            atractivo += (double) 1 / ((double)repetido_numero + 1);
             return atractivo;
         }
 

@@ -253,6 +253,8 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 if (tablero[fila, j] == num)
                     cont++;
             }
+            /*if (cont >= 1)
+                cont -= 1;*/
             return cont;
         }
         /// <summary>
@@ -269,6 +271,8 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 if (tablero[i, col] == num)
                     cont++;
             }
+            /*if (cont >= 1)
+                cont -= 1;*/
             return cont;
         }
         /// <summary>
@@ -291,6 +295,8 @@ namespace AntColonyOptimization.Modelo_Sudoku
                         cont++;
                 }
             }
+            /*if (cont >= 1)
+                cont -= 1;*/
             return cont;
         }
         /// <summary>
@@ -348,7 +354,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 {
                     for(int i_1 = i + 1; i_1 < n; i_1++)
                     {
-                       for (int j_1 = 0; j_1 < n; j_1++)
+                       for (int j_1 = j; j_1 < n; j_1++)
                        {
                            if(tablero[i+f,j+c]!= VACIO && tablero[i_1+f, j_1+f]!= VACIO && tablero[i+f,j+c] == tablero[i_1+f, j_1+f] && !repetidos.Contains(tablero[i_1+f, j_1+f]))
                            {
@@ -371,7 +377,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
             List<int> repetidos = new List<int>();
             for (int i = 0; i < (n * n) - 1; i++)
             {
-                for (int j = i; j < n * n; j++)
+                for (int j = i+1; j < n * n; j++)
                 {
                     if (tablero[i, col]  != VACIO && tablero[j, col] != VACIO && tablero[i, col] == tablero[j, col] && !repetidos.Contains(tablero[i, col]))
                         repetidos.Add(tablero[i, col]);
@@ -389,7 +395,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
             List<int> repetidos = new List<int>();
             for(int i = 0; i<  (n*n) - 1;i++)
             {
-                for(int j = i; j< n*n;j++)
+                for(int j = i+1; j< n*n;j++)
                 {
                     if (tablero[fila, i] != VACIO && tablero[fila, j] != VACIO && tablero[fila, i] == tablero[fila, j] && !repetidos.Contains(tablero[fila, i]))
                         repetidos.Add(tablero[fila, i]);

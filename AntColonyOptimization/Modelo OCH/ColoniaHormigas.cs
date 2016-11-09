@@ -304,6 +304,8 @@ namespace AntColonyOptimization.Modelo_OCH
             {
                 Console.WriteLine("Iteracion: " + cont);
                 Console.WriteLine(k.getSolucion().ToString());
+                if (cont == 6)
+                    Console.WriteLine("");
                 Componente actual_k = k.getSolucion().get_vertice_actual();
                 Componente x = g.buscar(actual_k);
                 //Vecinos del vertice actual
@@ -318,10 +320,11 @@ namespace AntColonyOptimization.Modelo_OCH
                 //Probabilidad de cada vertice
                 
                 double sum = 0;
-                IDictionary P = null;
+                IDictionary P,P1;
                 if(ubicacion_feromonas == VERTICES_FEROMONAS)
                 {
                     P = new Dictionary<Componente, double>();
+                    P1 = new Dictionary<Componente, double>();
                     foreach(Componente y in N_v)
                     {
                         double atractivo = y.calcular_atractivo(k.getSolucion());
@@ -333,6 +336,7 @@ namespace AntColonyOptimization.Modelo_OCH
                 else
                 {
                     P = new Dictionary<Transicion, double>();
+                    P1 = new Dictionary<Transicion, double>();
                     List<Transicion> aristas = x.get_arista_conecta(N_v);
                     foreach(Transicion y in aristas)
                     {
@@ -341,13 +345,13 @@ namespace AntColonyOptimization.Modelo_OCH
                         P.Add(y, P_xy);
                     }
                 }
-                Hashtable P1 = new Hashtable();
+               
                 
-                foreach (DictionaryEntry e in P)
-                {
-                    double P_xy = (double)e.Value / sum;
-                    P1.Add(e.Key, P_xy);
-                }
+                    foreach (DictionaryEntry e in P)
+                    {
+                        double P_xy = (double)e.Value / sum;
+                        P1.Add(e.Key, P_xy);
+                    }
                 P = P1;
                 Componente siguiente = escoger_vertice(P,x);
                 k.getSolucion().cambiar_vertice_actual(siguiente);
@@ -363,16 +367,15 @@ namespace AntColonyOptimization.Modelo_OCH
         private Componente escoger_vertice(IDictionary P,Componente v)
         {
             double num = random.NextDouble();
-            /*Console.WriteLine("Rnd: " + num);*/
             double sum = 0.0;
             foreach(DictionaryEntry e in P)
             {
-                Console.WriteLine("Vertice: " + e.Key.ToString() + " prob " + e.Value);
                 sum += (double)e.Value;
+                //Console.WriteLine("VALUE " + e.Value);
                 if (num <= sum)
                 {
-                    /*Console.WriteLine("Prob: " + e.Value);
-                    Console.WriteLine("Vertice escogido: " + e.Key.ToString());*/
+                    //Console.WriteLine("Prob: " + e.Value);
+                    //Console.WriteLine("Vertice escogido: " + e.Key.ToString());
                     if(ubicacion_feromonas == VERTICES_FEROMONAS)
                         return (Componente)e.Key;
                     else
