@@ -98,6 +98,10 @@ namespace AntColonyOptimization.Modelo_OCH
         /// Tiempo tomo a la simulación encontrar una solución
         /// </summary>
         private TimeSpan tiempo;
+        /// <summary>
+        /// Máximo número de iteraciones que puede tomar una hormiga en realizar su solución
+        /// </summary>
+        private int max_iteraciones_hormiga;
 
         /*-----------------------------------Métodos-----------------------------------*/
         public ColoniaHormigas()
@@ -105,19 +109,24 @@ namespace AntColonyOptimization.Modelo_OCH
             
         }
         /// <summary>
-        /// Busca la mejor solución para el grupo de vértices
+        /// Busca una solución sobre la gráfica 
         /// </summary>
-        /// <param name=param name="tipo_op">indica si las feromonas estan en las aristas o vertices, usar constantes de la presenta clase</param>
+        /// <param name="iteraciones_hormiga">Cantidad máxima de iteraciones para que una hormiga construya una solución</param>
+        /// <param name="mismo_camino">Porcentaje mínimo de hormigas que se espera esten en el mismo camino</param>
+        /// <param name="nSemilla">Valor inicial para el generador de numeros aleatorios    </param>
+        /// <param name="inicial_feromonas">Cantidad inicia de feromonas en vertices/aristas</param>
+        /// <param name="ubicacion_feromonas">Ubicación de las feromonas, vertices/aristas</param>
+        /// <param name="tipo_op">Tipo optimizacion maximizar/minimizar</param>
         /// <param name="g">Gestor del problema</param>
-        /// <param name="vertices">gráfica busqueda  de las hormigas</param>
-        /// <param name="n">cantidad de hormigas</param>
+        /// <param name="grafica">Gráfica del problema</param>
+        /// <param name="n">Cantidad de hormigas</param>
         /// <param name="alfa">Influencia sobre nivel de feromonas</param>
         /// <param name="beta">Influencia atractivo movimiento</param>
         /// <param name="rho">Coeficiente evaporacion feromonas</param>
         /// <returns>Mejor solución encontrada</returns>
-        public Solucion optimizacion_colonia_hormigas(double mismo_camino,int nSemilla,double inicial_feromonas, int ubicacion_feromonas, int tipo_op,GestorProblema g,Grafica grafica, int n,double alfa, double beta,double rho)
+        public Solucion optimizacion_colonia_hormigas(int iteraciones_hormiga,double mismo_camino,int nSemilla,double inicial_feromonas, int ubicacion_feromonas, int tipo_op,GestorProblema g,Grafica grafica, int n,double alfa, double beta,double rho)
         {
-            DateTime inicio = DateTime.Now;
+            this.max_iteraciones_hormiga = iteraciones_hormiga;
             semilla = nSemilla;
             this.mismo_camino = mismo_camino;
             random = new Random(semilla);
@@ -131,29 +140,29 @@ namespace AntColonyOptimization.Modelo_OCH
             this.beta = beta;
             this.rho = rho;
 
+            DateTime inicio = DateTime.Now;
             crear_hormigas();
             iniciar_feromonas();
             int i = 0;
             do
             {
                 gestor.ubicar_posicion_inicial(random,hormigas, grafica);
-                foreach (Hormiga k in hormigas)
+                Boolean cond = false;
+                for (int cont = 0; cont < hormigas.Count && !cond; cont++ )
                 {
+                    Hormiga k = hormigas[cont];
                     construir_solucion(k);
-                    Console.WriteLine(k.ToString());
+                    cond = gestor.condicion_parada_hormigas(k.getSolucion());
+                    //Console.WriteLine(k.ToString());
                 }
                     
                 seleccionar_mejor_hormiga();
                 actualizar_feromonas();
-                i++;/*
-                Console.WriteLine(mejor.ToString());
-                Console.WriteLine(mejor.funcion_costo());*/
-                Console.WriteLine("iteracion " + i);
-                Console.WriteLine("Porentjae: " + hormigas_mismo_camino());
-                
+                i++;
                     
-            } while (hormigas_mismo_camino() < mismo_camino);
+            } while (hormigas_mismo_camino() < mismo_camino && !gestor.cumple_condicion_parada(mejor));
             DateTime final = DateTime.Now;
+            
             tiempo = final - inicio;
             return mejor;
         }
@@ -299,14 +308,10 @@ namespace AntColonyOptimization.Modelo_OCH
             Grafica g = grafica;
             //Verifica aún hay vecinos para explorar desde la solución actual
             int cont = 0;
-            int iteraciones = 200;
             Boolean abortado = false;
-            while(!gestor.completo(k.getSolucion()) && !abortado)
+            while(!gestor.completo(k.getSolucion()) && !abortado && cont < max_iteraciones_hormiga)
             {
-                //Console.WriteLine("Iteracion: " + cont + " Coliciones " + k.getSolucion().funcion_costo());
-                //Console.WriteLine(k.getSolucion().ToString());
-                if (cont == 16634)
-                    Console.WriteLine("");
+                //Console.WriteLine("" + k.getSolucion().ToString());
                 Componente actual_k = k.getSolucion().get_vertice_actual();
                 Componente x = g.buscar(actual_k);
                 //Vecinos del vertice actual
@@ -348,12 +353,11 @@ namespace AntColonyOptimization.Modelo_OCH
                 }
                
                 
-                    foreach (DictionaryEntry e in P)
-                    {
-                        double P_xy = (double)e.Value / sum;
-                        //Console.WriteLine(e.Key.ToString()+" "+P_xy);
-                        P1.Add(e.Key, P_xy);
-                    }
+                foreach (DictionaryEntry e in P)
+                {
+                    double P_xy = (double)e.Value / sum;
+                    P1.Add(e.Key, P_xy);
+                }
                 P = P1;
                 Componente siguiente = escoger_vertice(P,x);
                 k.getSolucion().cambiar_vertice_actual(siguiente);
@@ -391,6 +395,10 @@ namespace AntColonyOptimization.Modelo_OCH
             }
             return null;
         }
-
+        
+        public TimeSpan get_tiempo()
+        {
+            return tiempo;
+        }
     }
 }

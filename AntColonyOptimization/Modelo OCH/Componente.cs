@@ -27,7 +27,6 @@ namespace AntColonyOptimization.Modelo_OCH
         /// </summary>
         protected double atractivo;
         /*-----------------------------------Métodos-----------------------------------*/
-
         public Componente()
         {
             feromonas = 0;
@@ -183,8 +182,6 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <param name="s">solución sobre la cual se quiere ver el atractivo</param>
         /// <returns></returns>
         public abstract double calcular_atractivo(Solucion s);
-
         public abstract Object Clone();
-
     }
 }

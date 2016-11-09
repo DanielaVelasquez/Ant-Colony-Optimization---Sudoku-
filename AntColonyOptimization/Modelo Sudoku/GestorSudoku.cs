@@ -10,10 +10,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
     public class GestorSudoku : GestorProblema
     {
         /*-----------------------------------Constantes-----------------------------------*/
-        /// <summary>
-        /// Cantidad hormigas en la colonia
-        /// </summary>
-        private const int N = 50;
+        
         /// <summary>
         /// Influencia sobre nivel de feromonas
         /// </summary>
@@ -46,15 +43,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         private ColoniaHormigas colonia;
 
         /*-----------------------------------Métodos-----------------------------------*/
-        public void set_sudoku(Sudoku s)
-        {
-            this.sudoku = s;
-            crear_grafica_solucion(s);
-        }
-        private void crear_grafica_solucion(Sudoku s)
-        {
-
-        }
+       
         public void ubicar_posicion_inicial(Random r, List<Hormiga> hormigas, Grafica grafica)
         {
             List<Componente> componentes = grafica.get_vertices();
@@ -105,13 +94,23 @@ namespace AntColonyOptimization.Modelo_Sudoku
             }
             return N;
         }
+        public Boolean cumple_condicion_parada(Solucion mejor)
+        {
+            Sudoku s = (Sudoku)mejor;
+            return s.coliciones() == 0;
+        }
+        public Boolean condicion_parada_hormigas(Solucion s_k)
+        {
+            Sudoku s = (Sudoku)s_k;
+            return s.coliciones() == 0;
+        }
 
         /// <summary>
         /// Crea una gráfica a partir de un sudoku inicial
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
-        public Grafica crear_grafica(Sudoku s)
+        private Grafica crear_grafica(Sudoku s)
         {
             List<Componente> componentes = new List<Componente>();
             int[,] tablero = s.get_tablero();
@@ -152,7 +151,6 @@ namespace AntColonyOptimization.Modelo_Sudoku
             g.set_aristas(transicion);
             return g;
         }
-        
         public Sudoku resolver(Sudoku s,int semilla)
         {
             sudoku = s;
@@ -177,7 +175,11 @@ namespace AntColonyOptimization.Modelo_Sudoku
             }
             sudoku.set_grafica(solucion);
 
-            return (Sudoku)colonia.optimizacion_colonia_hormigas(PORCENTAJE_HORMIGAS,semilla, FEROMONAS_INICIAL, ColoniaHormigas.VERTICES_FEROMONAS, ColoniaHormigas.MINIMIZAR, this, grafica, N, ALFA, BETA, RHO);
+            //Cantidad hormigas depende del tamaño del tablero
+            int N = (n * n);
+            //Cantidad máxima de iteraciones para 
+            int max_iteraciones = (n * n) * 1000;
+            return (Sudoku)colonia.optimizacion_colonia_hormigas(max_iteraciones,PORCENTAJE_HORMIGAS,semilla, FEROMONAS_INICIAL, ColoniaHormigas.VERTICES_FEROMONAS, ColoniaHormigas.MINIMIZAR, this, grafica, N, ALFA, BETA, RHO);
 
         }
         

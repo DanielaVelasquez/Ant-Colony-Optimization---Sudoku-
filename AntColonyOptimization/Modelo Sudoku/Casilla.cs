@@ -100,8 +100,8 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 atractivo += MUY_BUENO;*/
 
             //Si hace falta en todos
-            if (faltantes_filas.Contains(valor) && faltantes_cols.Contains(valor) && faltantes_region.Contains(valor))
-                atractivo += MUY_BUENO;
+            /*if (faltantes_filas.Contains(valor) && faltantes_cols.Contains(valor) && faltantes_region.Contains(valor))
+                atractivo += MUY_BUENO;*/
 
            
            

@@ -33,6 +33,7 @@ namespace AntColonyOptimization.Modelo_OCH
         {
             solucion = s;
         }
+
         /// <summary>
         /// Determina la cantidad de feromonas que aplica la hormiga k, con base en la función de costo de su solución
         /// </summary>
@@ -50,7 +51,7 @@ namespace AntColonyOptimization.Modelo_OCH
         }
         public override string ToString()
         {
-            return "Id: " + id + "\nSolucion: " + solucion.ToString();
+            return "Id: " + id + "\nSolucion:\n" + solucion.ToString();
         }
 
     }

@@ -28,5 +28,18 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <param name="k">hormiga está construyendo una solucion sobre la gráfica</param>
         /// <rereturns>vecinos acomodados</rereturns>
         List<Componente> configurar_vecinos(List<Componente> N, Hormiga k);
+        /// <summary>
+        /// Determina si se cumplió la condición de parada implícita del problema
+        /// </summary>
+        /// <param name="mejor">mejor solucion encontrada</param>
+        /// <returns>verdadero si la condición de parada ya se cumplió, falso en caso contrario</returns>
+        Boolean cumple_condicion_parada(Solucion mejor);
+        /// <summary>
+        /// Determina si la condición de parada durante la creación del recorrido de
+        /// las hormigas se cumplió
+        /// </summary>
+        /// <param name="s_k">solución de la hormiga k</param>
+        /// <returns>verdadero si cumplió la condicion de parada, falso en caso contrario</returns>
+        Boolean condicion_parada_hormigas(Solucion s_k);
     }
 }
