@@ -20,7 +20,7 @@ namespace AntColonyOptimization.Vista
         /// <summary>
         /// Casillas del tablero del sudoku
         /// </summary>
-        private TextBox[,] casillas;
+        private RichTextBox[,] casillas;
         /// <summary>
         /// Tamaño tablero
         /// </summary>
@@ -37,7 +37,7 @@ namespace AntColonyOptimization.Vista
             crear_tablero();
             disponible_conjunto(false);
             controlador = SudokuOCH.get_instance();
-            resolver();
+            //resolver();
         }
         private void resolver()
         {
@@ -55,11 +55,10 @@ namespace AntColonyOptimization.Vista
             }
             
         }
-        private Sudoku crear_sudoku(String cad)
+        private Sudoku crear_sudoku(String cad,int n)
         {
             String[] sep = cad.Split(',');
             int cont = 0;
-            int n = 3;
             Sudoku s = new Sudoku(n);
             for(int i = 0; i<n*n;i++)
             {
@@ -74,14 +73,15 @@ namespace AntColonyOptimization.Vista
         private void crear_tablero()
         {
             int ancho = (panel_tablero.Size.Width/(n*n));
-            casillas = new TextBox[n*n, n*n];
+            casillas = new RichTextBox[n*n, n*n];
             for (int i = 0; i < n *n ; i++ )
             {
                 for(int j = 0; j< n*n ;j++)
                 {
-                    TextBox casilla = new TextBox();
+                    RichTextBox casilla = new RichTextBox();
+                    casilla.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                     casilla.Location = new System.Drawing.Point(i*ancho,j*ancho);
-                    casilla.Size = new System.Drawing.Size(ancho - (n *n), ancho*n );
+                    casilla.Size = new System.Drawing.Size(ancho,ancho );
                     casilla.Name = i+""+separador+j;
                     casilla.KeyUp += new System.Windows.Forms.KeyEventHandler(this.casilla_selecciona);
                     casillas[i, j] = casilla;
@@ -100,7 +100,7 @@ namespace AntColonyOptimization.Vista
         }
         private void casilla_selecciona(object sender, EventArgs e)
         {
-            TextBox casilla = (TextBox)sender;
+            RichTextBox casilla = (RichTextBox)sender;
             String[] posiciones = casilla.Name.Split(separador);
             int i = int.Parse(posiciones[0]);
             int j = int.Parse(posiciones[1]);

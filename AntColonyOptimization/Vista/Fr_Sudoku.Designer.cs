@@ -240,7 +240,7 @@
             this.panel_tablero.Size = new System.Drawing.Size(500, 500);
             this.panel_tablero.TabIndex = 9;
             // 
-            // Sudoku
+            // Fr_Sudoku
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -253,7 +253,7 @@
             this.Controls.Add(this.btn_cambiar);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.lb_tamanio_tablero);
-            this.Name = "Sudoku";
+            this.Name = "Fr_Sudoku";
             this.Text = "Sudoku";
             this.Load += new System.EventHandler(this.Sudoku_Load);
             this.groupBox1.ResumeLayout(false);
