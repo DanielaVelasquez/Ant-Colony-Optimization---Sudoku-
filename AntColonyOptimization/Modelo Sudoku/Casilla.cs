@@ -57,7 +57,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
             int[,] tablero = sudoku.get_tablero();
 
             //Si la casilla en el sudoku está vacia
-            if (tablero[fila, col] == Sudoku.VACIO)
+            /*if (tablero[fila, col] == Sudoku.VACIO)
                 atractivo += MUY_BUENO;
 
             //Si el número que está en el tablero NO es el de la casilla
@@ -69,16 +69,21 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 atractivo += BUENO;
             //Si el valor que hay actualmente es incorrecto
             if (tablero[fila, col] != Sudoku.VACIO && sudoku.puede_ubicar(fila, col, tablero[fila, col]))
-                atractivo += NORMAL;
+                atractivo += NORMAL;*/
+
             //Si al ubicar el número de la casilla, disminuyen las coliciones
+            if (tablero[fila, col] == valor)
+                return 0;
             int actual = tablero[fila, col];
             int coliciones_a = sudoku.coliciones();
             sudoku.ubicar_numero(fila, col, valor);
             int coliciones_n = sudoku.coliciones();
             sudoku.ubicar_numero(fila, col, actual);
-            if (coliciones_n <= coliciones_a)
+            atractivo = (double)1/(double)(coliciones_n+1);
+            return atractivo;
+            /*if (coliciones_n <= coliciones_a)
                 atractivo += MUY_BUENO;
-
+            /*
             //Si es uno de los números faltantes en la fila
             List<int> faltantes_filas = sudoku.faltantes_fila(fila);
             if (faltantes_filas.Contains(valor))
@@ -137,59 +142,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 return 0.1;
 
             atractivo = atractivo / (NORMAL * 3 + BUENO * 7 + MUY_BUENO * 6);
-            return atractivo; 
-            /*
-            int total = (n * n - 1) + (n * n - 1) + ((n * n) - ((n - 1) * (n - 1)));
-
-            //Cantidad de números repetidos que hay en la misma fila, columna y región de la casilla
-           
-            int repetidos = lista_repetidos.Count;
-
-            //Si hay números repetidos
-            if (repetidos > 0)
-            {
-                //Si entre los números repetidos NO es el valor de la casilla, su deseabilidad aumenta
-                if (!lista_repetidos.Contains(valor))
-                {
-                    atractivo += (double)1 / ((double)repetido_numero + 1);
-                }
-
-
-            }
-            return atractivo;
-
-            /*
-            if (fila == 6 && col == 5 && valor == 6)
-                Console.WriteLine("k");
-            atractivo = 0;
-            //Cantidad de veces está presente el valor de la casilla en su fila, columna y región 
-            int repetido_numero = sudoku.contar_repetidos_fila(fila,valor) + sudoku.contar_repetidos_col(col,valor) + sudoku.contar_repetidos_region(fila,col,valor);
-            //Cantidad de casillas que afecta un sudoku
-            int total = (n * n - 1) + (n * n - 1) + ((n * n) - ((n - 1) * (n - 1)));
-            
-            //Si el valor de la casilla es válido aumenta su deseabilidad
-            if (sudoku.puede_ubicar(fila, col, valor))
-                atractivo += 1 - ((double)1 /( (double)total - repetido_numero + 1));
-
-            //Cantidad de números repetidos que hay en la misma fila, columna y región de la casilla
-            List<int> lista_repetidos = sudoku.listar_numeros_repetidos_en(fila, col);
-            int repetidos = lista_repetidos.Count;
-
-            //Si hay números repetidos
-            if (repetidos > 0)
-            {
-                //Si entre los números repetidos NO es el valor de la casilla, su deseabilidad aumenta
-                if (!lista_repetidos.Contains(valor))
-                {
-                    atractivo += (double) 1 / ((double)repetido_numero + 1);
-                }
-                    
-               
-            }
-            
-            atractivo += (double) 1 / ((double)repetido_numero + 1);
-            return atractivo;
-             * */
+            return atractivo; */
         }
 
         public override Object Clone()
