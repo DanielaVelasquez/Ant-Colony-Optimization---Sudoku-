@@ -1,11 +1,10 @@
-C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\obj\Debug\AntColonyOptimization.Properties.Resources.resources
-C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\obj\Debug\AntColonyOptimization.Vista.Fr_Sudoku.resources
-C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\obj\Debug\AntColonyOptimization.csproj.GenerateResource.Cache
 C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\bin\Debug\AntColonyOptimization.exe.config
 C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\bin\Debug\AntColonyOptimization.exe
 C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\bin\Debug\AntColonyOptimization.pdb
 C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\bin\Debug\Newtonsoft.Json.dll
 C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\bin\Debug\Newtonsoft.Json.xml
-C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\obj\Debug\AntColonyOptimization.csprojResolveAssemblyReference.cache
+C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\obj\Debug\AntColonyOptimization.Properties.Resources.resources
+C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\obj\Debug\AntColonyOptimization.Vista.Fr_Sudoku.resources
+C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\obj\Debug\AntColonyOptimization.csproj.GenerateResource.Cache
 C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\obj\Debug\AntColonyOptimization.exe
 C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\obj\Debug\AntColonyOptimization.pdb

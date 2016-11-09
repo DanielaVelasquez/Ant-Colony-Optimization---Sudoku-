@@ -16,6 +16,7 @@ namespace AntColonyOptimization.Vista
     {
         /*-----------------------------------Constantes-----------------------------------*/
         private static char separador = ',';
+        private const int MAX_CASILLAS_VACIAS = 64;
         /*-----------------------------------Atributos-----------------------------------*/
         /// <summary>
         /// Casillas del tablero del sudoku
@@ -29,10 +30,15 @@ namespace AntColonyOptimization.Vista
         /// Controlador 
         /// </summary>
         private SudokuOCH controlador;
+        /// <summary>
+        /// Sudoku en pantalla
+        /// </summary>
+        private Sudoku sudoku;
         /*-----------------------------------Métodos-----------------------------------*/
         public Fr_Sudoku()
         {
             n = 3;
+            sudoku = new Sudoku(n);
             InitializeComponent();
             crear_tablero();
             disponible_conjunto(false);
@@ -104,8 +110,36 @@ namespace AntColonyOptimization.Vista
             String[] posiciones = casilla.Name.Split(separador);
             int i = int.Parse(posiciones[0]);
             int j = int.Parse(posiciones[1]);
+            try
+            {
+                if (sudoku.casillas_vacias() <= MAX_CASILLAS_VACIAS)
+                    throw new Exception("Máximo número de casillas permitido completado");
+                
+                int num = obtener_numero(casilla.Text);
+                if(num<=0 || num> n*n)
+                {
+                    throw new Exception("Valor ingresado incorrecto, sudoku solo admite número: "+1+"-"+(n*n));
+                }
 
-            Console.WriteLine("casilla " + casilla.Name);
+                sudoku.ubicar_numero_jugando(i, j, num);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                casilla.Text = "";
+            }
+            
+        }
+        private int obtener_numero(String texto)
+        {
+            try
+            {
+                return int.Parse(texto);
+            }
+            catch
+            {
+                throw new Exception("Valor no numérico ingresado");
+            }
         }
         private void ckbox_unitario_CheckedChanged(object sender, EventArgs e)
         {
@@ -125,6 +159,17 @@ namespace AntColonyOptimization.Vista
         {
             disponible_conjunto(ckbox_conjunto.Checked);
             ckbox_unitario.Checked = !ckbox_conjunto.Checked; 
+        }
+
+        private void lb_limpiar_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            for(int i = 0; i< n*n;i++)
+            {
+                for(int j = 0; j< n*n;j++)
+                {
+                    casillas[i, j].Text = "";
+                }
+            }
         }
     }
 }

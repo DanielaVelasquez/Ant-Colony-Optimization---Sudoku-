@@ -161,7 +161,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
             if (puede_ubicar(fila, col, num))
                 tablero[fila, col] = num;
             else
-                throw new Exception("Número " + num + " repetido en fila, columna o cuadrante");
+                throw new Exception("Número " + num + " repetido en fila, columna o región");
         }
         /// <summary>
         /// Ubica un número en el tablero sin revisar si es válido

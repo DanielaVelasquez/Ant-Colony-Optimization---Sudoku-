@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lb_tamanio_tablero = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.btn_cambiar = new System.Windows.Forms.Button();
             this.lb_semilla = new System.Windows.Forms.Label();
             this.txt_semilla = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -48,36 +45,10 @@
             this.btn_simular = new System.Windows.Forms.Button();
             this.btn_graficas = new System.Windows.Forms.Button();
             this.panel_tablero = new System.Windows.Forms.Panel();
+            this.lb_limpiar = new System.Windows.Forms.LinkLabel();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // lb_tamanio_tablero
-            // 
-            this.lb_tamanio_tablero.AutoSize = true;
-            this.lb_tamanio_tablero.Location = new System.Drawing.Point(37, 34);
-            this.lb_tamanio_tablero.Name = "lb_tamanio_tablero";
-            this.lb_tamanio_tablero.Size = new System.Drawing.Size(131, 17);
-            this.lb_tamanio_tablero.TabIndex = 0;
-            this.lb_tamanio_tablero.Text = "Tamaño del tablero";
-            this.lb_tamanio_tablero.Click += new System.EventHandler(this.lb_tamanio_tablero_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(174, 34);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(33, 22);
-            this.textBox1.TabIndex = 1;
-            this.textBox1.Text = "3";
-            // 
-            // btn_cambiar
-            // 
-            this.btn_cambiar.Location = new System.Drawing.Point(223, 33);
-            this.btn_cambiar.Name = "btn_cambiar";
-            this.btn_cambiar.Size = new System.Drawing.Size(75, 23);
-            this.btn_cambiar.TabIndex = 2;
-            this.btn_cambiar.Text = "Cambiar";
-            this.btn_cambiar.UseVisualStyleBackColor = true;
             // 
             // lb_semilla
             // 
@@ -100,7 +71,7 @@
             this.groupBox1.Controls.Add(this.ckbox_unitario);
             this.groupBox1.Controls.Add(this.txt_semilla);
             this.groupBox1.Controls.Add(this.lb_semilla);
-            this.groupBox1.Location = new System.Drawing.Point(32, 83);
+            this.groupBox1.Location = new System.Drawing.Point(32, 37);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(265, 74);
             this.groupBox1.TabIndex = 5;
@@ -131,7 +102,7 @@
             this.groupBox2.Controls.Add(this.txt_inicio);
             this.groupBox2.Controls.Add(this.txt_cant_semillas);
             this.groupBox2.Controls.Add(this.lb_cant_semillas);
-            this.groupBox2.Location = new System.Drawing.Point(32, 176);
+            this.groupBox2.Location = new System.Drawing.Point(32, 131);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(265, 395);
             this.groupBox2.TabIndex = 6;
@@ -217,7 +188,7 @@
             // 
             // btn_simular
             // 
-            this.btn_simular.Location = new System.Drawing.Point(762, 556);
+            this.btn_simular.Location = new System.Drawing.Point(762, 571);
             this.btn_simular.Name = "btn_simular";
             this.btn_simular.Size = new System.Drawing.Size(73, 40);
             this.btn_simular.TabIndex = 7;
@@ -226,7 +197,7 @@
             // 
             // btn_graficas
             // 
-            this.btn_graficas.Location = new System.Drawing.Point(672, 556);
+            this.btn_graficas.Location = new System.Drawing.Point(672, 571);
             this.btn_graficas.Name = "btn_graficas";
             this.btn_graficas.Size = new System.Drawing.Size(73, 40);
             this.btn_graficas.TabIndex = 8;
@@ -240,19 +211,28 @@
             this.panel_tablero.Size = new System.Drawing.Size(500, 500);
             this.panel_tablero.TabIndex = 9;
             // 
+            // lb_limpiar
+            // 
+            this.lb_limpiar.AutoSize = true;
+            this.lb_limpiar.Location = new System.Drawing.Point(763, 540);
+            this.lb_limpiar.Name = "lb_limpiar";
+            this.lb_limpiar.Size = new System.Drawing.Size(54, 17);
+            this.lb_limpiar.TabIndex = 10;
+            this.lb_limpiar.TabStop = true;
+            this.lb_limpiar.Text = "Limpiar";
+            this.lb_limpiar.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lb_limpiar_LinkClicked);
+            // 
             // Fr_Sudoku
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(860, 623);
+            this.Controls.Add(this.lb_limpiar);
             this.Controls.Add(this.panel_tablero);
             this.Controls.Add(this.btn_graficas);
             this.Controls.Add(this.btn_simular);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.btn_cambiar);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.lb_tamanio_tablero);
             this.Name = "Fr_Sudoku";
             this.Text = "Sudoku";
             this.Load += new System.EventHandler(this.Sudoku_Load);
@@ -267,9 +247,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lb_tamanio_tablero;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button btn_cambiar;
         private System.Windows.Forms.Label lb_semilla;
         private System.Windows.Forms.TextBox txt_semilla;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -287,5 +264,6 @@
         private System.Windows.Forms.Button btn_simular;
         private System.Windows.Forms.Button btn_graficas;
         private System.Windows.Forms.Panel panel_tablero;
+        private System.Windows.Forms.LinkLabel lb_limpiar;
     }
 }
