@@ -77,39 +77,31 @@ namespace AntColonyOptimization.Modelo_Sudoku
         {
             List<Componente> vecinos = new List<Componente>();
             List<Componente> vertices_solucion = k.getSolucion().get_grafica().get_vertices();
+            
+            Sudoku sudoku = (Sudoku)k.getSolucion();
+            int n = sudoku.get_n();
+            int[,] tablero = sudoku.get_tablero();
 
-            //Sudoku s = k.getSolucion(
-            foreach(Casilla v in vertices_solucion)
+            int coliciones_a = sudoku.coliciones();
+            int i = 0;
+            while(i< N.Count)
             {
-                int cont = 0;
-                while(cont < N.Count)
+                Casilla c = (Casilla)N[i];
+                if(tablero[c.get_fila(), c.get_col()]!= c.get_valor())
                 {
-                    Casilla c = (Casilla) N[cont];
-                    /*if(c.get_fila()==0 && c.get_col()==0 && c.get_valor() == 5)
-                    {
-                        Console.WriteLine("llegue");
-                    }*/
-                    //Si la fila y columna ya están ocupadas
-                    if (v.get_fila() == c.get_fila() && v.get_col() == c.get_col())
-                        N.Remove(c);
-                    //Si la fila o columna ya tiene el número 
-                    else if((v.get_fila() == c.get_fila() || v.get_col() == c.get_col())&& c.get_valor() == v.get_valor())
-                        N.Remove(c);
-                    //Si estan en el mismo cuadrante y el número ya está en el cuadrante
-                    else if(sudoku.obtener_cuadrante(v.get_fila())==sudoku.obtener_cuadrante(c.get_fila()) && sudoku.obtener_cuadrante(v.get_col())==sudoku.obtener_cuadrante(c.get_col()) && c.get_valor() == v.get_valor())
-                        N.Remove(c);
+                    int actual = tablero[c.get_fila(), c.get_col()];
+                    sudoku.ubicar_numero(c.get_fila(), c.get_col(), c.get_valor());
+                    int coliciones_n = sudoku.coliciones();
+                    sudoku.ubicar_numero(c.get_fila(), c.get_col(), actual);
+                    if (coliciones_n <= coliciones_a)
+                        i++;
                     else
-                        cont++;
+                        N.Remove(c);
                 }
-                /*
-                foreach(Casilla c in N)
-                {
-                    
-                    if (!(v.get_fila() == c.get_fila() && v.get_col() == c.get_col()) && !vecinos.Contains(c))
-                        vecinos.Add(c);
-                    else
-                        copia.Remove(c);
-                }*/
+                else
+                    N.Remove(c);
+                
+
             }
             return N;
         }

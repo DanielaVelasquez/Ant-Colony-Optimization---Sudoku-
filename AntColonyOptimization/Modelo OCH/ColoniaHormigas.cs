@@ -300,9 +300,10 @@ namespace AntColonyOptimization.Modelo_OCH
             //Verifica aún hay vecinos para explorar desde la solución actual
             int cont = 0;
             int iteraciones = 200;
-            while(!gestor.completo(k.getSolucion()))
+            Boolean abortado = false;
+            while(!gestor.completo(k.getSolucion()) && !abortado)
             {
-                Console.WriteLine("Iteracion: " + cont + " Coliciones " + k.getSolucion().funcion_costo());
+                //Console.WriteLine("Iteracion: " + cont + " Coliciones " + k.getSolucion().funcion_costo());
                 //Console.WriteLine(k.getSolucion().ToString());
                 if (cont == 16634)
                     Console.WriteLine("");
@@ -310,12 +311,12 @@ namespace AntColonyOptimization.Modelo_OCH
                 Componente x = g.buscar(actual_k);
                 //Vecinos del vertice actual
                 List<Componente> N_v = x.N();
-                //N_v = gestor.configurar_vecinos(N_v, k);
-                /*if (N_v.Count == 0)
+                N_v = gestor.configurar_vecinos(N_v, k);
+                if (N_v.Count == 0)
                 {
                     abortado = true;
                     break;
-                }*/
+                }
                     
                 //Probabilidad de cada vertice
                 
