@@ -41,7 +41,7 @@ namespace AntColonyOptimization.Vista
         }
         private void resolver()
         {
-            n = 3;
+            n = 2;
             //int[,] tablero = new int[n * n, n * n];
             for(int i = 0; i<100;i++)
             {

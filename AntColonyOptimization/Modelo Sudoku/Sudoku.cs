@@ -40,7 +40,15 @@ namespace AntColonyOptimization.Modelo_Sudoku
         }
         public override double funcion_costo()
         {
-            return repetidos_filas() + repetidos_columnas() + repetidos_cuadros() + (casillas_vacias() * PENALIZACION_VACIOS) + Math.Abs((n*n*n*n)-grafica.get_vertices().Count);
+            return repetidos_filas() + repetidos_columnas() + repetidos_region(); //+ (casillas_vacias() * PENALIZACION_VACIOS) + Math.Abs((n*n*n*n)-grafica.get_vertices().Count);
+        }
+        /// <summary>
+        /// Cuenta cantidad de números que chocan indebidamente en el tablero
+        /// </summary>
+        /// <returns>cantidad de coliciones</returns>
+        public int coliciones()
+        {
+            return repetidos_filas() + repetidos_columnas() + repetidos_region();
         }
         /// <summary>
         /// Cuenta la cantidad de casillas vacias
@@ -72,10 +80,12 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 List<int> numeros = crear_lista_valores();
                 for(int j=0; j< n*n;j++)
                 {
-                    if (numeros.Contains(tablero[i,j]))
-                        numeros.Remove(tablero[i,j]);
+                    if (tablero[i, j] != VACIO && !numeros.Contains(tablero[i, j]))
+                        filas++;
+                    else if (tablero[i, j] != VACIO)
+                        numeros.Remove(tablero[i, j]);
                 }
-                filas += numeros.Count;
+                
             }
             return filas;
         }
@@ -91,10 +101,11 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 List<int> numeros = crear_lista_valores();
                 for(int i = 0; i< n*n; i++)
                 {
-                    if (numeros.Contains(tablero[i,j]))
-                        numeros.Remove(tablero[i,j]);
+                    if (tablero[i, j] != VACIO && !numeros.Contains(tablero[i, j]))
+                        columnas++;
+                    else if (tablero[i, j] != VACIO)
+                        numeros.Remove(tablero[i, j]);
                 }
-                columnas += numeros.Count;
             }
             return columnas;
         }
@@ -102,22 +113,25 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// Contabiliza la cantidad de números repetidos en los cuadros del tablero
         /// </summary>
         /// <returns>cantidad números repetidos en cuadros</returns>
-        private int repetidos_cuadros()
+        private int repetidos_region()
         {
             int cuadros = 0;
             for(int f = 0; f < n*n; f = f + n)
             {
                 for(int c = 0; c < n*n; c = c+n)
                 {
+                    List<int> numeros = crear_lista_valores();
                     for(int i = 0; i <n;i++)
                     {
-                        List<int> numeros = crear_lista_valores();
+                        
                         for(int j = 0; j< n; j++)
                         {
-                            if (numeros.Contains(tablero[i + f,j + c]))
-                                numeros.Remove(tablero[i + f,j + c]);
+                            if (tablero[i + f, j + c] != VACIO && !numeros.Contains(tablero[i + f, j + c]))
+                                cuadros++;
+                            else if (tablero[i + f, j + c] != VACIO)
+                                numeros.Remove(tablero[i + f, j + c]);
                         }
-                        cuadros += numeros.Count;
+                        
                     }
                 }
             }
@@ -131,7 +145,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         {
             
             List<int> numeros = new List<int>();
-            for (int i = 0; i < n * n; i++)
+            for (int i = 1; i <= n * n; i++)
                 numeros.Add(i);
             
             return numeros;
@@ -305,14 +319,125 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// <returns></returns>
         public Boolean completo()
         {
-            for(int i=0;i< n*n;i++)
+            return filas_completas() && cols_completas() && regiones_completas();
+        }
+        /// <summary>
+        /// Determina si las regiones se llenaron de forma correcta
+        /// </summary>
+        /// <returns>verdadero si las regiones se llenaron de forma correcta</returns>
+        private Boolean regiones_completas()
+        {
+            
+            for (int f = 0; f < n * n; f = f + n)
             {
-                for(int j = 0; j< n*n;j++)
+                for (int c = 0; c < n * n; c = c + n)
                 {
-                    if (tablero[i, j] == VACIO)
+                    if (!region_completa(f, c))
                         return false;
                 }
             }
+            return true;
+        }
+        /// <summary>
+        /// Determina si la region a la cual pertence la casilla[fila, col] está completa
+        /// </summary>
+        /// <param name="fila">fila de la casilla</param>
+        /// <param name="col">columna de la casilla</param>
+        /// <returns>verdadero si la region de la casilla está completa</returns>
+        public Boolean esta_completa_region(int fila, int col)
+        {
+            int f = obtener_cuadrante(fila);
+            int c = obtener_cuadrante(col);
+            return region_completa(f, c);
+        }
+        
+        /// <summary>
+        /// Determina si una region está completa
+        /// </summary>
+        /// <param name="f">Fila inicio de la region</param>
+        /// <param name="c">Columna incio de la region</param>
+        /// <returns>verdadero si la region está completa</returns>
+        private Boolean region_completa(int f, int c)
+        {
+            int v = n * n;
+            int suma = (v * (v - 1)) / 2;
+            int region = 0;
+            for (int i = 0; i < n; i++)
+            {
+
+                for (int j = 0; j < n; j++)
+                {
+                    region += tablero[i + f, j + c];
+                }
+
+            }
+            if (region != suma)
+                return false;
+            return true;
+
+        }
+        /// <summary>
+        /// Determina si todas las columnas se llenaron correctamente
+        /// </summary>
+        /// <returns>verdadero si todas las columnas se llenaron de fomra correcta</returns>
+        private Boolean cols_completas()
+        {
+            
+            for (int i = 0; i < n * n; i++)
+            {
+                if (!completa_col(i))
+                    return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// Determinas si la columna i se lleno adecuadamente
+        /// </summary>
+        /// <param name="i">columna</param>
+        /// <returns>verdadero si la columna se lleno apropiadamente</returns>
+        public Boolean completa_col(int i)
+        {
+            int v = n * n;
+            int suma = (v * (v - 1)) / 2;
+            int col = 0;
+            for (int j = 0; j < n * n; j++)
+            {
+                col += tablero[j, i];
+            }
+            if (col != suma)
+                return false;
+            return true;
+        }
+        /// <summary>
+        /// Determina si todas las filas se llenaron correctamente
+        /// </summary>
+        /// <returns>verdadero si todas las filas se llenaron de fomra correcta</returns>
+        private Boolean filas_completas()
+        {
+            
+            for(int i = 0; i < n*n; i++)
+            {
+                if (!completa_fila(i))
+                    return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// Determina si la fila i está completa
+        /// </summary>
+        /// <param name="i">fila</param>
+        /// <returns>verdadero si la fila está completa</returns>
+        public Boolean completa_fila(int i)
+        {
+            int v = n * n;
+            int suma = (v * (v - 1)) / 2;
+            int fila = 0;
+            for (int j = 0; j < n * n; j++)
+            {
+                fila += tablero[i, j];
+            }
+            if (fila != suma)
+                return false;
             return true;
         }
         /// <summary>
@@ -402,6 +527,57 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 }
             }
             return repetidos;
+        }
+        /// <summary>
+        /// Crea una lista del conjunto de números que faltan en una fila
+        /// </summary>
+        /// <param name="fila">fila que se desea</param>
+        /// <returns>Lista del conjunto de números que faltan en la fila</returns>
+        public List<int> faltantes_fila(int fila)
+        {
+            List<int> faltantes = crear_lista_valores();
+            for(int j = 0; j< n*n;j++)
+            {
+                if (faltantes.Contains(tablero[fila, j]))
+                    faltantes.Remove(tablero[fila, j]);
+            }
+            return faltantes;
+        }
+        /// <summary>
+        /// Crea una lista del conjunto de números que faltan en una columna
+        /// </summary>
+        /// <param name="col">columna que se desea</param>
+        /// <returns>Lista del conjunto de números que faltan en la fila</returns>
+        public List<int> faltantes_col(int col)
+        {
+            List<int> faltantes = crear_lista_valores();
+            for (int i = 0; i < n * n; i++)
+            {
+                if (faltantes.Contains(tablero[i, col]))
+                    faltantes.Remove(tablero[i, col]);
+            }
+            return faltantes;
+        }
+        /// <summary>
+        /// Crea una lista del conjunto de números que faltan en la region en la cual está la fila y columna
+        /// </summary>
+        /// <param name="fila">fila que se desea</param>
+        /// /// <param name="col">columna que se desea</param>
+        /// <returns>Lista del conjunto de números que faltan en la region en la cual está la fila y columna</returns>
+        public List<int> faltantes_region(int fila,int col)
+        {
+            List<int> faltantes = crear_lista_valores();
+            int f = obtener_cuadrante(fila);
+            int c = obtener_cuadrante(col);
+            for (int i = 0; i < n; i++ )
+            {
+                for(int j = 0; j< n;j++)
+                {
+                    if (faltantes.Contains(tablero[i + f, c + j]))
+                        faltantes.Remove(tablero[i + f, c + j]);
+                }
+            }
+             return faltantes;
         }
         public int get_n()
         {

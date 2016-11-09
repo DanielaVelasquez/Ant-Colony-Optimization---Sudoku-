@@ -17,7 +17,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// <summary>
         /// Influencia sobre nivel de feromonas
         /// </summary>
-        private const double ALFA = 0.3;
+        private const double ALFA = 1;
         /// <summary>
         /// Influencia atractivo movimiento
         /// </summary>
@@ -29,7 +29,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// <summary>
         /// Cantidad inicial de feromonas
         /// </summary>
-        public const double FEROMONAS_INICIAL = 0.1;
+        public const double FEROMONAS_INICIAL = 0.3;
         /// <summary>
         /// Valor mínimo de desviacion de las soluciones de las hormigas
         /// </summary>
@@ -69,8 +69,8 @@ namespace AntColonyOptimization.Modelo_Sudoku
         }
         public Boolean completo(Solucion solucion)
         {
-            return ((Sudoku)solucion).funcion_costo() == 0;
-            //return ((Sudoku)solucion).completo();
+            //return ((Sudoku)solucion).coliciones() == 0;
+            return ((Sudoku)solucion).completo();
 
         }
         public  List<Componente> configurar_vecinos(List<Componente> N, Hormiga k)

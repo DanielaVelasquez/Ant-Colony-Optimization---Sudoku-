@@ -302,9 +302,9 @@ namespace AntColonyOptimization.Modelo_OCH
             int iteraciones = 200;
             while(!gestor.completo(k.getSolucion()))
             {
-                Console.WriteLine("Iteracion: " + cont);
+                Console.WriteLine("Iteracion: " + cont + " Coliciones " + k.getSolucion().funcion_costo());
                 Console.WriteLine(k.getSolucion().ToString());
-                if (cont == 6)
+                if (cont == 16634)
                     Console.WriteLine("");
                 Componente actual_k = k.getSolucion().get_vertice_actual();
                 Componente x = g.buscar(actual_k);
@@ -350,6 +350,7 @@ namespace AntColonyOptimization.Modelo_OCH
                     foreach (DictionaryEntry e in P)
                     {
                         double P_xy = (double)e.Value / sum;
+                        Console.WriteLine(e.Key.ToString()+" "+P_xy);
                         P1.Add(e.Key, P_xy);
                     }
                 P = P1;
@@ -367,6 +368,7 @@ namespace AntColonyOptimization.Modelo_OCH
         private Componente escoger_vertice(IDictionary P,Componente v)
         {
             double num = random.NextDouble();
+            Console.WriteLine("RAND: " + num);
             double sum = 0.0;
             foreach(DictionaryEntry e in P)
             {
@@ -375,7 +377,7 @@ namespace AntColonyOptimization.Modelo_OCH
                 if (num <= sum)
                 {
                     //Console.WriteLine("Prob: " + e.Value);
-                    //Console.WriteLine("Vertice escogido: " + e.Key.ToString());
+                    Console.WriteLine("Vertice escogido: " + e.Key.ToString());
                     if(ubicacion_feromonas == VERTICES_FEROMONAS)
                         return (Componente)e.Key;
                     else
