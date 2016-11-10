@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AntColonyOptimization.Controlador;
 using AntColonyOptimization.Modelo_Sudoku;
+using System.IO;
 
 namespace AntColonyOptimization.Vista
 {
@@ -41,6 +42,7 @@ namespace AntColonyOptimization.Vista
             sudoku = new Sudoku(n);
             InitializeComponent();
             crear_tablero();
+            colorear_tablero();
             disponible_conjunto(false);
             controlador = SudokuOCH.get_instance();
             //resolver();
@@ -61,20 +63,24 @@ namespace AntColonyOptimization.Vista
             }
             
         }
-        private Sudoku crear_sudoku(String cad,int n)
+        private Sudoku leer_sudoku(String cad,int n)
         {
             String[] sep = cad.Split(',');
             int cont = 0;
             Sudoku s = new Sudoku(n);
-            for(int i = 0; i<n*n;i++)
+            for (int i = 0; i < n * n; i++)
             {
-                for(int j = 0; j < n*n; j++)
+                for (int j = 0; j < n * n; j++)
                 {
-                    s.ubicar_numero(i, j, int.Parse(sep[cont]));
+                    int num = int.Parse(sep[cont]);
+                    if(num != Sudoku.VACIO)
+                        s.ubicar_numero_jugando(i, j,num );
                     cont++;
                 }
             }
             return s;
+           
+            
         }
         private void crear_tablero()
         {
@@ -112,9 +118,7 @@ namespace AntColonyOptimization.Vista
             int j = int.Parse(posiciones[1]);
             try
             {
-                if (sudoku.casillas_vacias() <= MAX_CASILLAS_VACIAS)
-                    throw new Exception("Máximo número de casillas permitido completado");
-                
+               
                 int num = obtener_numero(casilla.Text);
                 if(num<=0 || num> n*n)
                 {
@@ -163,13 +167,94 @@ namespace AntColonyOptimization.Vista
 
         private void lb_limpiar_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            limpiar();
+        }
+        private void limpiar()
+        {
+            sudoku = new Sudoku(n);
+            pintar(sudoku);
+        }
+        private void pintar(Sudoku s)
+        {
+            int[,] tablero = s.get_tablero();
             for(int i = 0; i< n*n;i++)
             {
-                for(int j = 0; j< n*n;j++)
+                for(int j = 0; j< n*n; j++)
                 {
-                    casillas[i, j].Text = "";
+                    if (tablero[i, j] != Sudoku.VACIO)
+                        casillas[i, j].Text = " "+tablero[i, j];
                 }
             }
+        }
+        private void btn_archivo_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ventana = new OpenFileDialog();
+            Stream myStream = null;
+            ventana.InitialDirectory = "c:\\desktop";
+            ventana.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            ventana.FilterIndex = 2;
+
+            if (ventana.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    if ((myStream = ventana.OpenFile()) != null)
+                    {
+                        String nombre = ventana.FileName;
+                        String[] texto = File.ReadAllLines(nombre);
+                        if (texto.Length > 1)
+                            throw new Exception("Formato del archivo incorrecto, deber ser una linea separando cada valor por " + separador);
+                        String cad = texto[0];
+                        sudoku = leer_sudoku(cad, n);
+                        pintar(sudoku);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    limpiar();
+                }
+            }
+        }
+        private void colorear_tablero()
+        {
+            int cont = 0;
+            for(int i = 0; i < n*n; i = i + n)
+            {
+                for(int j = 0; j < n*n ;j = j + n)
+                {
+
+                    for(int f = 0; f<n;f++)
+                    {
+                        for( int c = 0; c < n; c++)
+                        {
+                            RichTextBox casilla = casillas[i + f, j + c];
+                            if (cont % 2 == 0)
+                            {
+                                casilla.BackColor = System.Drawing.SystemColors.ActiveCaption;
+                            }
+                            else
+                                casilla.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+                        }
+                    }
+                    cont++;
+                }
+            }
+        }
+
+        private void btn_simular_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (sudoku.casillas_vacias() <= MAX_CASILLAS_VACIAS)
+                    throw new Exception("Máximo número de valores iniciales es 17");
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+                
         }
     }
 }

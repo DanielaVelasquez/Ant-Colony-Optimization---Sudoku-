@@ -46,6 +46,7 @@
             this.btn_graficas = new System.Windows.Forms.Button();
             this.panel_tablero = new System.Windows.Forms.Panel();
             this.lb_limpiar = new System.Windows.Forms.LinkLabel();
+            this.btn_archivo = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -194,6 +195,7 @@
             this.btn_simular.TabIndex = 7;
             this.btn_simular.Text = "Simular";
             this.btn_simular.UseVisualStyleBackColor = true;
+            this.btn_simular.Click += new System.EventHandler(this.btn_simular_Click);
             // 
             // btn_graficas
             // 
@@ -222,11 +224,22 @@
             this.lb_limpiar.Text = "Limpiar";
             this.lb_limpiar.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lb_limpiar_LinkClicked);
             // 
+            // btn_archivo
+            // 
+            this.btn_archivo.Location = new System.Drawing.Point(526, 571);
+            this.btn_archivo.Name = "btn_archivo";
+            this.btn_archivo.Size = new System.Drawing.Size(129, 40);
+            this.btn_archivo.TabIndex = 11;
+            this.btn_archivo.Text = "Cargar archivo";
+            this.btn_archivo.UseVisualStyleBackColor = true;
+            this.btn_archivo.Click += new System.EventHandler(this.btn_archivo_Click);
+            // 
             // Fr_Sudoku
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(860, 623);
+            this.Controls.Add(this.btn_archivo);
             this.Controls.Add(this.lb_limpiar);
             this.Controls.Add(this.panel_tablero);
             this.Controls.Add(this.btn_graficas);
@@ -265,5 +278,6 @@
         private System.Windows.Forms.Button btn_graficas;
         private System.Windows.Forms.Panel panel_tablero;
         private System.Windows.Forms.LinkLabel lb_limpiar;
+        private System.Windows.Forms.Button btn_archivo;
     }
 }
