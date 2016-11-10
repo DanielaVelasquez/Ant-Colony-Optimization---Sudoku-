@@ -435,5 +435,9 @@ namespace AntColonyOptimization.Modelo_OCH
        {
            return "(" + mejor.funcion_costo() + ", " + tiempo.Hours + ":" + tiempo.Minutes + ":" + tiempo.Seconds+")";
        }
+        public Grafica get_grafica()
+       {
+           return grafica;
+       }
     }
 }

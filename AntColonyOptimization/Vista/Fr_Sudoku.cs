@@ -44,11 +44,8 @@ namespace AntColonyOptimization.Vista
             InitializeComponent();
             crear_tablero();
             colorear_tablero();
-            disponible_conjunto(false);
             controlador = new GestorSudoku();
-            lb_hormiga.Visible = false;
-            lb_tiempo.Visible = false;
-            //resolver();
+            
         }
         private void resolver()
         {
@@ -97,7 +94,7 @@ namespace AntColonyOptimization.Vista
                 for(int j = 0; j< n*n ;j++)
                 {
                     RichTextBox casilla = new RichTextBox();
-                    casilla.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    casilla.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                     casilla.Location = new System.Drawing.Point(i*ancho,j*ancho);
                     casilla.Size = new System.Drawing.Size(ancho,ancho );
                     casilla.Name = j+""+separador+i;
@@ -162,26 +159,8 @@ namespace AntColonyOptimization.Vista
                 throw new Exception("Valor no numérico ingresado en "+nombre);
             }
         }
-        private void ckbox_unitario_CheckedChanged(object sender, EventArgs e)
-        {
-            disponible_conjunto(!ckbox_unitario.Checked);
-            ckbox_conjunto.Checked = !ckbox_unitario.Checked;            
-        }
-        private void disponible_conjunto(bool valor)
-        {
-            txt_cant_semillas.Enabled = valor;
-            txt_inicio.Enabled = valor;
-            txt_paso.Enabled = valor;
-            ls_resultados.Enabled = valor;
-
-            txt_semilla.Enabled = !valor;
-        }
-        private void ckbox_conjunto_CheckedChanged(object sender, EventArgs e)
-        {
-            disponible_conjunto(ckbox_conjunto.Checked);
-            ckbox_unitario.Checked = !ckbox_conjunto.Checked; 
-        }
-
+        
+       
         private void lb_limpiar_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             limpiar();
@@ -196,8 +175,8 @@ namespace AntColonyOptimization.Vista
                     casillas[i, j].Text = "";
                 }
             }
-            lb_tiempo.Visible = false;
-            lb_hormiga.Visible = false;
+            txt_tiempo.Text = "";
+            ls_casillas.Items.Clear();
         }
         private void pintar(Sudoku s)
         {
@@ -268,64 +247,25 @@ namespace AntColonyOptimization.Vista
                 }
             }
         }
+        private void pintar_colonia(ColoniaHormigas c)
+        {
+            sudoku = (Sudoku)c.get_mejor();
+            pintar(sudoku);
+            TimeSpan t = c.get_tiempo();
+            txt_tiempo.Text = "" + t.Hours + ":" + t.Minutes + ":" + t.Seconds + ":" + t.Milliseconds;
+            List<Componente> vertices = c.get_grafica().get_vertices();
+            ls_casillas.Items.AddRange(vertices.ToArray());
+        }
         private void btn_simular_Click(object sender, EventArgs e)
         {
             try
             {
-                /*if (sudoku.casillas_vacias() < MAX_CASILLAS_VACIAS)
-                    throw new Exception("Máximo número de valores iniciales es 17");*/
-                if (ckbox_unitario.Checked)
-                {
-                    int semilla = obtener_numero(txt_semilla.Text," campo valor de la semilla");
-                    Console.WriteLine(sudoku.ToString());
-                    controlador.resolver(sudoku, semilla);
+                
+                int semilla = obtener_numero(txt_semilla.Text," campo valor de la semilla");
+                controlador.resolver(sudoku, semilla);
                    
-                    ColoniaHormigas c = controlador.getColonias();
-                    
-                    sudoku = (Sudoku)c.get_mejor();
-                    pintar(sudoku);
-                    /*while(hilo.IsAlive)
-                    {
-                        
-                        sudoku = (Sudoku) c.get_solucion_actual();
-                        if(sudoku!=null)
-                            pintar(sudoku);
-                        Thread.Sleep(1000);
-                    }*/
-                    
-                    TimeSpan t = c.get_tiempo();
-                    lb_tiempo.Visible = true;
-                    lb_tiempo.Text = ""+t.Hours+":"+t.Minutes+":"+t.Seconds+":"+t.Milliseconds;
-                }
-                else
-                {
-                    int cant = obtener_numero(txt_cant_semillas.Text, "Cantidad de semillas");
-                    int inicio = obtener_numero(txt_inicio.Text, "Inicio");
-                    int paso = obtener_numero(txt_paso.Text, "Paso");
-                    List<ColoniaHormigas> colonias = new List<ColoniaHormigas>();
-                    for(int cont = 0;cont < cant;cont++)
-                    {
-                        controlador.resolver(sudoku, inicio);
-                        ColoniaHormigas c = controlador.getColonias();
-                        colonias.Add(c);
-                        ls_resultados.Items.Add(c);
-                        inicio +=paso;
-                    }
-                    /*List<Thread> hilos = controlador.resolver(sudoku, cant, inicio, paso);
-                    foreach(Thread h in hilos)
-                    {
-                        while(h.IsAlive)
-                        {
-                            lb_hormiga.Visible = true;
-                            lb_hormiga.Text = "Procesando";
-                        }
-                    }
-                    List<ColoniaHormigas> colonias = controlador.getColonias();
-                    ls_resultados.Items.Clear();
-                    foreach (ColoniaHormigas c in colonias)
-                        ls_resultados.Items.Add(c);*/
-                }
-
+                ColoniaHormigas c = controlador.getColonias();
+                pintar_colonia(c);
             }
             catch (Exception ex)
             {
@@ -335,17 +275,6 @@ namespace AntColonyOptimization.Vista
                 
         }
 
-        /*-----------------------------------Observador colonia-----------------------------------*/
-        public void inicia_construir_nueva_hormiga(int id_hormiga)
-        {
-            lb_hormiga.Visible = true;
-            lb_hormiga.Text = "Hormiga " + id_hormiga;
-        }
-
-        public void nuevo_componente_seleccionado(Componente c)
-        {
-            Casilla casilla = (Casilla)c;
-            casillas[casilla.get_fila(), casilla.get_col()].Text = "  " + casilla.get_valor();
-        }
+       
     }
 }
