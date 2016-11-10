@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AntColonyOptimization.Modelo_OCH;
+using System.Threading;
 
 namespace AntColonyOptimization.Modelo_Sudoku
 {
@@ -40,8 +41,15 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// <summary>
         /// Colonia hormigas
         /// </summary>
+        private List<ColoniaHormigas> colonias;
+        /// <summary>
+        /// Grafica del sudoku
+        /// </summary>
+        private Grafica grafica;
+        private int N;
         private ColoniaHormigas colonia;
-
+        private int max_iteraciones;
+        private int semilla;
         /*-----------------------------------Métodos-----------------------------------*/
        
         public void ubicar_posicion_inicial(Random r, List<Hormiga> hormigas, Grafica grafica)
@@ -115,6 +123,10 @@ namespace AntColonyOptimization.Modelo_Sudoku
             Sudoku s = (Sudoku)s_k;
             return s.completo();
         }
+        public GestorSudoku()
+        {
+            colonias = new List<ColoniaHormigas>();
+        }
 
         /// <summary>
         /// Crea una gráfica a partir de un sudoku inicial
@@ -163,16 +175,13 @@ namespace AntColonyOptimization.Modelo_Sudoku
             return g;
         }
         /// <summary>
-        /// Resuelve un sudoku
+        /// Crea la gráfica asociada al sudoku y le asigna su solucion inicial
         /// </summary>
-        /// <param name="s">sudoku que se quiere resolver</param>
-        /// <param name="semilla">semilla para el generador de números aleatorios</param>
-        /// <returns>solucion del sudoku</returns>
-        public Sudoku resolver(Sudoku s,int semilla)
+        /// <param name="s">sudoku a gestionar</param>
+        private void configurar(Sudoku s)
         {
             sudoku = s;
-            colonia = new ColoniaHormigas();
-            Grafica grafica = crear_grafica(s);
+            grafica = crear_grafica(s);
 
             Grafica solucion = new Grafica();
 
@@ -182,27 +191,68 @@ namespace AntColonyOptimization.Modelo_Sudoku
             {
                 for (int j = 0; j < n * n; j++)
                 {
-                    if(tablero[i,j]!=Sudoku.VACIO)
+                    if (tablero[i, j] != Sudoku.VACIO)
                     {
                         Casilla c = new Casilla(i, j, tablero[i, j]);
-                        Casilla casilla = (Casilla) grafica.buscar(c);
+                        Casilla casilla = (Casilla)grafica.buscar(c);
                         solucion.adicionar_vertice(casilla.clonar_sin_vecinos());
                     }
                 }
             }
             sudoku.set_grafica(solucion);
-            
+        }
+        /// <summary>
+        /// Da solución a un sudoku
+        /// </summary>
+        /// <param name="s">sudoku que se quiere resolver</param>
+        /// <param name="semilla">semilla para el generador de números aleatorios</param>
+        /// <returns>solucion del sudoku</returns>
+        public Thread resolver(Sudoku s,int semilla)
+        {
+            configurar(s);
 
+            colonia = new ColoniaHormigas();
+            colonias.Add(colonia);
+            int n = s.get_n();
             //Cantidad hormigas depende del tamaño del tablero
-            int N = (n * n);
+            N = (n * n);
             //Cantidad máxima de iteraciones para 
-            int max_iteraciones = (n * n) * 100;
-            return (Sudoku)colonia.optimizacion_colonia_hormigas(max_iteraciones,PORCENTAJE_HORMIGAS,semilla, FEROMONAS_INICIAL, ColoniaHormigas.VERTICES_FEROMONAS, ColoniaHormigas.MINIMIZAR, this, grafica, N, ALFA, BETA, RHO);
+            max_iteraciones = (n * n) * 100;
+            this.semilla = semilla;
+            Thread hilo = new Thread(ejecutar);
+            hilo.Start();
+            return hilo;
 
         }
-        public ColoniaHormigas getColonia()
+        public List<Thread> resolver(Sudoku s, int cant_semillas, int inicio, int paso)
         {
-            return colonia;
+            
+            int n = s.get_n();
+            //Cantidad hormigas depende del tamaño del tablero
+            N = (n * n);
+            //Cantidad máxima de iteraciones para 
+            max_iteraciones = (n * n) * 100;
+            List<Thread> hilos = new List<Thread>();
+            for(int cont = 0; cont < cant_semillas; cont++)
+            {
+                configurar(s);
+                this.semilla = inicio;
+                inicio += paso;
+                colonia = new ColoniaHormigas();
+                colonias.Add(colonia);
+                Thread hilo = new Thread(ejecutar);
+                hilos.Add(hilo);
+                hilo.Start();
+            }
+            return hilos;
+        }
+        private void ejecutar()
+        {
+            colonia.optimizacion_colonia_hormigas(max_iteraciones, PORCENTAJE_HORMIGAS, semilla, FEROMONAS_INICIAL, ColoniaHormigas.VERTICES_FEROMONAS, ColoniaHormigas.MINIMIZAR, this, grafica, N, ALFA, BETA, RHO);
+        }
+        public List<ColoniaHormigas> getColonias()
+        {
+            return colonias;
         }
         
     }

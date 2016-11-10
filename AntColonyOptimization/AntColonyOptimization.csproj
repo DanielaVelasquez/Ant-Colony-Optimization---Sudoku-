@@ -48,7 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Complemento\Clonar.cs" />
-    <Compile Include="Controlador\SudokuOCH.cs" />
     <Compile Include="Modelo OCH\Transicion.cs" />
     <Compile Include="Modelo OCH\ColoniaHormigas.cs" />
     <Compile Include="Modelo OCH\GestorProblema.cs" />

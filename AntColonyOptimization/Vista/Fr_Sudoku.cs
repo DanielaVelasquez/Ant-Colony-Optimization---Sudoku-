@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using AntColonyOptimization.Controlador;
 using AntColonyOptimization.Modelo_Sudoku;
 using System.IO;
 using AntColonyOptimization.Modelo_OCH;
+using System.Threading;
 
 namespace AntColonyOptimization.Vista
 {
@@ -31,7 +31,7 @@ namespace AntColonyOptimization.Vista
         /// <summary>
         /// Controlador 
         /// </summary>
-        private SudokuOCH controlador;
+        private GestorSudoku controlador;
         /// <summary>
         /// Sudoku en pantalla
         /// </summary>
@@ -45,7 +45,7 @@ namespace AntColonyOptimization.Vista
             crear_tablero();
             colorear_tablero();
             disponible_conjunto(false);
-            controlador = SudokuOCH.get_instance();
+            controlador = new GestorSudoku();
             lb_hormiga.Visible = false;
             lb_tiempo.Visible = false;
         }
@@ -114,27 +114,38 @@ namespace AntColonyOptimization.Vista
         }
         private void casilla_selecciona(object sender, EventArgs e)
         {
+            KeyEventArgs key = (KeyEventArgs) e;
             RichTextBox casilla = (RichTextBox)sender;
             String[] posiciones = casilla.Name.Split(separador);
             int i = int.Parse(posiciones[0]);
             int j = int.Parse(posiciones[1]);
-            try
-            {
-                String nombre = "Casilla ("+i+","+j+")";
-                int num = obtener_numero(casilla.Text,nombre);
-                if(num<=0 || num> n*n)
-                {
-                    throw new Exception("Valor ingresado incorrecto, sudoku solo admite número: "+1+"-"+(n*n));
-                }
 
-                sudoku.ubicar_numero_jugando(i, j, num);
-            }
-            catch(Exception ex)
+            if(key.KeyCode == Keys.Back || key.KeyCode == Keys.Delete)
             {
-                MessageBox.Show(ex.Message);
+                sudoku.ubicar_numero(i, j, Sudoku.VACIO);
+            }
+            else if(key.KeyCode == Keys.Enter)
+            {
                 casilla.Text = "";
             }
-            
+            else
+            {
+                try
+                {
+                    String nombre = "Casilla";
+                    int num = obtener_numero(casilla.Text, nombre);
+                    if (num <= 0 || num > n * n)
+                    {
+                        throw new Exception("Valor ingresado incorrecto, sudoku solo admite número: " + 1 + "-" + (n * n));
+                    }
+                    sudoku.ubicar_numero_jugando(i, j, num);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    casilla.Text = "";
+                }
+            }
         }
         private int obtener_numero(String texto,String nombre)
         {
@@ -186,6 +197,7 @@ namespace AntColonyOptimization.Vista
         }
         private void pintar(Sudoku s)
         {
+            Console.WriteLine(s.ToString());
             limpiar();
             int[,] tablero = s.get_tablero();
             for(int i = 0; i< n*n;i++)
@@ -193,7 +205,7 @@ namespace AntColonyOptimization.Vista
                 for(int j = 0; j< n*n; j++)
                 {
                     if (tablero[i, j] != Sudoku.VACIO)
-                        casillas[i, j].Text = "  "+tablero[i, j];
+                        casillas[i, j].Text = ""+tablero[i, j];
                 }
             }
         }
@@ -261,13 +273,45 @@ namespace AntColonyOptimization.Vista
                 if (ckbox_unitario.Checked)
                 {
                     int semilla = obtener_numero(txt_semilla.Text," campo valor de la semilla");
-                    sudoku = controlador.resolver(n, sudoku, semilla);
+                    Thread hilo = controlador.resolver(sudoku, semilla);
+
+                    ColoniaHormigas c = controlador.getColonias()[0];
+                    while(hilo.IsAlive)
+                    {
+                        
+                        sudoku = (Sudoku) c.get_solucion_actual();
+                        if(sudoku!=null)
+                            pintar(sudoku);
+                        Thread.Sleep(1000);
+                    }
+                    sudoku = (Sudoku)c.get_mejor();
                     pintar(sudoku);
-                    ColoniaHormigas c = controlador.get_colonia();
+                    
+                    
                     TimeSpan t = c.get_tiempo();
                     lb_tiempo.Visible = true;
                     lb_tiempo.Text = ""+t.Hours+":"+t.Minutes+":"+t.Seconds+":"+t.Milliseconds;
                 }
+                else
+                {
+                    int cant = obtener_numero(txt_cant_semillas.Text, "Cantidad de semillas");
+                    int inicio = obtener_numero(txt_inicio.Text, "Inicio");
+                    int paso = obtener_numero(txt_paso.Text, "Paso");
+                    List<Thread> hilos = controlador.resolver(sudoku, cant, inicio, paso);
+                    foreach(Thread h in hilos)
+                    {
+                        while(h.IsAlive)
+                        {
+                            lb_hormiga.Visible = true;
+                            lb_hormiga.Text = "Procesando";
+                        }
+                    }
+                    List<ColoniaHormigas> colonias = controlador.getColonias();
+                    ls_resultados.Items.Clear();
+                    foreach (ColoniaHormigas c in colonias)
+                        ls_resultados.Items.Add(c);
+                }
+
             }
             catch (Exception ex)
             {

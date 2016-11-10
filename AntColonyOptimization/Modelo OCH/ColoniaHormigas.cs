@@ -106,6 +106,10 @@ namespace AntColonyOptimization.Modelo_OCH
         /// Determina si la colonia de hormigas está simulando
         /// </summary>
         private Boolean simulando;
+        /// <summary>
+        /// Solución que está siendo construida por la hormiga
+        /// </summary>
+        private Solucion solucion_actual;
 
         /*-----------------------------------Métodos-----------------------------------*/
         public ColoniaHormigas()
@@ -156,7 +160,7 @@ namespace AntColonyOptimization.Modelo_OCH
                 for (int cont = 0; cont < hormigas.Count && !cond; cont++ )
                 {
                     Hormiga k = hormigas[cont];
-                    //notificar_cambio_hormiga(k.get_id());
+                    cambia_solucion_actual(k.getSolucion());
                     construir_solucion(k);
                     cond = gestor.condicion_parada_hormigas(k.getSolucion());
                     //Console.WriteLine(k.ToString());
@@ -415,7 +419,21 @@ namespace AntColonyOptimization.Modelo_OCH
             return tiempo;
         }
 
-       
-        
+       private void cambia_solucion_actual(Solucion n)
+       {
+            solucion_actual = n;
+       }
+       public Solucion get_solucion_actual()
+       {
+           return solucion_actual;
+       }
+       public Solucion get_mejor()
+       {
+           return mejor;
+       }
+       public override string ToString()
+       {
+           return "(" + mejor.funcion_costo() + ", " + tiempo.Hours + ":" + tiempo.Minutes + ":" + tiempo.Seconds+")";
+       }
     }
 }
