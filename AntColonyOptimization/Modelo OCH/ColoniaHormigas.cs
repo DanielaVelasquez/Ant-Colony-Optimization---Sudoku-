@@ -102,10 +102,15 @@ namespace AntColonyOptimization.Modelo_OCH
         /// Máximo número de iteraciones que puede tomar una hormiga en realizar su solución
         /// </summary>
         private int max_iteraciones_hormiga;
+        /// <summary>
+        /// Determina si la colonia de hormigas está simulando
+        /// </summary>
+        private Boolean simulando;
 
         /*-----------------------------------Métodos-----------------------------------*/
         public ColoniaHormigas()
         {
+            simulando = false;
         }
         /// <summary>
         /// Busca una solución sobre la gráfica 
@@ -145,6 +150,7 @@ namespace AntColonyOptimization.Modelo_OCH
             int i = 0;
             do
             {
+                simulando = true;
                 gestor.ubicar_posicion_inicial(random,hormigas, grafica);
                 Boolean cond = false;
                 for (int cont = 0; cont < hormigas.Count && !cond; cont++ )
@@ -161,10 +167,15 @@ namespace AntColonyOptimization.Modelo_OCH
                 i++;
                     
             } while (hormigas_mismo_camino() < mismo_camino && !gestor.cumple_condicion_parada(mejor) && i < iteraciones_hormiga);
+            simulando = false;
             DateTime final = DateTime.Now;
             
             tiempo = final - inicio;
             return mejor;
+        }
+        public Boolean esta_simulando()
+        {
+            return simulando;
         }
         /// <summary>
         /// Calcula la desviación estandar de las soluciones de cada hormiga
