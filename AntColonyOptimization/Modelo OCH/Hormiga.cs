@@ -53,6 +53,9 @@ namespace AntColonyOptimization.Modelo_OCH
         {
             return "Id: " + id + "\nSolucion:\n" + solucion.ToString();
         }
-
+        public int get_id()
+        {
+            return id;
+        }
     }
 }

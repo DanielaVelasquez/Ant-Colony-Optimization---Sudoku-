@@ -188,7 +188,7 @@ namespace AntColonyOptimization.Vista
                 for(int j = 0; j< n*n; j++)
                 {
                     if (tablero[i, j] != Sudoku.VACIO)
-                        casillas[i, j].Text = " "+tablero[i, j];
+                        casillas[i, j].Text = "  "+tablero[i, j];
                 }
             }
         }

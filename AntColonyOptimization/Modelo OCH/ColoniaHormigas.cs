@@ -102,11 +102,15 @@ namespace AntColonyOptimization.Modelo_OCH
         /// Máximo número de iteraciones que puede tomar una hormiga en realizar su solución
         /// </summary>
         private int max_iteraciones_hormiga;
+        /// <summary>
+        /// Elementos que desean conocer los cambios de la colonia
+        /// </summary>
+        private List<ObservadorColonia> observadores;
 
         /*-----------------------------------Métodos-----------------------------------*/
         public ColoniaHormigas()
         {
-            
+            observadores = new List<ObservadorColonia>();
         }
         /// <summary>
         /// Busca una solución sobre la gráfica 
@@ -151,6 +155,7 @@ namespace AntColonyOptimization.Modelo_OCH
                 for (int cont = 0; cont < hormigas.Count && !cond; cont++ )
                 {
                     Hormiga k = hormigas[cont];
+                    notificar_cambio_hormiga(k.get_id());
                     construir_solucion(k);
                     cond = gestor.condicion_parada_hormigas(k.getSolucion());
                     //Console.WriteLine(k.ToString());
@@ -361,6 +366,7 @@ namespace AntColonyOptimization.Modelo_OCH
                 P = P1;
                 Componente siguiente = escoger_vertice(P,x);
                 k.getSolucion().cambiar_vertice_actual(siguiente);
+                notificar_nuevo_componente(siguiente);
                 cont++;
             }
         }
@@ -399,6 +405,43 @@ namespace AntColonyOptimization.Modelo_OCH
         public TimeSpan get_tiempo()
         {
             return tiempo;
+        }
+
+        /*-----------------------------------Visualizador soluciones-----------------------------------*/
+        /// <summary>
+        /// Adiciona un observador de la colonia
+        /// </summary>
+        /// <param name="v"></param>
+        public void adicionar_visualizador(ObservadorColonia v)
+        {
+            observadores.Add(v);
+        }
+        /// <summary>
+        /// Elimina un observador de la colonia
+        /// </summary>
+        /// <param name="v"></param>
+        public void remover_visualizador(ObservadorColonia v)
+        {
+            observadores.Remove(v);
+        }
+        /// <summary>
+        /// Notifica a todos los observadores que una nueva hormiga inicio su trabajo
+        /// </summary>
+        /// <param name="id">identificador de la hormiga que inició su trabajo</param>
+        private void notificar_cambio_hormiga(int id)
+        {
+            foreach (ObservadorColonia v in observadores)
+                v.inicia_construir_nueva_hormiga(id);
+        }
+        /// <summary>
+        /// Notifica a los observadores que un nuevo componente se adicionó a la solución 
+        /// de la hormiga
+        /// </summary>
+        /// <param name="c">nuevo componente</param>
+        private void notificar_nuevo_componente(Componente c)
+        {
+            foreach (ObservadorColonia v in observadores)
+                v.nuevo_componente_seleccionado(c);
         }
     }
 }
