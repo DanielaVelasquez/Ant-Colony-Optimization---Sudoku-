@@ -167,9 +167,8 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// </summary>
         /// <param name="s">sudoku que se quiere resolver</param>
         /// <param name="semilla">semilla para el generador de números aleatorios</param>
-        /// <param name="observadores">lista de observadores para la colonia</param>
         /// <returns>solucion del sudoku</returns>
-        public Sudoku resolver(Sudoku s,int semilla,List<ObservadorColonia> observadores)
+        public Sudoku resolver(Sudoku s,int semilla)
         {
             sudoku = s;
             colonia = new ColoniaHormigas();
@@ -192,11 +191,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 }
             }
             sudoku.set_grafica(solucion);
-            if(observadores!= null && observadores.Count>0)
-            {
-                foreach (ObservadorColonia o in observadores)
-                    colonia.adicionar_visualizador(o);
-            }
+            
 
             //Cantidad hormigas depende del tamaño del tablero
             int N = (n * n);

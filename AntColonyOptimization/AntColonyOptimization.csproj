@@ -56,7 +56,6 @@
     <Compile Include="Modelo OCH\Hormiga.cs" />
     <Compile Include="Modelo OCH\Solucion.cs" />
     <Compile Include="Modelo OCH\Componente.cs" />
-    <Compile Include="Modelo OCH\ObservadorColonia.cs" />
     <Compile Include="Modelo Sudoku\Casilla.cs" />
     <Compile Include="Modelo Sudoku\GestorSudoku.cs" />
     <Compile Include="Modelo Sudoku\Sudoku.cs" />

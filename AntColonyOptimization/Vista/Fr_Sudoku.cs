@@ -14,7 +14,7 @@ using AntColonyOptimization.Modelo_OCH;
 
 namespace AntColonyOptimization.Vista
 {
-    public partial class Fr_Sudoku : Form, ObservadorColonia
+    public partial class Fr_Sudoku : Form
     {
         /*-----------------------------------Constantes-----------------------------------*/
         private static char separador = ',';
@@ -252,20 +252,16 @@ namespace AntColonyOptimization.Vista
                 }
             }
         }
-
         private void btn_simular_Click(object sender, EventArgs e)
         {
             try
             {
                 if (sudoku.casillas_vacias() < MAX_CASILLAS_VACIAS)
                     throw new Exception("Máximo número de valores iniciales es 17");
-                List<ObservadorColonia> obs = new List<ObservadorColonia>();
-                obs.Add(this);
                 if (ckbox_unitario.Checked)
                 {
                     int semilla = obtener_numero(txt_semilla.Text," campo valor de la semilla");
-                    sudoku = controlador.resolver(n, sudoku, semilla, obs);
-                    Console.WriteLine(sudoku.ToString());
+                    sudoku = controlador.resolver(n, sudoku, semilla);
                     pintar(sudoku);
                     ColoniaHormigas c = controlador.get_colonia();
                     TimeSpan t = c.get_tiempo();

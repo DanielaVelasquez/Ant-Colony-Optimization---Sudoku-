@@ -52,10 +52,10 @@ namespace AntColonyOptimization.Controlador
         /// <param name="s">Tablero inicial</param>
         /// <param name="semilla">Semilla para aleatoriedad</param>
         /// <returns></returns>
-        public Sudoku resolver(int n,Sudoku s,int semilla,List<ObservadorColonia> ob)
+        public Sudoku resolver(int n,Sudoku s,int semilla)
         {
             gestor = new GestorSudoku();
-            return gestor.resolver(s, semilla,ob);
+            return gestor.resolver(s, semilla);
         }
         public ColoniaHormigas get_colonia()
         {

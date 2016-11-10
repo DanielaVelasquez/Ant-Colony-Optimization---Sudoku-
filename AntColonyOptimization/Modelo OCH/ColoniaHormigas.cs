@@ -102,15 +102,10 @@ namespace AntColonyOptimization.Modelo_OCH
         /// Máximo número de iteraciones que puede tomar una hormiga en realizar su solución
         /// </summary>
         private int max_iteraciones_hormiga;
-        /// <summary>
-        /// Elementos que desean conocer los cambios de la colonia
-        /// </summary>
-        private List<ObservadorColonia> observadores;
 
         /*-----------------------------------Métodos-----------------------------------*/
         public ColoniaHormigas()
         {
-            observadores = new List<ObservadorColonia>();
         }
         /// <summary>
         /// Busca una solución sobre la gráfica 
@@ -409,41 +404,7 @@ namespace AntColonyOptimization.Modelo_OCH
             return tiempo;
         }
 
-        /*-----------------------------------Visualizador soluciones-----------------------------------*/
-        /// <summary>
-        /// Adiciona un observador de la colonia
-        /// </summary>
-        /// <param name="v"></param>
-        public void adicionar_visualizador(ObservadorColonia v)
-        {
-            observadores.Add(v);
-        }
-        /// <summary>
-        /// Elimina un observador de la colonia
-        /// </summary>
-        /// <param name="v"></param>
-        public void remover_visualizador(ObservadorColonia v)
-        {
-            observadores.Remove(v);
-        }
-        /// <summary>
-        /// Notifica a todos los observadores que una nueva hormiga inicio su trabajo
-        /// </summary>
-        /// <param name="id">identificador de la hormiga que inició su trabajo</param>
-        private void notificar_cambio_hormiga(int id)
-        {
-            foreach (ObservadorColonia v in observadores)
-                v.inicia_construir_nueva_hormiga(id);
-        }
-        /// <summary>
-        /// Notifica a los observadores que un nuevo componente se adicionó a la solución 
-        /// de la hormiga
-        /// </summary>
-        /// <param name="c">nuevo componente</param>
-        private void notificar_nuevo_componente(Componente c)
-        {
-            foreach (ObservadorColonia v in observadores)
-                v.nuevo_componente_seleccionado(c);
-        }
+       
+        
     }
 }
