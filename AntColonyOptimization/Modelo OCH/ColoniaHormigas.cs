@@ -163,14 +163,14 @@ namespace AntColonyOptimization.Modelo_OCH
                     cambia_solucion_actual(k.getSolucion());
                     construir_solucion(k);
                     cond = gestor.condicion_parada_hormigas(k.getSolucion());
-                    //Console.WriteLine(k.ToString());
+                    Console.WriteLine(k.ToString());
                 }
                     
                 seleccionar_mejor_hormiga();
                 actualizar_feromonas();
                 i++;
                     
-            } while (hormigas_mismo_camino() < mismo_camino && !gestor.cumple_condicion_parada(mejor) && i < iteraciones_hormiga);
+            } while (hormigas_mismo_camino() < mismo_camino && !gestor.cumple_condicion_parada(mejor) && i < (iteraciones_hormiga/4));
             simulando = false;
             DateTime final = DateTime.Now;
             

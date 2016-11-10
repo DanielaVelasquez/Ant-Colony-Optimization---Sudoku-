@@ -48,8 +48,9 @@ namespace AntColonyOptimization.Vista
             controlador = new GestorSudoku();
             lb_hormiga.Visible = false;
             lb_tiempo.Visible = false;
+            //resolver();
         }
-        /*private void resolver()
+        private void resolver()
         {
             n = 3;
             //int[,] tablero = new int[n * n, n * n];
@@ -57,14 +58,17 @@ namespace AntColonyOptimization.Vista
             {
                 //Sudoku s = crear_sudoku("5,3,1,0,8,0,6,0,0,0,0,0,4,0,6,0,0,0,0,7,0,0,0,2,8,5,0,8,0,2,7,3,0,0,1,0,7,0,0,5,0,0,0,9,0,3,4,0,0,6,0,0,0,0,0,6,9,8,0,0,0,0,0,0,5,0,0,4,1,0,0,7,0,0,0,2,0,0,4,0,3");
                 Sudoku s = new Sudoku(n);
-                Sudoku solucion = controlador.resolver(n, s, i);
-                if (solucion.funcion_costo() == 0)
-                    Console.WriteLine("I'm amazing");
-                Console.WriteLine(solucion.ToString());
-                Console.WriteLine(solucion.funcion_costo());
+                controlador.resolver(s, i);
+                ColoniaHormigas colonia = controlador.getColonias();
+                Solucion sol = colonia.get_mejor();
+                Console.WriteLine(i+", "+sol.funcion_costo()+","+colonia.get_tiempo().ToString());
+                /*Console.WriteLine(colonia.ToString());
+                
+                Console.WriteLine(sol.ToString());
+                Console.*/
             }
             
-        }*/
+        }
         private Sudoku leer_sudoku(String cad,int n)
         {
             String[] sep = cad.Split(',');
@@ -96,7 +100,7 @@ namespace AntColonyOptimization.Vista
                     casilla.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                     casilla.Location = new System.Drawing.Point(i*ancho,j*ancho);
                     casilla.Size = new System.Drawing.Size(ancho,ancho );
-                    casilla.Name = i+""+separador+j;
+                    casilla.Name = j+""+separador+i;
                     casilla.KeyUp += new System.Windows.Forms.KeyEventHandler(this.casilla_selecciona);
                     casillas[j, i] = casilla;
                     this.panel_tablero.Controls.Add(casilla);
@@ -198,7 +202,6 @@ namespace AntColonyOptimization.Vista
         private void pintar(Sudoku s)
         {
             Console.WriteLine(s.ToString());
-            limpiar();
             int[,] tablero = s.get_tablero();
             for(int i = 0; i< n*n;i++)
             {
@@ -227,6 +230,7 @@ namespace AntColonyOptimization.Vista
                         String[] texto = File.ReadAllLines(nombre);
                         if (texto.Length > 1)
                             throw new Exception("Formato del archivo incorrecto, deber ser una linea separando cada valor por " + separador);
+                        limpiar();
                         String cad = texto[0];
                         sudoku = leer_sudoku(cad, n);
                         pintar(sudoku);
@@ -268,25 +272,26 @@ namespace AntColonyOptimization.Vista
         {
             try
             {
-                if (sudoku.casillas_vacias() < MAX_CASILLAS_VACIAS)
-                    throw new Exception("Máximo número de valores iniciales es 17");
+                /*if (sudoku.casillas_vacias() < MAX_CASILLAS_VACIAS)
+                    throw new Exception("Máximo número de valores iniciales es 17");*/
                 if (ckbox_unitario.Checked)
                 {
                     int semilla = obtener_numero(txt_semilla.Text," campo valor de la semilla");
-                    Thread hilo = controlador.resolver(sudoku, semilla);
-
-                    ColoniaHormigas c = controlador.getColonias()[0];
-                    while(hilo.IsAlive)
+                    Console.WriteLine(sudoku.ToString());
+                    controlador.resolver(sudoku, semilla);
+                   
+                    ColoniaHormigas c = controlador.getColonias();
+                    
+                    sudoku = (Sudoku)c.get_mejor();
+                    pintar(sudoku);
+                    /*while(hilo.IsAlive)
                     {
                         
                         sudoku = (Sudoku) c.get_solucion_actual();
                         if(sudoku!=null)
                             pintar(sudoku);
                         Thread.Sleep(1000);
-                    }
-                    sudoku = (Sudoku)c.get_mejor();
-                    pintar(sudoku);
-                    
+                    }*/
                     
                     TimeSpan t = c.get_tiempo();
                     lb_tiempo.Visible = true;
@@ -297,7 +302,16 @@ namespace AntColonyOptimization.Vista
                     int cant = obtener_numero(txt_cant_semillas.Text, "Cantidad de semillas");
                     int inicio = obtener_numero(txt_inicio.Text, "Inicio");
                     int paso = obtener_numero(txt_paso.Text, "Paso");
-                    List<Thread> hilos = controlador.resolver(sudoku, cant, inicio, paso);
+                    List<ColoniaHormigas> colonias = new List<ColoniaHormigas>();
+                    for(int cont = 0;cont < cant;cont++)
+                    {
+                        controlador.resolver(sudoku, inicio);
+                        ColoniaHormigas c = controlador.getColonias();
+                        colonias.Add(c);
+                        ls_resultados.Items.Add(c);
+                        inicio +=paso;
+                    }
+                    /*List<Thread> hilos = controlador.resolver(sudoku, cant, inicio, paso);
                     foreach(Thread h in hilos)
                     {
                         while(h.IsAlive)
@@ -309,7 +323,7 @@ namespace AntColonyOptimization.Vista
                     List<ColoniaHormigas> colonias = controlador.getColonias();
                     ls_resultados.Items.Clear();
                     foreach (ColoniaHormigas c in colonias)
-                        ls_resultados.Items.Add(c);
+                        ls_resultados.Items.Add(c);*/
                 }
 
             }
