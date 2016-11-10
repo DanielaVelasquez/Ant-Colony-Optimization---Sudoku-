@@ -172,7 +172,13 @@ namespace AntColonyOptimization.Vista
         private void limpiar()
         {
             sudoku = new Sudoku(n);
-            pintar(sudoku);
+            for(int i = 0; i< n*n;i++)
+            {
+                for(int j = 0;j<n*n;j++)
+                {
+                    casillas[i, j].Text = "";
+                }
+            }
         }
         private void pintar(Sudoku s)
         {
