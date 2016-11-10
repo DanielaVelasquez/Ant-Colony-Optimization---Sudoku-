@@ -47,6 +47,7 @@
             this.panel_tablero = new System.Windows.Forms.Panel();
             this.lb_limpiar = new System.Windows.Forms.LinkLabel();
             this.btn_archivo = new System.Windows.Forms.Button();
+            this.lb_hormiga = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -234,11 +235,21 @@
             this.btn_archivo.UseVisualStyleBackColor = true;
             this.btn_archivo.Click += new System.EventHandler(this.btn_archivo_Click);
             // 
+            // lb_hormiga
+            // 
+            this.lb_hormiga.AutoSize = true;
+            this.lb_hormiga.Location = new System.Drawing.Point(332, 540);
+            this.lb_hormiga.Name = "lb_hormiga";
+            this.lb_hormiga.Size = new System.Drawing.Size(65, 17);
+            this.lb_hormiga.TabIndex = 12;
+            this.lb_hormiga.Text = "Hormiga ";
+            // 
             // Fr_Sudoku
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(860, 623);
+            this.Controls.Add(this.lb_hormiga);
             this.Controls.Add(this.btn_archivo);
             this.Controls.Add(this.lb_limpiar);
             this.Controls.Add(this.panel_tablero);
@@ -279,5 +290,6 @@
         private System.Windows.Forms.Panel panel_tablero;
         private System.Windows.Forms.LinkLabel lb_limpiar;
         private System.Windows.Forms.Button btn_archivo;
+        private System.Windows.Forms.Label lb_hormiga;
     }
 }

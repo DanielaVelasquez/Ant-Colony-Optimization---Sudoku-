@@ -55,7 +55,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
             Sudoku sudoku = (Sudoku) s;
             int n = sudoku.get_n();
             int[,] tablero = sudoku.get_tablero();
-
+            atractivo = 0;
             //Si la casilla en el sudoku está vacia
             if (tablero[fila, col] == Sudoku.VACIO)
                 atractivo += MUY_BUENO;
@@ -64,13 +64,11 @@ namespace AntColonyOptimization.Modelo_Sudoku
             if (tablero[fila, col] != valor && tablero[fila, col] != Sudoku.VACIO)
                 atractivo += NORMAL;
 
-            
-
-            
+                     
             
             //Si es uno de los números faltantes en la fila
             List<int> faltantes_filas = sudoku.faltantes_fila(fila);
-            /*if (faltantes_filas.Contains(valor))
+            if (faltantes_filas.Contains(valor))
                 atractivo += BUENO;
 
             //Si es el único faltante en un fila
@@ -78,35 +76,35 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 atractivo += BUENO;
 
             //Si es uno de los números faltantes en la columna
-            */List<int> faltantes_cols = sudoku.faltantes_col(col);
-            /*if (faltantes_cols.Contains(valor))
+            List<int> faltantes_cols = sudoku.faltantes_col(col);
+            if (faltantes_cols.Contains(valor))
                 atractivo += BUENO;
 
             //Si es el único faltante en la columna
             if (faltantes_cols.Contains(valor) && faltantes_cols.Count == 1)
                 atractivo += BUENO;
 
-            *///Si es uno de los números faltantes en su region
+            //Si es uno de los números faltantes en su region
             List<int> faltantes_region = sudoku.faltantes_region(fila,col);
             if (faltantes_region.Contains(valor))
                 atractivo += BUENO;
 
-            /*//Si es el único faltante en la region
+            //Si es el único faltante en la region
             if (faltantes_region.Contains(valor) && faltantes_region.Count == 1)
                 atractivo += BUENO;
-            */
+            
             //Si es el único faltante en la fila, columna y region
-            /*if ((faltantes_filas.Contains(valor) && faltantes_filas.Count == 1) && (faltantes_cols.Contains(valor) && faltantes_cols.Count == 1) && (faltantes_region.Contains(valor) && faltantes_region.Count == 1))
-                atractivo += MUY_BUENO;*/
+            if ((faltantes_filas.Contains(valor) && faltantes_filas.Count == 1) && (faltantes_cols.Contains(valor) && faltantes_cols.Count == 1) && (faltantes_region.Contains(valor) && faltantes_region.Count == 1))
+                atractivo += MUY_BUENO;
 
             //Si hace falta en todos
-            /*if (faltantes_filas.Contains(valor) && faltantes_cols.Contains(valor) && faltantes_region.Contains(valor))
-                atractivo += MUY_BUENO;*/
+            if (faltantes_filas.Contains(valor) && faltantes_cols.Contains(valor) && faltantes_region.Contains(valor))
+                atractivo += MUY_BUENO;
 
            
            
 
-            atractivo = atractivo / (NORMAL * 1 + BUENO * 1 + MUY_BUENO * 2);
+            atractivo = atractivo / (NORMAL * 1 + BUENO * 0 + MUY_BUENO * 2);
             return atractivo; 
         }
 

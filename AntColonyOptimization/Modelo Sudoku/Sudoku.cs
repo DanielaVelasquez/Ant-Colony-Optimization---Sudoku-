@@ -360,7 +360,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         private Boolean region_completa(int f, int c)
         {
             int v = n * n;
-            int suma = (v * (v - 1)) / 2;
+            int suma = (v * (v + 1)) / 2;
             int region = 0;
             for (int i = 0; i < n; i++)
             {
@@ -398,7 +398,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         public Boolean completa_col(int i)
         {
             int v = n * n;
-            int suma = (v * (v - 1)) / 2;
+            int suma = (v * (v + 1)) / 2;
             int col = 0;
             for (int j = 0; j < n * n; j++)
             {
@@ -430,7 +430,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         public Boolean completa_fila(int i)
         {
             int v = n * n;
-            int suma = (v * (v - 1)) / 2;
+            int suma = (v * (v + 1)) / 2;
             int fila = 0;
             for (int j = 0; j < n * n; j++)
             {

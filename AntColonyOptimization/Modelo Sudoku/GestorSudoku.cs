@@ -97,12 +97,12 @@ namespace AntColonyOptimization.Modelo_Sudoku
         public Boolean cumple_condicion_parada(Solucion mejor)
         {
             Sudoku s = (Sudoku)mejor;
-            return s.coliciones() == 0;
+            return s.completo();
         }
         public Boolean condicion_parada_hormigas(Solucion s_k)
         {
             Sudoku s = (Sudoku)s_k;
-            return s.coliciones() == 0;
+            return s.completo();
         }
 
         /// <summary>
@@ -151,7 +151,14 @@ namespace AntColonyOptimization.Modelo_Sudoku
             g.set_aristas(transicion);
             return g;
         }
-        public Sudoku resolver(Sudoku s,int semilla)
+        /// <summary>
+        /// Resuelve un sudoku
+        /// </summary>
+        /// <param name="s">sudoku que se quiere resolver</param>
+        /// <param name="semilla">semilla para el generador de números aleatorios</param>
+        /// <param name="observadores">lista de observadores para la colonia</param>
+        /// <returns>solucion del sudoku</returns>
+        public Sudoku resolver(Sudoku s,int semilla,List<ObservadorColonia> observadores)
         {
             sudoku = s;
             colonia = new ColoniaHormigas();
@@ -174,11 +181,16 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 }
             }
             sudoku.set_grafica(solucion);
+            if(observadores!= null && observadores.Count>0)
+            {
+                foreach (ObservadorColonia o in observadores)
+                    colonia.adicionar_visualizador(o);
+            }
 
             //Cantidad hormigas depende del tamaño del tablero
             int N = (n * n);
             //Cantidad máxima de iteraciones para 
-            int max_iteraciones = (n * n) * 1000;
+            int max_iteraciones = (n * n) * 100;
             return (Sudoku)colonia.optimizacion_colonia_hormigas(max_iteraciones,PORCENTAJE_HORMIGAS,semilla, FEROMONAS_INICIAL, ColoniaHormigas.VERTICES_FEROMONAS, ColoniaHormigas.MINIMIZAR, this, grafica, N, ALFA, BETA, RHO);
 
         }

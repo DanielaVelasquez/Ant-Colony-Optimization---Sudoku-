@@ -155,10 +155,10 @@ namespace AntColonyOptimization.Modelo_OCH
                 for (int cont = 0; cont < hormigas.Count && !cond; cont++ )
                 {
                     Hormiga k = hormigas[cont];
-                    notificar_cambio_hormiga(k.get_id());
+                    //notificar_cambio_hormiga(k.get_id());
                     construir_solucion(k);
                     cond = gestor.condicion_parada_hormigas(k.getSolucion());
-                    //Console.WriteLine(k.ToString());
+                    Console.WriteLine(k.ToString());
                 }
                     
                 seleccionar_mejor_hormiga();
@@ -316,11 +316,13 @@ namespace AntColonyOptimization.Modelo_OCH
             Boolean abortado = false;
             while(!gestor.completo(k.getSolucion()) && !abortado && cont < max_iteraciones_hormiga)
             {
-                //Console.WriteLine("" + k.getSolucion().ToString());
+                Console.WriteLine("" + k.getSolucion().ToString());
                 Componente actual_k = k.getSolucion().get_vertice_actual();
                 Componente x = g.buscar(actual_k);
                 //Vecinos del vertice actual
                 List<Componente> N_v = x.N();
+                if (cont == 897)
+                    Console.WriteLine("Jj");
                 N_v = gestor.configurar_vecinos(N_v, k);
                 if (N_v.Count == 0)
                 {
@@ -366,7 +368,7 @@ namespace AntColonyOptimization.Modelo_OCH
                 P = P1;
                 Componente siguiente = escoger_vertice(P,x);
                 k.getSolucion().cambiar_vertice_actual(siguiente);
-                notificar_nuevo_componente(siguiente);
+                //notificar_nuevo_componente(siguiente);
                 cont++;
             }
         }

@@ -10,10 +10,11 @@ using System.Windows.Forms;
 using AntColonyOptimization.Controlador;
 using AntColonyOptimization.Modelo_Sudoku;
 using System.IO;
+using AntColonyOptimization.Modelo_OCH;
 
 namespace AntColonyOptimization.Vista
 {
-    public partial class Fr_Sudoku : Form
+    public partial class Fr_Sudoku : Form, ObservadorColonia
     {
         /*-----------------------------------Constantes-----------------------------------*/
         private static char separador = ',';
@@ -45,9 +46,10 @@ namespace AntColonyOptimization.Vista
             colorear_tablero();
             disponible_conjunto(false);
             controlador = SudokuOCH.get_instance();
+            lb_hormiga.Visible = false;
             //resolver();
         }
-        private void resolver()
+        /*private void resolver()
         {
             n = 3;
             //int[,] tablero = new int[n * n, n * n];
@@ -62,7 +64,7 @@ namespace AntColonyOptimization.Vista
                 Console.WriteLine(solucion.funcion_costo());
             }
             
-        }
+        }*/
         private Sudoku leer_sudoku(String cad,int n)
         {
             String[] sep = cad.Split(',');
@@ -118,8 +120,8 @@ namespace AntColonyOptimization.Vista
             int j = int.Parse(posiciones[1]);
             try
             {
-               
-                int num = obtener_numero(casilla.Text);
+                String nombre = "Casilla ("+i+","+j+")";
+                int num = obtener_numero(casilla.Text,nombre);
                 if(num<=0 || num> n*n)
                 {
                     throw new Exception("Valor ingresado incorrecto, sudoku solo admite número: "+1+"-"+(n*n));
@@ -134,7 +136,7 @@ namespace AntColonyOptimization.Vista
             }
             
         }
-        private int obtener_numero(String texto)
+        private int obtener_numero(String texto,String nombre)
         {
             try
             {
@@ -142,7 +144,7 @@ namespace AntColonyOptimization.Vista
             }
             catch
             {
-                throw new Exception("Valor no numérico ingresado");
+                throw new Exception("Valor no numérico ingresado en "+nombre);
             }
         }
         private void ckbox_unitario_CheckedChanged(object sender, EventArgs e)
@@ -254,13 +256,34 @@ namespace AntColonyOptimization.Vista
             {
                 if (sudoku.casillas_vacias() <= MAX_CASILLAS_VACIAS)
                     throw new Exception("Máximo número de valores iniciales es 17");
+                List<ObservadorColonia> obs = new List<ObservadorColonia>();
+                obs.Add(this);
+                if (ckbox_unitario.Checked)
+                {
+                    int semilla = obtener_numero(txt_semilla.Text," campo valor de la semilla");
+                    sudoku = controlador.resolver(n, sudoku, semilla, obs);
+                    pintar(sudoku);
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
             
                 
+        }
+
+        /*-----------------------------------Observador colonia-----------------------------------*/
+        public void inicia_construir_nueva_hormiga(int id_hormiga)
+        {
+            lb_hormiga.Visible = true;
+            lb_hormiga.Text = "Hormiga " + id_hormiga;
+        }
+
+        public void nuevo_componente_seleccionado(Componente c)
+        {
+            Casilla casilla = (Casilla)c;
+            casillas[casilla.get_fila(), casilla.get_col()].Text = "  " + casilla.get_valor();
         }
     }
 }
