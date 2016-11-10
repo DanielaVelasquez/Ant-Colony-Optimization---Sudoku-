@@ -47,7 +47,7 @@ namespace AntColonyOptimization.Vista
             disponible_conjunto(false);
             controlador = SudokuOCH.get_instance();
             lb_hormiga.Visible = false;
-            //resolver();
+            lb_tiempo.Visible = false;
         }
         /*private void resolver()
         {
@@ -98,7 +98,7 @@ namespace AntColonyOptimization.Vista
                     casilla.Size = new System.Drawing.Size(ancho,ancho );
                     casilla.Name = i+""+separador+j;
                     casilla.KeyUp += new System.Windows.Forms.KeyEventHandler(this.casilla_selecciona);
-                    casillas[i, j] = casilla;
+                    casillas[j, i] = casilla;
                     this.panel_tablero.Controls.Add(casilla);
                 }
             }
@@ -181,9 +181,12 @@ namespace AntColonyOptimization.Vista
                     casillas[i, j].Text = "";
                 }
             }
+            lb_tiempo.Visible = false;
+            lb_hormiga.Visible = false;
         }
         private void pintar(Sudoku s)
         {
+            limpiar();
             int[,] tablero = s.get_tablero();
             for(int i = 0; i< n*n;i++)
             {
@@ -254,7 +257,7 @@ namespace AntColonyOptimization.Vista
         {
             try
             {
-                if (sudoku.casillas_vacias() <= MAX_CASILLAS_VACIAS)
+                if (sudoku.casillas_vacias() < MAX_CASILLAS_VACIAS)
                     throw new Exception("Máximo número de valores iniciales es 17");
                 List<ObservadorColonia> obs = new List<ObservadorColonia>();
                 obs.Add(this);
@@ -262,7 +265,12 @@ namespace AntColonyOptimization.Vista
                 {
                     int semilla = obtener_numero(txt_semilla.Text," campo valor de la semilla");
                     sudoku = controlador.resolver(n, sudoku, semilla, obs);
+                    Console.WriteLine(sudoku.ToString());
                     pintar(sudoku);
+                    ColoniaHormigas c = controlador.get_colonia();
+                    TimeSpan t = c.get_tiempo();
+                    lb_tiempo.Visible = true;
+                    lb_tiempo.Text = ""+t.Hours+":"+t.Minutes+":"+t.Seconds+":"+t.Milliseconds;
                 }
             }
             catch (Exception ex)

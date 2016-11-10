@@ -40,7 +40,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         }
         public override double funcion_costo()
         {
-            return repetidos_filas() + repetidos_columnas() + repetidos_region() + (casillas_vacias() * PENALIZACION_VACIOS) + Math.Abs((n*n*n*n)-grafica.get_vertices().Count);
+            return casillas_vacias() + 1;
         }
         /// <summary>
         /// Cuenta cantidad de números que chocan indebidamente en el tablero

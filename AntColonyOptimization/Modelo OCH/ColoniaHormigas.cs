@@ -158,14 +158,14 @@ namespace AntColonyOptimization.Modelo_OCH
                     //notificar_cambio_hormiga(k.get_id());
                     construir_solucion(k);
                     cond = gestor.condicion_parada_hormigas(k.getSolucion());
-                    Console.WriteLine(k.ToString());
+                    //Console.WriteLine(k.ToString());
                 }
                     
                 seleccionar_mejor_hormiga();
                 actualizar_feromonas();
                 i++;
                     
-            } while (hormigas_mismo_camino() < mismo_camino && !gestor.cumple_condicion_parada(mejor));
+            } while (hormigas_mismo_camino() < mismo_camino && !gestor.cumple_condicion_parada(mejor) && i < iteraciones_hormiga);
             DateTime final = DateTime.Now;
             
             tiempo = final - inicio;
@@ -206,10 +206,10 @@ namespace AntColonyOptimization.Modelo_OCH
             if (mejor == null)
                 mejor = hormigas[0].getSolucion();
 
-            for(int k = 1; k < n; k++)
+            for(int k = 0; k < n; k++)
             {
                 Solucion actual = hormigas[k].getSolucion();
-                if (actual.funcion_costo() < actual.funcion_costo())
+                if (actual.funcion_costo() < mejor.funcion_costo())
                     mejor = actual;
             }
         }
@@ -264,11 +264,13 @@ namespace AntColonyOptimization.Modelo_OCH
             else if (ubicacion_feromonas == VERTICES_FEROMONAS)
             {
                 List<Componente> vertices = grafica.get_vertices();
+                
                 foreach (Componente v in vertices)
                 {
                     double Tx = v.get_feromonas();
                     Tx = ((1 - rho) * Tx) + sum_deltha_x(v);
                     v.set_feromonas(Tx);
+                    //Console.WriteLine("Vertice " + v.ToString() + "  "+Tx);
                 }
             }
             else
@@ -316,13 +318,11 @@ namespace AntColonyOptimization.Modelo_OCH
             Boolean abortado = false;
             while(!gestor.completo(k.getSolucion()) && !abortado && cont < max_iteraciones_hormiga)
             {
-                Console.WriteLine("" + k.getSolucion().ToString());
+                //Console.WriteLine("" + k.getSolucion().ToString());
                 Componente actual_k = k.getSolucion().get_vertice_actual();
                 Componente x = g.buscar(actual_k);
                 //Vecinos del vertice actual
                 List<Componente> N_v = x.N();
-                if (cont == 897)
-                    Console.WriteLine("Jj");
                 N_v = gestor.configurar_vecinos(N_v, k);
                 if (N_v.Count == 0)
                 {

@@ -47,13 +47,24 @@ namespace AntColonyOptimization.Modelo_Sudoku
         public void ubicar_posicion_inicial(Random r, List<Hormiga> hormigas, Grafica grafica)
         {
             List<Componente> componentes = grafica.get_vertices();
+            int[,] tablero = sudoku.get_tablero();
             foreach (Hormiga k in hormigas)
             {
-                int num = r.Next(0, componentes.Count);
-                Componente inicio = componentes[num];
-                Sudoku clone = (Sudoku)sudoku.Clone();
-                k.set_solucion(clone);
-                k.getSolucion().cambiar_vertice_actual(inicio);
+                Boolean escogio = false;
+                while(!escogio)
+                {
+                    int num = r.Next(0, componentes.Count);
+                    Casilla inicio = (Casilla)componentes[num];
+                    escogio = (tablero[inicio.get_fila(), inicio.get_col()] == Sudoku.VACIO);
+                    if (escogio)
+                    {
+                        Sudoku clone = (Sudoku)sudoku.Clone();
+                        k.set_solucion(clone);
+                        k.getSolucion().cambiar_vertice_actual(inicio);
+                    }
+                    
+                }
+                
             }
         }
         public Boolean completo(Solucion solucion)
@@ -193,6 +204,10 @@ namespace AntColonyOptimization.Modelo_Sudoku
             int max_iteraciones = (n * n) * 100;
             return (Sudoku)colonia.optimizacion_colonia_hormigas(max_iteraciones,PORCENTAJE_HORMIGAS,semilla, FEROMONAS_INICIAL, ColoniaHormigas.VERTICES_FEROMONAS, ColoniaHormigas.MINIMIZAR, this, grafica, N, ALFA, BETA, RHO);
 
+        }
+        public ColoniaHormigas getColonia()
+        {
+            return colonia;
         }
         
     }

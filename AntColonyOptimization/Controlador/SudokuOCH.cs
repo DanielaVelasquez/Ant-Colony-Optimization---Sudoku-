@@ -57,6 +57,9 @@ namespace AntColonyOptimization.Controlador
             gestor = new GestorSudoku();
             return gestor.resolver(s, semilla,ob);
         }
-
+        public ColoniaHormigas get_colonia()
+        {
+            return gestor.getColonia();
+        }
     }
 }

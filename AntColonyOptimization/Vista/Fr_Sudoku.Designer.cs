@@ -48,6 +48,7 @@
             this.lb_limpiar = new System.Windows.Forms.LinkLabel();
             this.btn_archivo = new System.Windows.Forms.Button();
             this.lb_hormiga = new System.Windows.Forms.Label();
+            this.lb_tiempo = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -244,11 +245,21 @@
             this.lb_hormiga.TabIndex = 12;
             this.lb_hormiga.Text = "Hormiga ";
             // 
+            // lb_tiempo
+            // 
+            this.lb_tiempo.AutoSize = true;
+            this.lb_tiempo.Location = new System.Drawing.Point(332, 557);
+            this.lb_tiempo.Name = "lb_tiempo";
+            this.lb_tiempo.Size = new System.Drawing.Size(55, 17);
+            this.lb_tiempo.TabIndex = 13;
+            this.lb_tiempo.Text = "Tiempo";
+            // 
             // Fr_Sudoku
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(860, 623);
+            this.Controls.Add(this.lb_tiempo);
             this.Controls.Add(this.lb_hormiga);
             this.Controls.Add(this.btn_archivo);
             this.Controls.Add(this.lb_limpiar);
@@ -291,5 +302,6 @@
         private System.Windows.Forms.LinkLabel lb_limpiar;
         private System.Windows.Forms.Button btn_archivo;
         private System.Windows.Forms.Label lb_hormiga;
+        private System.Windows.Forms.Label lb_tiempo;
     }
 }
