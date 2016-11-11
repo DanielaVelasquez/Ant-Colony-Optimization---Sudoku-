@@ -618,22 +618,30 @@ namespace AntColonyOptimization.Modelo_Sudoku
         }
         public override bool Equals(object obj)
         {
-            Sudoku s = (Sudoku)obj;
-            int[,] tablero2 = s.get_tablero();
-            int n2 = s.get_n();
-            if(n== n2)
+            try
             {
-                for(int i = 0; i < n*n; i++)
+                Sudoku s = (Sudoku)obj;
+                int[,] tablero2 = s.get_tablero();
+                int n2 = s.get_n();
+                if (n == n2)
                 {
-                    for(int j=0;j<n*n;j++)
+                    for (int i = 0; i < n * n; i++)
                     {
-                        if (tablero[i, j] != tablero2[i, j])
-                            return false;
+                        for (int j = 0; j < n * n; j++)
+                        {
+                            if (tablero[i, j] != tablero2[i, j])
+                                return false;
+                        }
                     }
+                    return true;
                 }
-                return true;
+                return false;
             }
-            return false;
+            catch
+            {
+                return false;
+            }
+            
         }
 
     }

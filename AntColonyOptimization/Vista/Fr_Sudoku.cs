@@ -255,12 +255,15 @@ namespace AntColonyOptimization.Vista
         }
         private void pintar_colonia(ColoniaHormigas c)
         {
+            
             sudoku = (Sudoku)c.get_mejor();
-            pintar(sudoku);
+            if (sudoku != null)
+                pintar(sudoku);
+            
             TimeSpan t = c.get_tiempo();
             txt_tiempo.Text = "" + t.Hours + ":" + t.Minutes + ":" + t.Seconds + ":" + t.Milliseconds;
             List<Componente> vertices = c.get_grafica().get_vertices();
-            
+            ls_casillas.Items.Clear();
             ls_casillas.Items.AddRange(vertices.ToArray());
         }
         private void btn_simular_Click(object sender, EventArgs e)
@@ -268,10 +271,26 @@ namespace AntColonyOptimization.Vista
             try
             {
                 int semilla = obtener_numero(txt_semilla.Text," campo valor de la semilla");
-                controlador.resolver(sudoku, semilla);
-                   
+                Thread hilo = controlador.resolver(sudoku, semilla);
                 colonia = controlador.getColonias();
+                while(hilo.IsAlive)
+                {
+                    this.Refresh();
+                    if ((sudoku = (Sudoku)colonia.get_solucion_actual()) != null)
+                    {
+                        pintar(sudoku);
+                        Console.WriteLine(sudoku.ToString());
+                    }
+
+                    //pintar_colonia(colonia);
+                    /*List<Componente> vertices = colonia.get_grafica().get_vertices();
+                    ls_casillas.Items.Clear();
+                    ls_casillas.Items.AddRange(vertices.ToArray());*/
+                    Thread.Sleep(2000);
+                }
+                
                 pintar_colonia(colonia);
+               
                 btn_graficas.Enabled = true;
             }
             catch (Exception ex)

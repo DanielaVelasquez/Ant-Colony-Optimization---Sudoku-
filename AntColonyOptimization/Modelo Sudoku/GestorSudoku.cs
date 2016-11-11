@@ -206,7 +206,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// <param name="s">sudoku que se quiere resolver</param>
         /// <param name="semilla">semilla para el generador de números aleatorios</param>
         /// <returns>solucion del sudoku</returns>
-        public void resolver(Sudoku s,int semilla)
+        public Thread resolver(Sudoku s,int semilla)
         {
             
             
@@ -222,29 +222,12 @@ namespace AntColonyOptimization.Modelo_Sudoku
 
             max_iteraciones = 200;//(int) ((casillas_llenas+1) * (casillas_llenas + 1) + 200 );
             this.semilla = semilla;
-            ejecutar();
 
-        }
-        public List<Thread> resolver(Sudoku s, int cant_semillas, int inicio, int paso)
-        {
-            
-            int n = s.get_n();
-            //Cantidad hormigas depende del tamaño del tablero
-            N = (n * n);
-            //Cantidad máxima de iteraciones para 
-            max_iteraciones = (n * n) * 100;
-            List<Thread> hilos = new List<Thread>();
-            for(int cont = 0; cont < cant_semillas; cont++)
-            {
-                configurar(s);
-                this.semilla = inicio;
-                inicio += paso;
-                colonia = new ColoniaHormigas();
-                Thread hilo = new Thread(ejecutar);
-                hilos.Add(hilo);
-                hilo.Start();
-            }
-            return hilos;
+            Thread hilo = new Thread(ejecutar);
+            hilo.Start();
+
+            return hilo;
+
         }
         private void ejecutar()
         {

@@ -101,17 +101,25 @@ namespace AntColonyOptimization.Modelo_OCH
         }
         public override bool Equals(object obj)
         {
-            Grafica otra = (Grafica)obj;
-            if(otra.get_vertices().Count == vertices.Count)
+            try
             {
-                List<Componente> otros_v = otra.get_vertices();
-                for(int i = 0; i<vertices.Count;i++)
+
+                Grafica otra = (Grafica)obj;
+                if (otra.get_vertices().Count == vertices.Count)
                 {
-                    if (!vertices[i].Equals(otros_v[i]))
-                        return false;
+                    List<Componente> otros_v = otra.get_vertices();
+                    for (int i = 0; i < vertices.Count; i++)
+                    {
+                        if (!vertices[i].Equals(otros_v[i]))
+                            return false;
+                    }
                 }
+                return false;
             }
-            return false;
+            catch
+            {
+                return false;
+            }
         }
     }
 }
