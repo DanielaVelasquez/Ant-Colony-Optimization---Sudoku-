@@ -279,13 +279,8 @@ namespace AntColonyOptimization.Vista
                     if ((sudoku = (Sudoku)colonia.get_solucion_actual()) != null)
                     {
                         pintar(sudoku);
-                        Console.WriteLine(sudoku.ToString());
+                        //Console.WriteLine(sudoku.ToString());
                     }
-
-                    //pintar_colonia(colonia);
-                    /*List<Componente> vertices = colonia.get_grafica().get_vertices();
-                    ls_casillas.Items.Clear();
-                    ls_casillas.Items.AddRange(vertices.ToArray());*/
                     Thread.Sleep(2000);
                 }
                 
@@ -300,7 +295,43 @@ namespace AntColonyOptimization.Vista
             
                 
         }
+        private void guardar_archivo(object sender, EventArgs e)
+        {
+            /*try
+            {*/
+                if (sudoku.casillas_vacias() == Math.Pow(n * n, 2))
+                    throw new Exception("El tablero está vacio, no hay información para guardar");
+                
+                SaveFileDialog dialog = new SaveFileDialog();
+                dialog.Filter = "txt files (*.txt)|*.txt";
+                dialog.Title = "Selecciona un directorio para guardar el tablero actual";
+                if(dialog.ShowDialog() == DialogResult.OK)
+                {
 
+                    int[,] tablero = sudoku.get_tablero();
+                    String cadena = "";
+                    for (int i = 0; i < n * n; i++)
+                    {
+                        if (i != 0)
+                            cadena += ",";
+                        for (int j = 0; j < n * n; j++)
+                        {
+                            if (j != 0)
+                                cadena += ",";
+                            cadena += "" + tablero[i,j];
+                        }
+                    }
+                    Console.WriteLine("Cadena " + cadena);
+                    String[] lineas = new String[1];
+                    lineas[0] = cadena;
+                    System.IO.File.WriteAllLines(dialog.FileName, lineas);
+                }
+            //}
+            /*catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }*/
+        }
         private void btn_graficas_Click(object sender, EventArgs e)
         {
             if(colonia!=null)
