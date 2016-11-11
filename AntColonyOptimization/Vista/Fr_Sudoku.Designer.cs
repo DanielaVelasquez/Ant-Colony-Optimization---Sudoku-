@@ -72,14 +72,14 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox1.Size = new System.Drawing.Size(267, 79);
+            this.groupBox1.Size = new System.Drawing.Size(171, 79);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Semilla unitaria";
             // 
             // btn_simular
             // 
-            this.btn_simular.Location = new System.Drawing.Point(739, 559);
+            this.btn_simular.Location = new System.Drawing.Point(647, 552);
             this.btn_simular.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_simular.Name = "btn_simular";
             this.btn_simular.Size = new System.Drawing.Size(99, 43);
@@ -90,7 +90,7 @@
             // 
             // btn_graficas
             // 
-            this.btn_graficas.Location = new System.Drawing.Point(616, 559);
+            this.btn_graficas.Location = new System.Drawing.Point(524, 552);
             this.btn_graficas.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_graficas.Name = "btn_graficas";
             this.btn_graficas.Size = new System.Drawing.Size(91, 43);
@@ -102,7 +102,7 @@
             // panel_tablero
             // 
             this.panel_tablero.Font = new System.Drawing.Font("HelvLight", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.panel_tablero.Location = new System.Drawing.Point(333, 21);
+            this.panel_tablero.Location = new System.Drawing.Point(246, 21);
             this.panel_tablero.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel_tablero.Name = "panel_tablero";
             this.panel_tablero.Size = new System.Drawing.Size(500, 499);
@@ -111,7 +111,7 @@
             // lb_limpiar
             // 
             this.lb_limpiar.AutoSize = true;
-            this.lb_limpiar.Location = new System.Drawing.Point(775, 532);
+            this.lb_limpiar.Location = new System.Drawing.Point(683, 525);
             this.lb_limpiar.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lb_limpiar.Name = "lb_limpiar";
             this.lb_limpiar.Size = new System.Drawing.Size(56, 17);
@@ -122,7 +122,7 @@
             // 
             // btn_archivo
             // 
-            this.btn_archivo.Location = new System.Drawing.Point(451, 559);
+            this.btn_archivo.Location = new System.Drawing.Point(359, 552);
             this.btn_archivo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_archivo.Name = "btn_archivo";
             this.btn_archivo.Size = new System.Drawing.Size(141, 43);
@@ -141,7 +141,7 @@
             this.gbox_resultados.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.gbox_resultados.Name = "gbox_resultados";
             this.gbox_resultados.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.gbox_resultados.Size = new System.Drawing.Size(267, 476);
+            this.gbox_resultados.Size = new System.Drawing.Size(171, 476);
             this.gbox_resultados.TabIndex = 6;
             this.gbox_resultados.TabStop = false;
             this.gbox_resultados.Text = "Resultados";
@@ -163,7 +163,7 @@
             this.txt_tiempo.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txt_tiempo.Name = "txt_tiempo";
             this.txt_tiempo.ReadOnly = true;
-            this.txt_tiempo.Size = new System.Drawing.Size(100, 25);
+            this.txt_tiempo.Size = new System.Drawing.Size(77, 25);
             this.txt_tiempo.TabIndex = 1;
             // 
             // ls_casillas
@@ -173,7 +173,7 @@
             this.ls_casillas.Location = new System.Drawing.Point(16, 120);
             this.ls_casillas.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ls_casillas.Name = "ls_casillas";
-            this.ls_casillas.Size = new System.Drawing.Size(232, 344);
+            this.ls_casillas.Size = new System.Drawing.Size(136, 344);
             this.ls_casillas.TabIndex = 2;
             // 
             // lb_casillas
@@ -188,7 +188,7 @@
             // 
             // btn_guardar
             // 
-            this.btn_guardar.Location = new System.Drawing.Point(333, 559);
+            this.btn_guardar.Location = new System.Drawing.Point(241, 552);
             this.btn_guardar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btn_guardar.Name = "btn_guardar";
             this.btn_guardar.Size = new System.Drawing.Size(92, 43);
@@ -200,7 +200,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(860, 608);
+            this.ClientSize = new System.Drawing.Size(776, 608);
             this.Controls.Add(this.btn_guardar);
             this.Controls.Add(this.btn_archivo);
             this.Controls.Add(this.lb_limpiar);

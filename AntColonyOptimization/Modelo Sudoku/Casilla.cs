@@ -133,7 +133,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         }
         public override string ToString()
         {
-            return "(" + fila + ", " + col + ", " + valor + ")" + " η: "+feromonas;
+            return "(" + fila + ", " + col + ", " + valor + ")" + " η: "+feromonas.ToString("F");
         
         }
     }
