@@ -91,9 +91,9 @@ namespace AntColonyOptimization.Modelo_OCH
         /// </summary>
         private Random random;
         /// <summary>
-        /// Resultados de las hormigas a traves de las iteraciones fila: iteracion, col: id_hormiga, val[fila,col] = funcion costo solucion hormiga
+        /// Resultados de las hormigas a traves de las iteraciones
         /// </summary>
-        private int[,] resultados;
+        private List<ResultadoOCH> resultados;
         /// <summary>
         /// Tiempo tomo a la simulación encontrar una solución
         /// </summary>
@@ -134,6 +134,7 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <returns>Mejor solución encontrada</returns>
         public Solucion optimizacion_colonia_hormigas(int iteraciones_hormiga,double mismo_camino,int nSemilla,double inicial_feromonas, int ubicacion_feromonas, int tipo_op,GestorProblema g,Grafica grafica, int n,double alfa, double beta,double rho)
         {
+            resultados = new List<ResultadoOCH>();
             this.max_iteraciones_hormiga = iteraciones_hormiga;
             semilla = nSemilla;
             this.mismo_camino = mismo_camino;
@@ -164,6 +165,7 @@ namespace AntColonyOptimization.Modelo_OCH
                     construir_solucion(k);
                     cond = gestor.condicion_parada_hormigas(k.getSolucion());
                     Console.WriteLine(k.ToString());
+                    resultados.Add(new ResultadoOCH(i, k.get_id(), k.getSolucion().funcion_costo()));
                 }
                     
                 seleccionar_mejor_hormiga();
@@ -435,9 +437,13 @@ namespace AntColonyOptimization.Modelo_OCH
        {
            return "(" + mejor.funcion_costo() + ", " + tiempo.Hours + ":" + tiempo.Minutes + ":" + tiempo.Seconds+")";
        }
-        public Grafica get_grafica()
+       public Grafica get_grafica()
        {
            return grafica;
+       }
+       public List<ResultadoOCH> getResultados()
+       {
+           return resultados;
        }
     }
 }
