@@ -36,6 +36,10 @@ namespace AntColonyOptimization.Vista
         /// Sudoku en pantalla
         /// </summary>
         private Sudoku sudoku;
+        /// <summary>
+        /// Colonia presentada en pantalla;
+        /// </summary>
+        private ColoniaHormigas colonia;
         /*-----------------------------------Métodos-----------------------------------*/
         public Fr_Sudoku()
         {
@@ -45,7 +49,7 @@ namespace AntColonyOptimization.Vista
             crear_tablero();
             colorear_tablero();
             controlador = new GestorSudoku();
-            
+            btn_graficas.Enabled = false;
         }
         private void resolver()
         {
@@ -177,6 +181,8 @@ namespace AntColonyOptimization.Vista
             }
             txt_tiempo.Text = "";
             ls_casillas.Items.Clear();
+            btn_graficas.Enabled = false;
+            colonia = null;
         }
         private void pintar(Sudoku s)
         {
@@ -254,18 +260,19 @@ namespace AntColonyOptimization.Vista
             TimeSpan t = c.get_tiempo();
             txt_tiempo.Text = "" + t.Hours + ":" + t.Minutes + ":" + t.Seconds + ":" + t.Milliseconds;
             List<Componente> vertices = c.get_grafica().get_vertices();
+            
             ls_casillas.Items.AddRange(vertices.ToArray());
         }
         private void btn_simular_Click(object sender, EventArgs e)
         {
             try
             {
-                
                 int semilla = obtener_numero(txt_semilla.Text," campo valor de la semilla");
                 controlador.resolver(sudoku, semilla);
                    
-                ColoniaHormigas c = controlador.getColonias();
-                pintar_colonia(c);
+                colonia = controlador.getColonias();
+                pintar_colonia(colonia);
+                btn_graficas.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -273,6 +280,25 @@ namespace AntColonyOptimization.Vista
             }
             
                 
+        }
+
+        private void btn_graficas_Click(object sender, EventArgs e)
+        {
+            if(colonia!=null)
+            {
+                List<ResultadoOCH> resultados = colonia.getResultados();
+                int cantHormigas = colonia.getCantidadHormigas();
+                Fr_Grafico fr_grafico = new Fr_Grafico();
+                for(int k = 1; k<=cantHormigas;k++)
+                {
+                    fr_grafico.crear_serie("Hormiga " + k);
+                }
+                foreach(ResultadoOCH r in resultados)
+                {
+                    fr_grafico.crear_punto(r.getHormiga() -1, r.getIteracion(), r.getFuncionCosto());
+                }
+                fr_grafico.Show();
+            }
         }
 
        

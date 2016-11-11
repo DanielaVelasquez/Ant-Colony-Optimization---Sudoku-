@@ -97,6 +97,7 @@
             this.btn_graficas.TabIndex = 8;
             this.btn_graficas.Text = "Gráficas";
             this.btn_graficas.UseVisualStyleBackColor = true;
+            this.btn_graficas.Click += new System.EventHandler(this.btn_graficas_Click);
             // 
             // panel_tablero
             // 

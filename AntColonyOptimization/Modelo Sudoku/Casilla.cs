@@ -120,12 +120,21 @@ namespace AntColonyOptimization.Modelo_Sudoku
         }
         public override bool Equals(object obj)
         {
-            Casilla c = (Casilla)obj;
-            return c.get_fila() == fila && c.get_valor() == valor && c.get_col() == col;
+            try
+            {
+                Casilla c = (Casilla)obj;
+                return c.get_fila() == fila && c.get_valor() == valor && c.get_col() == col;
+            }
+            catch
+            {
+                return false;
+            }
+            
         }
         public override string ToString()
         {
-            return "(" + fila + ", " + col + ", " + valor + ")" + "η "+feromonas;
+            return "(" + fila + ", " + col + ", " + valor + ")" + " η: "+feromonas;
+        
         }
     }
 }

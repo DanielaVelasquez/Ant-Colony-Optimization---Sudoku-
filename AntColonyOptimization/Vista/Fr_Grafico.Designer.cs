@@ -1,6 +1,6 @@
 ﻿namespace AntColonyOptimization.Vista
 {
-    partial class Grafico
+    partial class Fr_Grafico
     {
         /// <summary>
         /// Required designer variable.

@@ -9,3 +9,4 @@ C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimizaci
 C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\obj\Debug\AntColonyOptimization.exe
 C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\obj\Debug\AntColonyOptimization.pdb
 C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\obj\Debug\AntColonyOptimization.csprojResolveAssemblyReference.cache
+C:\Users\danyv\Google Drive\Octavo semestre\Seminario Heurísticas de optimización combinatoria\AntColonyOptimization\AntColonyOptimization\obj\Debug\AntColonyOptimization.Vista.Fr_Grafico.resources

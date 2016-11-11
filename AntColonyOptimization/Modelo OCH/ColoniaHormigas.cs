@@ -164,7 +164,7 @@ namespace AntColonyOptimization.Modelo_OCH
                     cambia_solucion_actual(k.getSolucion());
                     construir_solucion(k);
                     cond = gestor.condicion_parada_hormigas(k.getSolucion());
-                    Console.WriteLine(k.ToString());
+                    //Console.WriteLine(k.ToString());
                     resultados.Add(new ResultadoOCH(i, k.get_id(), k.getSolucion().funcion_costo()));
                 }
                     
@@ -444,6 +444,10 @@ namespace AntColonyOptimization.Modelo_OCH
        public List<ResultadoOCH> getResultados()
        {
            return resultados;
+       }
+       public int getCantidadHormigas()
+       {
+           return hormigas.Count;
        }
     }
 }

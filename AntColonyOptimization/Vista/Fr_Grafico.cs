@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace AntColonyOptimization.Vista
 {
-    public partial class Grafico : Form
+    public partial class Fr_Grafico : Form
     {
         /**-------------------------------------------------------------------------------------------
          * Atributos
@@ -28,7 +28,7 @@ namespace AntColonyOptimization.Vista
         }
         
         
-        public Grafico()
+        public Fr_Grafico()
         {
             InitializeComponent();
             grafica.Series.Clear();
