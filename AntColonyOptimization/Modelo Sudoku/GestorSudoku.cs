@@ -15,11 +15,11 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// <summary>
         /// Influencia sobre nivel de feromonas
         /// </summary>
-        private const double ALFA = 1;
+        private const double ALFA = 0.7;
         /// <summary>
         /// Influencia atractivo movimiento
         /// </summary>
-        private const double BETA = 1;
+        private const double BETA = 0.4;
         /// <summary>
         /// Coeficiente evaporacion feromonas
         /// </summary>
@@ -32,7 +32,14 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// Valor mínimo de desviacion de las soluciones de las hormigas
         /// </summary>
         public const double PORCENTAJE_HORMIGAS = 0.85;
-
+        /// <summary>
+        /// Cantidad máxima de iteraciones de una hormiga
+        /// </summary>
+        public  int MAX_ITERACION_HORMIGAS = 200;
+        /// <summary>
+        /// Cantidad máxima de iteraciones de la simulación
+        /// </summary>
+        public  int MAX_ITERACIONES ;
         /*-----------------------------------Atributos-----------------------------------*/
         /// <summary>
         /// Sudoku inicial que está gestionando  
@@ -47,7 +54,6 @@ namespace AntColonyOptimization.Modelo_Sudoku
         /// </summary>
         private Grafica grafica;
         private int N;
-        private int max_iteraciones;
         private int semilla;
         /*-----------------------------------Métodos-----------------------------------*/
        
@@ -62,7 +68,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
                 {
                     int num = r.Next(0, componentes.Count);
                     Casilla inicio = (Casilla)componentes[num];
-                    escogio = (tablero[inicio.get_fila(), inicio.get_col()] == Sudoku.VACIO);
+                    escogio = (tablero[inicio.get_fila(), inicio.get_col()] == Sudoku.VACIO)&&sudoku.puede_ubicar(inicio.get_fila(),inicio.get_col(),inicio.get_valor());
                     if (escogio)
                     {
                         Sudoku clone = (Sudoku)sudoku.Clone();
@@ -146,15 +152,18 @@ namespace AntColonyOptimization.Modelo_Sudoku
                     {
                         for(int valor = 1; valor <=n*n;valor++)
                         {
-                            Casilla c = new Casilla(i, j, valor);
-                            componentes.Add(c);
+                            if(s.puede_ubicar(i, j, valor))
+                            {
+                                Casilla c = new Casilla(i, j, valor);
+                                componentes.Add(c);
+                            }
                         }
                     }
-                    else
+                    /*else
                     {
                         Casilla c = new Casilla(i, j, tablero[i, j]);
                         componentes.Add(c);
-                    }
+                    }*/
                 }
             }
             Grafica g = new Grafica();
@@ -194,7 +203,8 @@ namespace AntColonyOptimization.Modelo_Sudoku
                     {
                         Casilla c = new Casilla(i, j, tablero[i, j]);
                         Casilla casilla = (Casilla)grafica.buscar(c);
-                        solucion.adicionar_vertice(casilla.clonar_sin_vecinos());
+                        if(casilla!=null)
+                            solucion.adicionar_vertice(casilla.clonar_sin_vecinos());
                     }
                 }
             }
@@ -220,9 +230,10 @@ namespace AntColonyOptimization.Modelo_Sudoku
             double total_casillas = Math.Pow(n * n, 2);
             double casillas_llenas = total_casillas - s.casillas_vacias();//Cantidad casillas número inicial
 
-            max_iteraciones = 200;//(int) ((casillas_llenas+1) * (casillas_llenas + 1) + 200 );
+            
             this.semilla = semilla;
-
+            MAX_ITERACION_HORMIGAS = sudoku.casillas_vacias() * 10 / 4;
+            MAX_ITERACIONES = MAX_ITERACION_HORMIGAS * 2;
             Thread hilo = new Thread(ejecutar);
             hilo.Start();
 
@@ -231,7 +242,7 @@ namespace AntColonyOptimization.Modelo_Sudoku
         }
         private void ejecutar()
         {
-            colonia.optimizacion_colonia_hormigas(max_iteraciones, PORCENTAJE_HORMIGAS, semilla, FEROMONAS_INICIAL, ColoniaHormigas.VERTICES_FEROMONAS, ColoniaHormigas.MINIMIZAR, this, grafica, N, ALFA, BETA, RHO);
+            colonia.optimizacion_colonia_hormigas(MAX_ITERACIONES, MAX_ITERACION_HORMIGAS, PORCENTAJE_HORMIGAS, semilla, FEROMONAS_INICIAL, ColoniaHormigas.VERTICES_FEROMONAS, ColoniaHormigas.MINIMIZAR, this, grafica, N, ALFA, BETA, RHO);
         }
         public ColoniaHormigas getColonias()
         {

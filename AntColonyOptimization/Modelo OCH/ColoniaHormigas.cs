@@ -110,6 +110,14 @@ namespace AntColonyOptimization.Modelo_OCH
         /// Solución que está siendo construida por la hormiga
         /// </summary>
         private Solucion solucion_actual;
+        /// <summary>
+        /// Máximo número de iteraciones del algoritmo
+        /// </summary>
+        private int max_iteraciones;
+        /// <summary>
+        /// Iteración actual de la simulacion
+        /// </summary>
+        private int iteracion_actual;
 
         /*-----------------------------------Métodos-----------------------------------*/
         public ColoniaHormigas()
@@ -119,6 +127,7 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <summary>
         /// Busca una solución sobre la gráfica 
         /// </summary>
+        /// <param name="max_iteraciones">Máximo número de iteraciones del algoritmo</param>
         /// <param name="iteraciones_hormiga">Cantidad máxima de iteraciones para que una hormiga construya una solución</param>
         /// <param name="mismo_camino">Porcentaje mínimo de hormigas que se espera esten en el mismo camino</param>
         /// <param name="nSemilla">Valor inicial para el generador de numeros aleatorios    </param>
@@ -132,8 +141,9 @@ namespace AntColonyOptimization.Modelo_OCH
         /// <param name="beta">Influencia atractivo movimiento</param>
         /// <param name="rho">Coeficiente evaporacion feromonas</param>
         /// <returns>Mejor solución encontrada</returns>
-        public Solucion optimizacion_colonia_hormigas(int iteraciones_hormiga,double mismo_camino,int nSemilla,double inicial_feromonas, int ubicacion_feromonas, int tipo_op,GestorProblema g,Grafica grafica, int n,double alfa, double beta,double rho)
+        public Solucion optimizacion_colonia_hormigas(int max_iteraciones,int iteraciones_hormiga,double mismo_camino,int nSemilla,double inicial_feromonas, int ubicacion_feromonas, int tipo_op,GestorProblema g,Grafica grafica, int n,double alfa, double beta,double rho)
         {
+            this.max_iteraciones = max_iteraciones;
             resultados = new List<ResultadoOCH>();
             this.max_iteraciones_hormiga = iteraciones_hormiga;
             semilla = nSemilla;
@@ -152,7 +162,7 @@ namespace AntColonyOptimization.Modelo_OCH
             DateTime inicio = DateTime.Now;
             crear_hormigas();
             iniciar_feromonas();
-            int i = 0;
+            iteracion_actual = 0;
             do
             {
                 simulando = true;
@@ -165,14 +175,13 @@ namespace AntColonyOptimization.Modelo_OCH
                     construir_solucion(k);
                     cond = gestor.condicion_parada_hormigas(k.getSolucion());
                     //Console.WriteLine(k.ToString());
-                    resultados.Add(new ResultadoOCH(i, k.get_id(), k.getSolucion().funcion_costo()));
+                    resultados.Add(new ResultadoOCH(iteracion_actual, k.get_id(), k.getSolucion().funcion_costo()));
                 }
                     
                 seleccionar_mejor_hormiga();
                 actualizar_feromonas();
-                i++;
-                    
-            } while (hormigas_mismo_camino() < mismo_camino && !gestor.cumple_condicion_parada(mejor) && i < (iteraciones_hormiga/4));
+                iteracion_actual++;
+            } while (hormigas_mismo_camino() < mismo_camino && !gestor.cumple_condicion_parada(mejor) && iteracion_actual < max_iteraciones);
             simulando = false;
             DateTime final = DateTime.Now;
             
@@ -448,6 +457,14 @@ namespace AntColonyOptimization.Modelo_OCH
        public int getCantidadHormigas()
        {
            return hormigas.Count;
+       }
+       public int get_iteracion_actual()
+       {
+           return iteracion_actual;
+       }
+       public int get_max_iteraciones()
+       {
+           return max_iteraciones;
        }
     }
 }

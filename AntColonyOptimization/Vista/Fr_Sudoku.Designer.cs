@@ -37,6 +37,12 @@
             this.lb_limpiar = new System.Windows.Forms.LinkLabel();
             this.btn_archivo = new System.Windows.Forms.Button();
             this.gbox_resultados = new System.Windows.Forms.GroupBox();
+            this.txt_simulacion = new System.Windows.Forms.TextBox();
+            this.lb_simulacion = new System.Windows.Forms.Label();
+            this.txt_solucion = new System.Windows.Forms.TextBox();
+            this.lb_solucion = new System.Windows.Forms.Label();
+            this.txt_iteracion = new System.Windows.Forms.TextBox();
+            this.lb_iteración = new System.Windows.Forms.Label();
             this.lb_casillas = new System.Windows.Forms.Label();
             this.ls_casillas = new System.Windows.Forms.ListBox();
             this.txt_tiempo = new System.Windows.Forms.TextBox();
@@ -72,7 +78,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(171, 79);
+            this.groupBox1.Size = new System.Drawing.Size(201, 79);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Semilla unitaria";
@@ -133,6 +139,12 @@
             // 
             // gbox_resultados
             // 
+            this.gbox_resultados.Controls.Add(this.txt_simulacion);
+            this.gbox_resultados.Controls.Add(this.lb_simulacion);
+            this.gbox_resultados.Controls.Add(this.txt_solucion);
+            this.gbox_resultados.Controls.Add(this.lb_solucion);
+            this.gbox_resultados.Controls.Add(this.txt_iteracion);
+            this.gbox_resultados.Controls.Add(this.lb_iteración);
             this.gbox_resultados.Controls.Add(this.lb_casillas);
             this.gbox_resultados.Controls.Add(this.ls_casillas);
             this.gbox_resultados.Controls.Add(this.txt_tiempo);
@@ -141,45 +153,101 @@
             this.gbox_resultados.Margin = new System.Windows.Forms.Padding(4);
             this.gbox_resultados.Name = "gbox_resultados";
             this.gbox_resultados.Padding = new System.Windows.Forms.Padding(4);
-            this.gbox_resultados.Size = new System.Drawing.Size(171, 476);
+            this.gbox_resultados.Size = new System.Drawing.Size(201, 476);
             this.gbox_resultados.TabIndex = 6;
             this.gbox_resultados.TabStop = false;
             this.gbox_resultados.Text = "Resultados";
             // 
+            // txt_simulacion
+            // 
+            this.txt_simulacion.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.txt_simulacion.Location = new System.Drawing.Point(101, 71);
+            this.txt_simulacion.Name = "txt_simulacion";
+            this.txt_simulacion.ReadOnly = true;
+            this.txt_simulacion.Size = new System.Drawing.Size(81, 25);
+            this.txt_simulacion.TabIndex = 9;
+            // 
+            // lb_simulacion
+            // 
+            this.lb_simulacion.AutoSize = true;
+            this.lb_simulacion.Location = new System.Drawing.Point(15, 74);
+            this.lb_simulacion.Name = "lb_simulacion";
+            this.lb_simulacion.Size = new System.Drawing.Size(80, 17);
+            this.lb_simulacion.TabIndex = 8;
+            this.lb_simulacion.Text = "Simulación";
+            // 
+            // txt_solucion
+            // 
+            this.txt_solucion.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.txt_solucion.Location = new System.Drawing.Point(101, 109);
+            this.txt_solucion.Name = "txt_solucion";
+            this.txt_solucion.ReadOnly = true;
+            this.txt_solucion.Size = new System.Drawing.Size(81, 25);
+            this.txt_solucion.TabIndex = 7;
+            // 
+            // lb_solucion
+            // 
+            this.lb_solucion.AutoSize = true;
+            this.lb_solucion.Location = new System.Drawing.Point(15, 112);
+            this.lb_solucion.Name = "lb_solucion";
+            this.lb_solucion.Size = new System.Drawing.Size(64, 17);
+            this.lb_solucion.TabIndex = 6;
+            this.lb_solucion.Text = "Solución";
+            // 
+            // txt_iteracion
+            // 
+            this.txt_iteracion.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.txt_iteracion.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.txt_iteracion.Location = new System.Drawing.Point(101, 36);
+            this.txt_iteracion.Name = "txt_iteracion";
+            this.txt_iteracion.ReadOnly = true;
+            this.txt_iteracion.Size = new System.Drawing.Size(81, 25);
+            this.txt_iteracion.TabIndex = 5;
+            // 
+            // lb_iteración
+            // 
+            this.lb_iteración.AutoSize = true;
+            this.lb_iteración.Location = new System.Drawing.Point(15, 39);
+            this.lb_iteración.Name = "lb_iteración";
+            this.lb_iteración.Size = new System.Drawing.Size(63, 17);
+            this.lb_iteración.TabIndex = 4;
+            this.lb_iteración.Text = "Iteración";
+            // 
             // lb_casillas
             // 
             this.lb_casillas.AutoSize = true;
-            this.lb_casillas.Location = new System.Drawing.Point(12, 83);
+            this.lb_casillas.Location = new System.Drawing.Point(15, 184);
             this.lb_casillas.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lb_casillas.Name = "lb_casillas";
-            this.lb_casillas.Size = new System.Drawing.Size(60, 17);
+            this.lb_casillas.Size = new System.Drawing.Size(159, 17);
             this.lb_casillas.TabIndex = 3;
-            this.lb_casillas.Text = "Casillas";
+            this.lb_casillas.Text = "Casillas (Fila,Col,Valor)";
+            this.lb_casillas.Click += new System.EventHandler(this.lb_casillas_Click);
             // 
             // ls_casillas
             // 
             this.ls_casillas.FormattingEnabled = true;
             this.ls_casillas.ItemHeight = 17;
-            this.ls_casillas.Location = new System.Drawing.Point(16, 120);
+            this.ls_casillas.Location = new System.Drawing.Point(16, 205);
             this.ls_casillas.Margin = new System.Windows.Forms.Padding(4);
             this.ls_casillas.Name = "ls_casillas";
-            this.ls_casillas.Size = new System.Drawing.Size(136, 344);
+            this.ls_casillas.Size = new System.Drawing.Size(166, 259);
             this.ls_casillas.TabIndex = 2;
             // 
             // txt_tiempo
             // 
             this.txt_tiempo.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.txt_tiempo.Location = new System.Drawing.Point(75, 43);
+            this.txt_tiempo.Location = new System.Drawing.Point(101, 144);
             this.txt_tiempo.Margin = new System.Windows.Forms.Padding(4);
             this.txt_tiempo.Name = "txt_tiempo";
             this.txt_tiempo.ReadOnly = true;
-            this.txt_tiempo.Size = new System.Drawing.Size(77, 25);
+            this.txt_tiempo.Size = new System.Drawing.Size(81, 25);
             this.txt_tiempo.TabIndex = 1;
             // 
             // lb_tiempo
             // 
             this.lb_tiempo.AutoSize = true;
-            this.lb_tiempo.Location = new System.Drawing.Point(12, 43);
+            this.lb_tiempo.Location = new System.Drawing.Point(13, 147);
             this.lb_tiempo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lb_tiempo.Name = "lb_tiempo";
             this.lb_tiempo.Size = new System.Drawing.Size(56, 17);
@@ -240,5 +308,11 @@
         private System.Windows.Forms.TextBox txt_tiempo;
         private System.Windows.Forms.Label lb_tiempo;
         private System.Windows.Forms.Button btn_guardar;
+        private System.Windows.Forms.TextBox txt_simulacion;
+        private System.Windows.Forms.Label lb_simulacion;
+        private System.Windows.Forms.TextBox txt_solucion;
+        private System.Windows.Forms.Label lb_solucion;
+        private System.Windows.Forms.TextBox txt_iteracion;
+        private System.Windows.Forms.Label lb_iteración;
     }
 }

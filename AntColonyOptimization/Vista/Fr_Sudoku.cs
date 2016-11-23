@@ -50,25 +50,29 @@ namespace AntColonyOptimization.Vista
             colorear_tablero();
             controlador = new GestorSudoku();
             btn_graficas.Enabled = false;
+           
         }
-        private void resolver()
+        private void pintar_casillas_fijas(Sudoku s)
         {
-            n = 3;
-            //int[,] tablero = new int[n * n, n * n];
-            for(int i = 0; i<100;i++)
+            int[,] tablero = s.get_tablero();
+            for (int i = 0;i<n*n;i++)
             {
-                //Sudoku s = crear_sudoku("5,3,1,0,8,0,6,0,0,0,0,0,4,0,6,0,0,0,0,7,0,0,0,2,8,5,0,8,0,2,7,3,0,0,1,0,7,0,0,5,0,0,0,9,0,3,4,0,0,6,0,0,0,0,0,6,9,8,0,0,0,0,0,0,5,0,0,4,1,0,0,7,0,0,0,2,0,0,4,0,3");
-                Sudoku s = new Sudoku(n);
-                controlador.resolver(s, i);
-                ColoniaHormigas colonia = controlador.getColonias();
-                Solucion sol = colonia.get_mejor();
-                Console.WriteLine(i+", "+sol.funcion_costo()+","+colonia.get_tiempo().ToString());
-                /*Console.WriteLine(colonia.ToString());
-                
-                Console.WriteLine(sol.ToString());
-                Console.*/
+                for(int j = 0; j< n*n; j++)
+                {
+                    if (tablero[i, j] != Sudoku.VACIO)
+                        casillas[i, j].ForeColor = System.Drawing.Color.Green;
+                }
             }
-            
+        }
+        private void despintar_casillas()
+        {
+            for (int i = 0; i < n * n; i++)
+            {
+                for (int j = 0; j < n * n; j++)
+                {
+                    casillas[i, j].ForeColor = System.Drawing.Color.Black;
+                }
+            }
         }
         private Sudoku leer_sudoku(String cad,int n)
         {
@@ -112,7 +116,6 @@ namespace AntColonyOptimization.Vista
         {
 
         }
-
         private void Sudoku_Load(object sender, EventArgs e)
         {
 
@@ -163,11 +166,20 @@ namespace AntColonyOptimization.Vista
                 throw new Exception("Valor no numérico ingresado en "+nombre);
             }
         }
-        
-       
         private void lb_limpiar_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             limpiar();
+        }
+        private void disponible_casilla(Boolean v)
+        {
+            for (int i = 0; i < n * n; i++)
+            {
+                for (int j = 0; j < n * n; j++)
+                {
+                    casillas[i, j].Enabled = v;
+                }
+            }
+            colorear_tablero();
         }
         private void limpiar()
         {
@@ -183,17 +195,25 @@ namespace AntColonyOptimization.Vista
             ls_casillas.Items.Clear();
             btn_graficas.Enabled = false;
             colonia = null;
+            txt_solucion.Text = "";
+            txt_simulacion.Text = "";
+            txt_iteracion.Text = "";
+            despintar_casillas();
+            disponible_casilla(true);
+
+            btn_simular.Enabled = true;
         }
         private void pintar(Sudoku s)
         {
-            Console.WriteLine(s.ToString());
             int[,] tablero = s.get_tablero();
             for(int i = 0; i< n*n;i++)
             {
                 for(int j = 0; j< n*n; j++)
                 {
                     if (tablero[i, j] != Sudoku.VACIO)
-                        casillas[i, j].Text = ""+tablero[i, j];
+                        casillas[i, j].Text = "" + tablero[i, j];
+                    else
+                        casillas[i, j].Text = "";
                 }
             }
         }
@@ -259,7 +279,17 @@ namespace AntColonyOptimization.Vista
             sudoku = (Sudoku)c.get_mejor();
             if (sudoku != null)
                 pintar(sudoku);
-            
+            if (sudoku.completo())
+            {
+                txt_solucion.Text = "CORRECTA";
+                txt_solucion.ForeColor = System.Drawing.Color.Green;
+            }
+            else
+            {
+                txt_solucion.Text = "INCORRECTA";
+                txt_solucion.ForeColor = System.Drawing.Color.Red;
+            }
+                
             TimeSpan t = c.get_tiempo();
             txt_tiempo.Text = "" + t.Hours + ":" + t.Minutes + ":" + t.Seconds + ":" + t.Milliseconds;
             List<Componente> vertices = c.get_grafica().get_vertices();
@@ -270,7 +300,11 @@ namespace AntColonyOptimization.Vista
         {
             try
             {
+                //disponible_casilla(false);
+                if (sudoku.casillas_vacias() == 0)
+                    throw new Exception("Sudoku está resuelto");
                 int semilla = obtener_numero(txt_semilla.Text," campo valor de la semilla");
+                pintar_casillas_fijas(sudoku);
                 Thread hilo = controlador.resolver(sudoku, semilla);
                 colonia = controlador.getColonias();
                 while(hilo.IsAlive)
@@ -281,11 +315,14 @@ namespace AntColonyOptimization.Vista
                         pintar(sudoku);
                         //Console.WriteLine(sudoku.ToString());
                     }
+                    txt_iteracion.Text = "" + (colonia.get_iteracion_actual()+1) + "/" + colonia.get_max_iteraciones();
+                    txt_simulacion.Text = "Trabajando";
                     Thread.Sleep(2000);
                 }
-                
+                txt_iteracion.Text = "" + colonia.get_iteracion_actual() + "/" + colonia.get_max_iteraciones();
+                txt_simulacion.Text = "Finalizada";
                 pintar_colonia(colonia);
-               
+                btn_simular.Enabled = false;
                 btn_graficas.Enabled = true;
             }
             catch (Exception ex)
@@ -295,10 +332,27 @@ namespace AntColonyOptimization.Vista
             
                 
         }
+        private String convertir_cadena(Sudoku sudoku)
+        {
+            int[,] tablero = sudoku.get_tablero();
+            String cadena = "";
+            for (int i = 0; i < n * n; i++)
+            {
+                if (i != 0)
+                    cadena += ",";
+                for (int j = 0; j < n * n; j++)
+                {
+                    if (j != 0)
+                        cadena += ",";
+                    cadena += "" + tablero[i, j];
+                }
+            }
+            return cadena;
+        }
         private void guardar_archivo(object sender, EventArgs e)
         {
-            /*try
-            {*/
+            try
+            {
                 if (sudoku.casillas_vacias() == Math.Pow(n * n, 2))
                     throw new Exception("El tablero está vacio, no hay información para guardar");
                 
@@ -308,29 +362,17 @@ namespace AntColonyOptimization.Vista
                 if(dialog.ShowDialog() == DialogResult.OK)
                 {
 
-                    int[,] tablero = sudoku.get_tablero();
-                    String cadena = "";
-                    for (int i = 0; i < n * n; i++)
-                    {
-                        if (i != 0)
-                            cadena += ",";
-                        for (int j = 0; j < n * n; j++)
-                        {
-                            if (j != 0)
-                                cadena += ",";
-                            cadena += "" + tablero[i,j];
-                        }
-                    }
-                    Console.WriteLine("Cadena " + cadena);
+                    String cadena = convertir_cadena(sudoku);
+                    
                     String[] lineas = new String[1];
                     lineas[0] = cadena;
                     System.IO.File.WriteAllLines(dialog.FileName, lineas);
                 }
-            //}
-            /*catch(Exception ex)
+            }
+            catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }*/
+            }
         }
         private void btn_graficas_Click(object sender, EventArgs e)
         {
@@ -345,12 +387,15 @@ namespace AntColonyOptimization.Vista
                 }
                 foreach(ResultadoOCH r in resultados)
                 {
-                    fr_grafico.crear_punto(r.getHormiga() -1, r.getIteracion(), r.getFuncionCosto());
+                    fr_grafico.crear_punto(r.getHormiga() -1, r.getIteracion()+1, r.getFuncionCosto());
                 }
                 fr_grafico.Show();
             }
         }
 
-       
-    }
+        private void lb_casillas_Click(object sender, EventArgs e)
+        {
+
+        }
+     }
 }
